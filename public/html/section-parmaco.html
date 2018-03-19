@@ -1,0 +1,81 @@
+<template>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<style>
+		.heading-box {
+			color: red;
+		}
+	</style>
+
+    <div id="heading-box" class="heading-box"></div>
+    <div id="buttons-row-box" class="buttons-row-box"></div>
+    <div id="chart-box" class="chart-box"></div>
+    <h1><slot id=s1 name=slot1></slot></h1>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	// Refers to the "importer", which is index.html
+	var thatDoc = document;
+    // Refers to the "importee", which is vimeo-embed.html
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+    // Gets content from <template>.
+    var template = thisDoc.querySelector( 'template' ).content;
+
+
+	let componentPrototype = Object.create(HTMLDivElement.prototype);
+
+    componentPrototype.createdCallback = function() {
+            let node = thatDoc.importNode(template, true);
+            this.createShadowRoot().appendChild(node);
+			this.setKind('section-box');
+			this.hoot();
+            };
+
+    componentPrototype.hoot = function() {
+        //h.dom.appendInnerHTMLIO('BETWEEN H1', this.shadowHost);
+    };
+
+    componentPrototype.setKind = function(kind) {
+        h.dom.setAttribute('kind', kind, this);
+    };
+    
+    componentPrototype.newHeadline = function(id, db) {
+        const headlineModel = new HeadlineModel(id, db);
+        const headlineView = new HeadlineView(headlineModel);
+        const headlineCtrl = new HeadlineCtrl(headlineView, headlineModel);
+        h.dom.appendChildNodeIO(headlineView.getDOM().element, this.shadowRoot.getElementById("heading-box"));
+        events.publish('changedRowNumber', 1);
+    };
+    
+    componentPrototype.newChart = function(doc, db, controller) {
+        const chartModel = new ChartModel(doc, db, controller);
+        const chartView = new ChartView(chartModel);
+        const chartCtrl = new ChartCtrl(chartView, chartModel);
+        h.dom.appendChildNodeIO(chartView.getDOM().chartElement, this.shadowRoot.getElementById("chart-box"));
+        chartView.notify();
+    };
+    
+    // componentPrototype.newButton = function(doc, db, controller) {
+    //     const buttonModel = new ButtonModel();
+    //     const buttonView = new ButtonView(ButtonModel);
+    //     const buttonCtrl = new ButtonCtrl(ButtonView, ButtonModel);
+    //     h.dom.appendChildNodeIO(buttonView.getDOM().chartElement, this.shadowRoot.getElementById("buttons-row-box"));
+    //     buttonView.notify();
+	// };
+	
+	componentPrototype.setId = function(id) {
+        h.dom.setAttribute('id', id, this);
+    };
+
+    document.registerElement('section-parmaco', {
+        prototype: componentPrototype,
+        extends: 'div'
+    });
+
+
+
+})(window, document);
+</script>
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+

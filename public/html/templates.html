@@ -1,0 +1,51 @@
+<template>
+	<style>
+		.heading-box {
+			color: red;
+		}
+	</style>
+
+	<div id="heading-box" class="heading-box"></div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	// Refers to the "importer", which is index.html
+	var thatDoc = document;
+    // Refers to the "importee", which is vimeo-embed.html
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+    // Gets content from <template>.
+    var template = thisDoc.querySelector( 'template' ).content;
+
+
+	let componentPrototype = Object.create(HTMLDivElement.prototype);
+
+    componentPrototype.createdCallback = function() {
+            let node = thatDoc.importNode(template, true);
+            this.createShadowRoot().appendChild(node);
+			this.setKind('section-box');
+			this.hoot();
+            };
+
+    componentPrototype.hoot = function() {
+        alert('hoot');
+    };
+
+    componentPrototype.setKind = function(kind) {
+        h.dom.setAttribute('kind', kind, this);
+	};
+	
+	componentPrototype.setId = function(id) {
+        h.dom.setAttribute('id', id, this);
+    };
+
+    document.registerElement('section-parmaco', {
+        prototype: componentPrototype,
+        extends: 'div'
+    });
+
+})(window, document);
+</script>
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+

@@ -1,0 +1,35 @@
+<template>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<style>
+		
+	</style>
+
+	<slot name="text"></slot>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	var thatDoc = document;
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+	var template = thisDoc.querySelector( 'template' ).content;
+	
+
+	class InfoHeadline extends HTMLElement {
+
+		constructor() {
+		super();
+
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.cloneNode(true));
+		//this._name = "";
+		}
+
+	}
+
+	window.customElements.define('info-headline', InfoHeadline);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>

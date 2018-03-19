@@ -1,0 +1,77 @@
+<template>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<style>
+		.info-section {
+			display: flex;
+  			justify-content: center;
+  			flex-direction: column;
+			text-align: center;
+			width: 200px;
+			height: auto;
+			margin: 5px;
+
+		background-color: lightblue;
+		border-radius: 5px;
+		color: #000;
+		}
+	</style>
+
+	<div class="info-section">
+		<slot name="headline"></slot>
+		<slot name="userinput"></slot>
+	</div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	var thatDoc = document;
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+	var template = thisDoc.querySelector( 'template' ).content;
+	
+
+	class InfoSection extends HTMLElement {
+
+		constructor() {
+		super();
+
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.cloneNode(true));
+		//this._name = "";
+		}
+
+		get name() {
+			return this.getAttribute('name');
+		}
+
+		set name(newName) {
+			return this.setAttribute('name', newName);
+		}
+
+			
+		static get observedAttributes() {
+		return [ 'name'];
+		}
+
+		attributeChangedCallback(name, oldVal, newVal) {
+
+		switch(name) {
+			case 'name':
+			var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
+			infoSectionInnerEl.innerHTML = newVal;
+		}
+		}
+
+		connectedCallback() {
+			//var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
+			//infoSectionInnerEl.innerHTML = this.name;
+		}
+
+	}
+
+	window.customElements.define('info-section', InfoSection);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>

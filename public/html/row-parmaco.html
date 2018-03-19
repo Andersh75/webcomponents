@@ -1,0 +1,62 @@
+<template>
+	<style>
+		.heading-box {
+			color: red;
+		}
+	</style>
+
+    <div id="heading-box" class="heading-box"></div>
+    <div id="buttons-row-box" class="buttons-row-box"></div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	// Refers to the "importer", which is index.html
+	var thatDoc = document;
+    // Refers to the "importee", which is vimeo-embed.html
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+    // Gets content from <template>.
+    var template = thisDoc.querySelector( 'template' ).content;
+
+
+	let componentPrototype = Object.create(HTMLDivElement.prototype);
+
+    componentPrototype.createdCallback = function() {
+            let node = thatDoc.importNode(template, true);
+            this.createShadowRoot().appendChild(node);
+			this.setKind('row-box');
+			this.hoot();
+            };
+
+    componentPrototype.hoot = function() {
+        //alert('hoot');
+    };
+
+    componentPrototype.setKind = function(kind) {
+        h.dom.setAttribute('kind', kind, this);
+    };
+    
+    componentPrototype.newHeadline = function(id, db) {
+        const headlineModel = new HeadlineModel(id, db);
+        const headlineView = new HeadlineView(headlineModel);
+        const headlineCtrl = new HeadlineCtrl(headlineView, headlineModel);
+        h.dom.appendChildNodeIO(headlineView.getDOM().element, this.shadowRoot.getElementById("heading-box"));
+        events.publish('changedRowNumber', 1);
+    };
+	
+	componentPrototype.setId = function(id) {
+        h.dom.setAttribute('id', id, this);
+    };
+
+    document.registerElement('row-parmaco', {
+        prototype: componentPrototype,
+        extends: 'div'
+    });
+
+
+
+})(window, document);
+</script>
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+
