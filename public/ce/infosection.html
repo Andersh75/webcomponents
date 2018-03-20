@@ -37,6 +37,12 @@
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
 		//this._name = "";
+
+		this.addEventListener('updatedfromsource', e => {
+			
+		console.log('I listen inside INFO-SECTION');
+		//this.dispatchEvent(new CustomEvent('updatedoutside2', {bubbles: true, composed: true}));
+		});
 		}
 
 		get name() {

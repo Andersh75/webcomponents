@@ -20,7 +20,7 @@
 	</style>
 	
 	<div class="info-section">
-		<input type="text">
+		<input type="text"></input>
 	</div>
 </template>
 
@@ -39,33 +39,62 @@
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
 		//this._name = "";
+
+		this.addEventListener('keydown', e => {
+			//console.log(e.composedPath());
+			let el = e.composedPath()[0];
+			
+			if (e.keyCode === 32 || e.keyCode === 13) {
+				//console.log(el);
+				el.dispatchEvent(
+					new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
+			}
+		});
+
+		this.addEventListener('click', e => {
+			e.stopPropagation;
+			//console.log(e.composedPath()[0].value);
+			this.value = e.composedPath()[0].value;
+		});
+		this.addEventListener('updatedfromsource', e => {
+			
+			console.log('I listen inside SDOM');
+			//this.dispatchEvent(new CustomEvent('updatedfrominput', {bubbles: true, cancelable: true, composed: true}));
+		});
 		}
 
-		get name() {
-			return this.getAttribute('name');
+		get value() {
+			return this.getAttribute('value');
 		}
 
-		set name(newName) {
-			return this.setAttribute('name', newName);
+		set value(newValue) {
+			return this.setAttribute('value', newValue);
 		}
 
 			
 		static get observedAttributes() {
-		return [ 'name'];
+		return [ 'value'];
 		}
 
 		attributeChangedCallback(name, oldVal, newVal) {
 
 		switch(name) {
-			case 'name':
-			var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-			infoSectionInnerEl.innerHTML = newVal;
+			case 'value':
+			console.log(name + " " + oldVal + " " + newVal);
+			var el = this.shadowRoot.querySelector('input');
+			console.log(el);
+			el.dispatchEvent(new CustomEvent('updatedfromsource', {bubbles: true, cancelable: true, composed: true}));
+			// var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
+			// infoSectionInnerEl.innerHTML = newVal;
 		}
 		}
 
 		connectedCallback() {
-			var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
+			var inputEl = this.shadowRoot.querySelector('input');
 			//infoSectionInnerEl.innerHTML = this.name;
+			//console.log(this.value);
+			inputEl.value = this.value;
+			//inputEl.setAttribute('value', this.value);
 		}
 
 	}

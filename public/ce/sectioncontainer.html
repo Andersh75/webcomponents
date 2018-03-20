@@ -30,18 +30,24 @@
 	var template = thisDoc.querySelector('template').content;
 	
 
-	class SectionContainer extends HTMLElement {
+	class InfoContainer extends HTMLElement {
 
 		constructor() {
 		super();
 
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
+
+		this.addEventListener('updatedfromsource', e => {
+			
+			console.log('I listen inside INFO-CONTAINER');
+			
+		});
 		}
 
 	}
 
-	window.customElements.define('section-container', SectionContainer);
+	window.customElements.define('info-container', InfoContainer);
 
 })(window, document);
 </script>
