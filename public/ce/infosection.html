@@ -1,18 +1,18 @@
 <template>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<style>
 		.info-section {
 			display: flex;
-  			justify-content: center;
-  			flex-direction: column;
+			justify-content: center;
+			flex-direction: column;
 			text-align: center;
 			width: 200px;
 			height: auto;
 			margin: 5px;
 
-		background-color: lightblue;
-		border-radius: 5px;
-		color: #000;
+			background-color: lightblue;
+			border-radius: 5px;
+			color: #000;
 		}
 	</style>
 
@@ -23,60 +23,64 @@
 </template>
 
 <script>
-(function(window, document, undefined) {
-	var thatDoc = document;
-    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
-	var template = thisDoc.querySelector( 'template' ).content;
-	
+	(function (window, document, undefined) {
+		var thatDoc = document;
+		var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+		var template = thisDoc.querySelector('template').content;
 
-	class InfoSection extends HTMLElement {
 
-		constructor() {
-		super();
+		class InfoSection extends HTMLElement {
 
-		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.appendChild(template.cloneNode(true));
-		//this._name = "";
+			constructor() {
+				super();
 
-		this.addEventListener('updatedfromsource', e => {
-			
-		console.log('I listen inside INFO-SECTION');
-		//this.dispatchEvent(new CustomEvent('updatedoutside2', {bubbles: true, composed: true}));
-		});
+				this.attachShadow({
+					mode: 'open'
+				});
+				this.shadowRoot.appendChild(template.cloneNode(true));
+			}
+
+			get name() {
+				return this.getAttribute('name');
+			}
+
+			set name(newName) {
+				return this.setAttribute('name', newName);
+			}
+
+			changeHeadline(obj) {
+				console.log('subscriber');
+				this.children[0].children[0].textContent = obj.detail.newVal;
+			}
+
+			subs(obj) {
+				console.log('subscriber');
+				this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#333333";
+			}
+
+
+			static get observedAttributes() {
+				return ['name'];
+			}
+
+			attributeChangedCallback(name, oldVal, newVal) {
+
+				switch (name) {
+					case 'name':
+						var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
+						infoSectionInnerEl.innerHTML = newVal;
+				}
+			}
+
+			connectedCallback() {
+				events.subscribe('updated', this.changeHeadline.bind(this));
+			}
+
 		}
 
-		get name() {
-			return this.getAttribute('name');
-		}
+		window.customElements.define('info-section', InfoSection);
 
-		set name(newName) {
-			return this.setAttribute('name', newName);
-		}
-
-			
-		static get observedAttributes() {
-		return [ 'name'];
-		}
-
-		attributeChangedCallback(name, oldVal, newVal) {
-
-		switch(name) {
-			case 'name':
-			var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-			infoSectionInnerEl.innerHTML = newVal;
-		}
-		}
-
-		connectedCallback() {
-			//var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-			//infoSectionInnerEl.innerHTML = this.name;
-		}
-
-	}
-
-	window.customElements.define('info-section', InfoSection);
-
-})(window, document);
+	})(window, document);
 </script>
 
 <script type="text/javascript" src="/js/curry.js"></script>

@@ -36,7 +36,6 @@
 
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
-		//this._name = "";
 		}
 
 		get name() {
@@ -47,28 +46,38 @@
 			return this.setAttribute('name', newName);
 		}
 
+		changeBackgroundColor(obj) {
+			console.log('subscriber');
+			console.log(obj);
+			this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
+		}
+
+		changeHeadline(obj) {
+			console.log('subscriber');
+			this.children[0].children[0].textContent = obj.detail.newVal;
+		}
 			
 		static get observedAttributes() {
-		return [ 'name'];
+			return [ 'name'];
 		}
 
 		attributeChangedCallback(name, oldVal, newVal) {
-
-		switch(name) {
-			case 'name':
-			var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-			infoSectionInnerEl.innerHTML = newVal;
-		}
+			switch(name) {
+				case 'name':
+				var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
+				infoSectionInnerEl.innerHTML = newVal;
+			}
 		}
 
 		connectedCallback() {
-			//var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-			//infoSectionInnerEl.innerHTML = this.name;
+			events.subscribe('updated', this.changeBackgroundColor.bind(this));
+			events.subscribe('updated', this.changeHeadline.bind(this));
 		}
-
 	}
 
 	window.customElements.define('fancy-section', FancySection);
+
+
 
 })(window, document);
 </script>

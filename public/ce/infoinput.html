@@ -38,14 +38,12 @@
 
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
-		//this._name = "";
 
 		this.addEventListener('keydown', e => {
 			//console.log(e.composedPath());
 			let el = e.composedPath()[0];
 			
 			if (e.keyCode === 32 || e.keyCode === 13) {
-				//console.log(el);
 				el.dispatchEvent(
 					new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
 			}
@@ -55,11 +53,6 @@
 			e.stopPropagation;
 			//console.log(e.composedPath()[0].value);
 			this.value = e.composedPath()[0].value;
-		});
-		this.addEventListener('updatedfromsource', e => {
-			
-			console.log('I listen inside SDOM');
-			//this.dispatchEvent(new CustomEvent('updatedfrominput', {bubbles: true, cancelable: true, composed: true}));
 		});
 		}
 
@@ -73,30 +66,27 @@
 
 			
 		static get observedAttributes() {
-		return [ 'value'];
+			return [ 'value'];
 		}
 
 		attributeChangedCallback(name, oldVal, newVal) {
+			let el = this.shadowRoot.querySelector('input');
+			let changedAttribute = {};
+			changedAttribute.name = name;
+			changedAttribute.oldVal = oldVal;
+			changedAttribute.newVal = newVal;	
 
-		switch(name) {
-			case 'value':
-			console.log(name + " " + oldVal + " " + newVal);
-			var el = this.shadowRoot.querySelector('input');
-			console.log(el);
-			el.dispatchEvent(new CustomEvent('updatedfromsource', {bubbles: true, cancelable: true, composed: true}));
-			// var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-			// infoSectionInnerEl.innerHTML = newVal;
-		}
+			switch(name) {
+				case 'value':
+					eventDispatcher(el, 'updated', changedAttribute);
+			}
 		}
 
 		connectedCallback() {
-			var inputEl = this.shadowRoot.querySelector('input');
-			//infoSectionInnerEl.innerHTML = this.name;
-			//console.log(this.value);
-			inputEl.value = this.value;
-			//inputEl.setAttribute('value', this.value);
+			let el = this.shadowRoot.querySelector('input');
+			el.value = this.value;
+			eventListener('updated');
 		}
-
 	}
 
 	window.customElements.define('info-input', InfoInput);
