@@ -85,7 +85,7 @@
 		connectedCallback() {
 			let el = this.shadowRoot.querySelector('input');
 			el.value = this.value;
-			eventListener('updated');
+			eventPublisher('updated');
 		}
 	}
 

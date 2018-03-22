@@ -57,24 +57,25 @@
         };
     })();
 
-    function eventListenerMaker() {
+
+    function eventPublisherMaker() {
         let eventNames = [];
 
-        return function eventListener(eventName) {
+        return function eventPublisher(eventName) {
 
             if (eventNames.indexOf(eventName) == -1) {
                 eventNames.push(eventName);
 
-                function eventPublisher(e) {
+                function publishEvent(e) {
                     return events.publish(eventName, e);
                 }
 
-                document.addEventListener(eventName, eventPublisher);
+                document.addEventListener(eventName, publishEvent);
             }
         };
     }
 
-    let eventListener = eventListenerMaker();
+    let eventPublisher = eventPublisherMaker();
 
     function eventDispatcher(element, eventName, changedAttribute) {
         console.log('theEvent');
