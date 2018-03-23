@@ -31,19 +31,15 @@
 
 	class FancySection extends HTMLElement {
 
-
-
-
-
 		constructor() {
 		super();
-
 
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
 		this.HeadlineModel = this.HeadlineModel.bind(this);
     	this.HeadlineView = this.HeadlineView.bind(this);
-    	this.HeadlineCtrl = this.HeadlineCtrl.bind(this);
+		this.HeadlineCtrl = this.HeadlineCtrl.bind(this);
+		this.changeBackgroundColor = this.changeBackgroundColor.bind(this);
 		}
 
 		get name() {
@@ -57,13 +53,16 @@
 		//Controller
 		HeadlineCtrl(model, view) {
 			let that = this;
+			console.log('that in CTRL');
+			console.log(that);
 
 			events.subscribe('updated', function(obj) {
 				console.log('here');
+				console.log(that);
+				//that.name = "changed!";
 				return model.newData();
 			});
-			console.log('that in CTRL');
-			console.log(that);
+
 
 			//model.register(view);
 
@@ -74,12 +73,15 @@
 					return model.register(view, this);
 				},
 				notify: function() {
+					console.log('CTRL notified');
 				}
 			};
 		}
 
 		HeadlineModel() {
 			let that = this;
+			console.log('this in Model');
+			console.log(this);
 			
 			const eventTarget = document.createElement('event-target');
 			let data = 1;
@@ -102,6 +104,8 @@
 
 		HeadlineView(model) {
 			let that = this;
+			console.log('this in View');
+			console.log(this);
 
 			let elementH1;
 
@@ -110,7 +114,8 @@
 			}
 
 			function render(data) {
-				return this.children[0].children[0].textContent = data;
+				//return this.children[0].children[0].textContent = data;
+				return this.changeHeadline(data);
 			}
 
 			elementH1 = document.createElement('h1');
@@ -142,12 +147,6 @@
 
 		changeHeadline(obj) {
 			console.log('subscriber');
-			console.log(this.headlineModel);
-			this.children[0].children[0].textContent = obj.detail.newVal;
-		}
-
-		changeHeadline2(obj) {
-			console.log('subscriber');
 			console.log(obj);
 			this.children[0].children[0].textContent = obj;
 		}
@@ -159,17 +158,17 @@
 		attributeChangedCallback(name, oldVal, newVal) {
 			switch(name) {
 				case 'name':
-				var infoSectionInnerEl = this.shadowRoot.querySelector('.info-section-inner');
-				infoSectionInnerEl.innerHTML = newVal;
+				var infoSectionEl = this.shadowRoot.querySelector('.info-section');
+				console.log(this.shadowRoot);
+				infoSectionEl.innerHTML = newVal;
 			}
 		}
 
 		connectedCallback() {
-			events.subscribe('updated', this.changeBackgroundColor.bind(this));
-			//events.subscribe('updated', this.changeHeadline.bind(this));
-			const headlineModel = this.HeadlineModel.call(this);
-            const headlineView = this.HeadlineView.call(this, headlineModel);
-			const headlineCtrl = this.HeadlineCtrl.call(this, headlineModel, headlineView);
+			events.subscribe('updated', this.changeBackgroundColor);
+			const headlineModel = this.HeadlineModel();
+            const headlineView = this.HeadlineView(headlineModel);
+			const headlineCtrl = this.HeadlineCtrl(headlineModel, headlineView);
 			headlineCtrl.register();
 
 
