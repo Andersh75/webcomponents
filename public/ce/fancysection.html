@@ -31,11 +31,19 @@
 
 	class FancySection extends HTMLElement {
 
+
+
+
+
 		constructor() {
 		super();
 
+
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
+		this.HeadlineModel = this.HeadlineModel.bind(this);
+    	this.HeadlineView = this.HeadlineView.bind(this);
+    	this.HeadlineCtrl = this.HeadlineCtrl.bind(this);
 		}
 
 		get name() {
@@ -46,6 +54,86 @@
 			return this.setAttribute('name', newName);
 		}
 
+		//Controller
+		HeadlineCtrl(model, view) {
+			let that = this;
+
+			events.subscribe('updated', function(obj) {
+				console.log('here');
+				return model.newData();
+			});
+			console.log('that in CTRL');
+			console.log(that);
+
+			//model.register(view);
+
+			return {
+				register: function() {
+					console.log('this in CTRL');
+					console.log(this);
+					return model.register(view, this);
+				},
+				notify: function() {
+				}
+			};
+		}
+
+		HeadlineModel() {
+			let that = this;
+			
+			const eventTarget = document.createElement('event-target');
+			let data = 1;
+
+			return {
+				getData: function() {
+					return data;
+				},
+				newData: function() {
+					data = data + 1;
+					eventTarget.dispatchEvent(new Event('notify'));
+				},
+				register: function(...args) {
+					args.forEach(elem => {
+						eventTarget.addEventListener('notify', elem.notify.bind(that));
+					});
+				}
+			};
+		}
+
+		HeadlineView(model) {
+			let that = this;
+
+			let elementH1;
+
+			function getData() {
+				return model.getData();
+			}
+
+			function render(data) {
+				return this.children[0].children[0].textContent = data;
+			}
+
+			elementH1 = document.createElement('h1');
+
+			h.dom.appendInnerHTMLIO(getData(), elementH1);
+
+			let DOM = {
+				element: elementH1
+			}
+
+			return {
+				getDOM: function() {
+					return DOM;
+				},
+				notify: function() {
+					console.log('That in View');
+					console.log(that);
+					//this.changeHeadline2(getData());
+					render.call(that, getData());
+				}
+			};          
+		}
+
 		changeBackgroundColor(obj) {
 			console.log('subscriber');
 			console.log(obj);
@@ -54,7 +142,14 @@
 
 		changeHeadline(obj) {
 			console.log('subscriber');
+			console.log(this.headlineModel);
 			this.children[0].children[0].textContent = obj.detail.newVal;
+		}
+
+		changeHeadline2(obj) {
+			console.log('subscriber');
+			console.log(obj);
+			this.children[0].children[0].textContent = obj;
 		}
 			
 		static get observedAttributes() {
@@ -71,11 +166,20 @@
 
 		connectedCallback() {
 			events.subscribe('updated', this.changeBackgroundColor.bind(this));
-			events.subscribe('updated', this.changeHeadline.bind(this));
+			//events.subscribe('updated', this.changeHeadline.bind(this));
+			const headlineModel = this.HeadlineModel.call(this);
+            const headlineView = this.HeadlineView.call(this, headlineModel);
+			const headlineCtrl = this.HeadlineCtrl.call(this, headlineModel, headlineView);
+			headlineCtrl.register();
+
+
 		}
 	}
 
 	window.customElements.define('fancy-section', FancySection);
+
+	
+
 
 
 
