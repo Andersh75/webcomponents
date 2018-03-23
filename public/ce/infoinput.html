@@ -71,14 +71,15 @@
 
 		attributeChangedCallback(name, oldVal, newVal) {
 			let el = this.shadowRoot.querySelector('input');
-			let changedAttribute = {};
-			changedAttribute.name = name;
-			changedAttribute.oldVal = oldVal;
-			changedAttribute.newVal = newVal;	
+			let details = {};
+			details.changedAttribute = {}
+			details.changedAttribute.name = name;
+			details.changedAttribute.oldVal = oldVal;
+			details.changedAttribute.newVal = newVal;
 
 			switch(name) {
 				case 'value':
-					eventDispatcher(el, 'updated', changedAttribute);
+					eventDispatcher(el, 'updated', details);
 			}
 		}
 

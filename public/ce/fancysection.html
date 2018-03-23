@@ -36,10 +36,6 @@
 
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
-		this.HeadlineModel = this.HeadlineModel.bind(this);
-    	this.HeadlineView = this.HeadlineView.bind(this);
-		this.HeadlineCtrl = this.HeadlineCtrl.bind(this);
-		this.changeBackgroundColor = this.changeBackgroundColor.bind(this);
 		}
 
 		get name() {
@@ -56,24 +52,28 @@
 			console.log('that in CTRL');
 			console.log(that);
 
-			events.subscribe('updated', function(obj) {
+			events.subscribe('notDefined', function(e) {
 				console.log('here');
 				console.log(that);
 				//that.name = "changed!";
 				return model.newData();
 			});
 
-			events.subscribe('updated', function(obj) {
+			events.subscribe('updated', function(e) {
 				console.log('here');
 				console.log(that);
 				//that.name = "changed!";
-				return view.changeBackgroundColor();
+				return model.updateHeadline(e);
 			});
 
-			
-
-
-			//model.register(view);
+			events.subscribe('notDefined', function(e) {
+				console.log('here');
+				console.log(that);
+				console.log('e');
+				console.log(e);
+				//that.name = "changed!";
+				return view.changeBackgroundColor();
+			});
 
 			return {
 				register: function() {
@@ -83,6 +83,8 @@
 				},
 				notify: function() {
 					console.log('CTRL notified');
+				},
+				updatedHeadline: function() {
 				}
 			};
 		}
@@ -94,18 +96,38 @@
 			
 			const eventTarget = document.createElement('event-target');
 			let data = 1;
+			let headline = "";
+
+			function newData() {
+				data += 1;
+				return eventTarget.dispatchEvent(new Event('notify'));
+			}
+
+			function updateHeadline(e) {
+				headline = data + e.detail.changedAttribute.newVal;
+				console.log("HEADLINE UPDATED");
+				console.log(headline);
+				return eventTarget.dispatchEvent(new Event('updatedHeadline'));
+			}
 
 			return {
 				getData: function() {
 					return data;
 				},
+
+				getHeadline: function() {
+					return headline;
+				},
 				newData: function() {
-					data = data + 1;
-					eventTarget.dispatchEvent(new Event('notify'));
+					return newData();
+				},
+				updateHeadline: function(e) {
+					return updateHeadline(e);
 				},
 				register: function(...args) {
 					args.forEach(elem => {
 						eventTarget.addEventListener('notify', elem.notify.bind(that));
+						eventTarget.addEventListener('updatedHeadline', elem.updatedHeadline.bind(that));
 					});
 				}
 			};
@@ -122,13 +144,25 @@
 				return model.getData();
 			}
 
+			function getHeadline() {
+				return model.getHeadline();
+			}
+
 			function changeBackgroundColor() {
-				return this.changeBackgroundColor();
+				//return this.changeBackgroundColor();
+				return this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
 			}
 
 			function render(data) {
-				//return this.children[0].children[0].textContent = data;
-				return this.changeHeadline(data);
+				return this.children[0].children[0].textContent = data;
+				//return this.changeHeadline(data);
+			}
+
+			function updateHeadline(headline) {
+				console.log("THE HEADLINE");
+				console.log(headline);
+				return this.children[0].children[0].textContent = headline;
+				//return this.changeHeadline(data);
 			}
 
 			elementH1 = document.createElement('h1');
@@ -151,7 +185,14 @@
 					console.log(that);
 					//this.changeHeadline2(getData());
 					render.call(that, getData());
+				},
+				updatedHeadline: function() {
+					console.log('That in View updatedHeadline');
+					console.log(that);
+					//this.changeHeadline2(getData());
+					updateHeadline.call(that, getHeadline());
 				}
+
 			};          
 		}
 
@@ -180,22 +221,14 @@
 		}
 
 		connectedCallback() {
-			
 			const headlineModel = this.HeadlineModel();
             const headlineView = this.HeadlineView(headlineModel);
 			const headlineCtrl = this.HeadlineCtrl(headlineModel, headlineView);
 			headlineCtrl.register();
-
-
 		}
 	}
 
 	window.customElements.define('fancy-section', FancySection);
-
-	
-
-
-
 
 })(window, document);
 </script>

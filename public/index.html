@@ -77,14 +77,14 @@
 
     let eventPublisher = eventPublisherMaker();
 
-    function eventDispatcher(element, eventName, changedAttribute) {
+    function eventDispatcher(element, eventName, details) {
         console.log('theEvent');
-        console.log(changedAttribute);
+        console.log(details);
         element.dispatchEvent(new CustomEvent(eventName, {
             bubbles: true,
             cancelable: true,
             composed: true,
-            detail: changedAttribute
+            detail: details
         }));
 
     }
