@@ -96,97 +96,79 @@
   <link rel="import" href="ce/infosection.html">
   <link rel="import" href="ce/fancysection.html">
   <link rel="import" href="ce/sectioncontainer.html">
+  <link rel="import" href="ce/togglebutton.html">
 
 
 </head>
 <body>
-  
-
-  <info-container>
-
-    <info-section slot="section">
-            
-
-
-      <info-headline slot="headline">
-        <h1 slot="text">A Headline</h1>
-      </info-headline>
-      <info-input slot="userinput" value="default">
-      </info-input>
 
 
 
-    </info-section>
+<info-container>
+    <info-headline slot="h1">
+        <h1 slot="text">Heat section</h1>
+    </info-headline>
 
-    <fancy-section slot="section" section="heat">
+    <toggle-button slot="b1" toggle="on" section="heat">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
 
-        
+    <info-headline slot="h2">
+        <h1 slot="text">Edit heat section headline</h1>
+    </info-headline>
+
+    <info-input slot="i1" value="default" section="heat"></info-input>
+
+    <fancy-section slot="s1" section="heat">    
         <info-headline slot="headline" year="1">
-          <h1 slot="text">A Headline</h1>
+            <h1 slot="text">A Headline</h1>
         </info-headline>
         <info-headline slot="headline" year="2">
             <h1 slot="text">A Headline</h1>
-          </info-headline>
-          <info-headline slot="headline" year="3">
+        </info-headline>
+        <info-headline slot="headline" year="3">
             <h1 slot="text">A Headline</h1>
-          </info-headline>
-          <info-headline slot="headline" year="4">
+        </info-headline>
+        <info-headline slot="headline" year="4">
             <h1 slot="text">A Headline</h1>
-          </info-headline>
-              
-        <info-input slot="userinput">
-        </info-input>
-  
-  
-  
+        </info-headline>
+
+        <info-input slot="userinput" section="heat"></info-input>
     </fancy-section>
 
-      <info-section slot="section">
-      
+    <info-select slot="select1" selectedindex="1" section="heat"></info-select>
+</info-container>
 
-          
-          <info-headline slot="headline">
+
+
+
+<info-container>
+    <info-headline slot="h1">
+        <h1 slot="text">Water section</h1>
+    </info-headline>
+
+    <toggle-button slot="b1" toggle="on" section="water">TOGGLE WATER SECTION VISIBILITY</toggle-button>
+
+    <info-headline slot="h2">
+        <h1 slot="text">Edit water section headline</h1>
+    </info-headline>
+
+    <info-input slot="i1" value="default" section="water"></info-input>
+
+    <fancy-section slot="s1" section="water">    
+        <info-headline slot="headline">
             <h1 slot="text">A Headline</h1>
-          </info-headline>
-          <info-input slot="userinput">
-          </info-input>
-    
-    
-    
-        </info-section>
+        </info-headline>
+        <info-input slot="userinput" section="water"></info-input> 
+    </fancy-section>
 
-        <info-section slot="section">
-      
+    <info-select slot="select1" selectedindex="1" section="water"></info-select>
+</info-container>
 
-            
-            <info-headline slot="headline">
-              <h1 slot="text">A Headline</h1>
-            </info-headline>
-            <info-input slot="userinput">
-            </info-input>
-      
-      
-      
-          </info-section>
 
-          <fancy-section slot="section" section="water">
 
-        
-            <info-headline slot="headline">
-              <h1 slot="text">A Headline</h1>
-            </info-headline>
-                  
-            <info-input slot="userinput">
-            </info-input>
-      
-      
-      
-        </fancy-section>
 
-  </info-container>
 
-<info-select selectedindex="1" section="water"></info-select>
-<info-select selectedindex="1" section="heat"></info-select>
+
+
   
   
 

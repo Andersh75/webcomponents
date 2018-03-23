@@ -1,0 +1,128 @@
+<template>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<style>
+		.info-section {
+			display: flex;
+  			justify-content: center;
+  			flex-direction: column;
+			text-align: center;
+			width: 200px;
+			height: auto;
+			margin: 5px;
+
+		background-color: lightblue;
+		border-radius: 5px;
+		color: #000;
+		}
+		.info-section-inner {
+
+		}
+	</style>
+	
+	<div class="info-section">
+		<button>
+			<slot></slot>
+		</button>
+	</div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	var thatDoc = document;
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+	var template = thisDoc.querySelector( 'template' ).content;
+	
+
+	class ToggleButton extends HTMLElement {
+
+		constructor() {
+		super();
+
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.cloneNode(true));
+
+		// this.addEventListener('keydown', e => {
+		// 	//console.log(e.composedPath());
+		// 	let el = e.composedPath()[0];
+			
+		// 	if (e.keyCode === 32 || e.keyCode === 13) {
+		// 		el.dispatchEvent(
+		// 			new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
+		// 	}
+		// });
+
+
+		this.addEventListener('click', e => {
+			e.stopPropagation;
+			console.log('click');
+			console.log(e.composedPath());
+			console.log(this.toggle);
+			if(this.toggle === "on") {
+				this.toggle = "off";
+			} else {
+				this.toggle = "on";
+			}
+			//this.value = e.composedPath()[0].value;
+		});
+
+		// this.shadowRoot.querySelector('select').addEventListener('change', e => {
+		// 	e.stopPropagation;
+		// 	console.log('change');
+		// 	console.log(e.composedPath());
+		// 	this.selectedIndex = e.composedPath()[0].selectedIndex;
+		// });
+		}
+
+		get toggle() {
+			return this.getAttribute('toggle');
+		}
+
+		set toggle(newToggle) {
+			return this.setAttribute('toggle', newToggle);
+		}
+
+		// get section() {
+		// 	return this.getAttribute('section');
+		// }
+
+		// set section(newSection) {
+		// 	return this.setAttribute('section', newSection);
+		// }
+
+			
+		static get observedAttributes() {
+			return [ 'toggle' ];
+		}
+
+		attributeChangedCallback(name, oldVal, newVal) {
+			let el = this.shadowRoot.querySelector('button');
+			console.log('before dispatch');
+			console.log(el);
+			let details = {};
+			details.changedAttribute = {}
+			details.changedAttribute.name = name;
+			details.changedAttribute.oldVal = oldVal;
+			details.changedAttribute.newVal = newVal;
+
+			switch(name) {
+				case 'toggle':
+					eventDispatcher(el, 'newToggle', details);
+			}
+		}
+
+		connectedCallback() {
+			let el = this.shadowRoot.querySelector('button');
+			el.dataset.toggle = this.toggle;
+			console.log('after dataset');
+			console.log(el);
+			eventPublisher('newToggle');
+		}
+	}
+
+	window.customElements.define('toggle-button', ToggleButton);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>

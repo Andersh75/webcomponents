@@ -69,9 +69,13 @@
 
 			events.subscribe('updated', function(e) {
 				console.log('here');
-				console.log(that);
+				console.log(e.target.getAttribute('section'));
+				//console.log(e.target.getAttribute('section'));
 				//that.name = "changed!";
-				return model.updateHeadline(e);
+				if (e.target.getAttribute('section') === that.section) {
+					return model.updateHeadline(e);
+				}
+				
 			});
 
 			events.subscribe('notDefined', function(e) {
@@ -92,6 +96,23 @@
 				if (e.target.getAttribute('section') === that.section) {
 					return model.updateHeadline(e);
 				}
+				
+			});
+
+			events.subscribe('newToggle', function(e) {
+				console.log('newToggle catched');
+				console.log('e');
+				console.log(e);
+				console.log(e.target.getAttribute('toggle'));
+				// //that.name = "changed!";
+				if (e.target.getAttribute('section') === that.section) {
+					if (e.target.getAttribute('toggle') === "off") {
+					return view.hideComponent(e);
+				} else {
+					return view.showComponent(e);
+				}
+				}
+				
 				
 			});
 
@@ -173,6 +194,18 @@
 				return this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
 			}
 
+			function hideComponent() {
+				//return this.changeBackgroundColor();
+				console.log(this);
+				return this.style.visibility = "hidden";
+			}
+
+			function showComponent() {
+				//return this.changeBackgroundColor();
+				console.log(this);
+				return this.style.visibility = "visible";
+			}
+
 			function render(data) {
 				return this.children[0].children[0].textContent = data;
 				//return this.changeHeadline(data);
@@ -219,6 +252,18 @@
 					console.log(that);
 					//this.changeHeadline2(getData());
 					updateHeadline.call(that, getHeadline());
+				},
+				hideComponent: function() {
+					console.log('That in View updatedHeadline');
+					console.log(that);
+					//this.changeHeadline2(getData());
+					hideComponent.call(that);
+				},
+				showComponent: function() {
+					console.log('That in View updatedHeadline');
+					console.log(that);
+					//this.changeHeadline2(getData());
+					showComponent.call(that);
 				}
 
 			};          
