@@ -63,6 +63,15 @@
 				return model.newData();
 			});
 
+			events.subscribe('updated', function(obj) {
+				console.log('here');
+				console.log(that);
+				//that.name = "changed!";
+				return view.changeBackgroundColor();
+			});
+
+			
+
 
 			//model.register(view);
 
@@ -113,6 +122,10 @@
 				return model.getData();
 			}
 
+			function changeBackgroundColor() {
+				return this.changeBackgroundColor();
+			}
+
 			function render(data) {
 				//return this.children[0].children[0].textContent = data;
 				return this.changeHeadline(data);
@@ -130,6 +143,9 @@
 				getDOM: function() {
 					return DOM;
 				},
+				changeBackgroundColor: function() {
+					changeBackgroundColor.call(that);
+				},
 				notify: function() {
 					console.log('That in View');
 					console.log(that);
@@ -139,9 +155,8 @@
 			};          
 		}
 
-		changeBackgroundColor(obj) {
+		changeBackgroundColor() {
 			console.log('subscriber');
-			console.log(obj);
 			this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
 		}
 
@@ -165,7 +180,7 @@
 		}
 
 		connectedCallback() {
-			events.subscribe('updated', this.changeBackgroundColor);
+			
 			const headlineModel = this.HeadlineModel();
             const headlineView = this.HeadlineView(headlineModel);
 			const headlineCtrl = this.HeadlineCtrl(headlineModel, headlineView);
