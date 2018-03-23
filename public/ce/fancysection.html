@@ -46,6 +46,14 @@
 			return this.setAttribute('name', newName);
 		}
 
+		get section() {
+			return this.getAttribute('section');
+		}
+
+		set section(newSection) {
+			return this.setAttribute('section', newSection);
+		}
+
 		//Controller
 		HeadlineCtrl(model, view) {
 			let that = this;
@@ -73,6 +81,18 @@
 				console.log(e);
 				//that.name = "changed!";
 				return view.changeBackgroundColor();
+			});
+
+			events.subscribe('newIndex', function(e) {
+				console.log('newIndex catched');
+				console.log('e');
+				console.log(e);
+				console.log(e.target.getAttribute('section'));
+				//that.name = "changed!";
+				if (e.target.getAttribute('section') === that.section) {
+					return model.updateHeadline(e);
+				}
+				
 			});
 
 			return {

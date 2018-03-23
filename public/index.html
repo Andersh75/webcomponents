@@ -91,6 +91,7 @@
 </script>
   
   <link rel="import" href="ce/infoinput.html">
+  <link rel="import" href="ce/infoselect.html">
   <link rel="import" href="ce/infoheadline.html">
   <link rel="import" href="ce/infosection.html">
   <link rel="import" href="ce/fancysection.html">
@@ -117,7 +118,7 @@
 
     </info-section>
 
-    <fancy-section slot="section">
+    <fancy-section slot="section" section="heat">
 
         
         <info-headline slot="headline">
@@ -159,7 +160,24 @@
       
           </info-section>
 
+          <fancy-section slot="section" section="water">
+
+        
+            <info-headline slot="headline">
+              <h1 slot="text">A Headline</h1>
+            </info-headline>
+                  
+            <info-input slot="userinput">
+            </info-input>
+      
+      
+      
+        </fancy-section>
+
   </info-container>
+
+<info-select selectedindex="1" section="water"></info-select>
+<info-select selectedindex="1" section="heat"></info-select>
   
   
 

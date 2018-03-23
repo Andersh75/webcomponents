@@ -1,0 +1,130 @@
+<template>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<style>
+		.info-section {
+			display: flex;
+  			justify-content: center;
+  			flex-direction: column;
+			text-align: center;
+			width: 200px;
+			height: auto;
+			margin: 5px;
+
+		background-color: lightblue;
+		border-radius: 5px;
+		color: #000;
+		}
+		.info-section-inner {
+
+		}
+	</style>
+	
+	<div class="info-section">
+		<select>
+			<option value='1'>1</option>
+			<option value='2'>2</option>
+			<option value='3'>3</option>
+			<option value='4'>4</option>
+			<option value='5'>5</option>
+		</select>
+	</div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	var thatDoc = document;
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+	var template = thisDoc.querySelector( 'template' ).content;
+	
+
+	class InfoSelect extends HTMLElement {
+
+		constructor() {
+		super();
+
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.cloneNode(true));
+
+		// this.addEventListener('keydown', e => {
+		// 	//console.log(e.composedPath());
+		// 	let el = e.composedPath()[0];
+			
+		// 	if (e.keyCode === 32 || e.keyCode === 13) {
+		// 		el.dispatchEvent(
+		// 			new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
+		// 	}
+		// });
+
+
+		this.addEventListener('click', e => {
+			e.stopPropagation;
+			console.log('click');
+			console.log(e.composedPath());
+			this.value = e.composedPath()[0].value;
+		});
+
+		this.shadowRoot.querySelector('select').addEventListener('change', e => {
+			e.stopPropagation;
+			console.log('change');
+			console.log(e.composedPath());
+			this.selectedIndex = e.composedPath()[0].selectedIndex;
+		});
+		}
+
+		get selectedIndex() {
+			return this.getAttribute('selectedindex');
+		}
+
+		set selectedIndex(newSelectedIndex) {
+			return this.setAttribute('selectedindex', newSelectedIndex);
+		}
+
+		get section() {
+			return this.getAttribute('section');
+		}
+
+		set section(newSection) {
+			return this.setAttribute('section', newSection);
+		}
+
+			
+		static get observedAttributes() {
+			return [ 'selectedindex', 'section'];
+		}
+
+		attributeChangedCallback(name, oldVal, newVal) {
+			let el = this.shadowRoot.querySelector('select');
+			console.log('before dispatch');
+			console.log(el);
+			let details = {};
+			details.changedAttribute = {}
+			details.changedAttribute.name = name;
+			details.changedAttribute.oldVal = oldVal;
+			details.changedAttribute.newVal = newVal;
+
+			switch(name) {
+				case 'selectedindex':
+					eventDispatcher(el, 'newIndex', details);
+				case 'section':
+					eventDispatcher(el, 'newSection', details);
+			}
+		}
+
+		connectedCallback() {
+			let el = this.shadowRoot.querySelector('select');
+			el.selectedIndex = this.selectedIndex;
+			el.dataset.section = this.section;
+			console.log('after dataset');
+			console.log(el);
+			eventPublisher('newIndex');
+			eventPublisher('newSection');
+		}
+	}
+
+	window.customElements.define('info-select', InfoSelect);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
