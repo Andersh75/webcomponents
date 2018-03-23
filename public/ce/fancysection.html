@@ -181,6 +181,14 @@
 			function updateHeadline(headline) {
 				console.log("THE HEADLINE");
 				console.log(headline);
+				this.shadowRoot.querySelectorAll('slot')[0].assignedNodes().forEach(node => {
+					console.log(node);
+					console.log(node.shadowRoot.querySelectorAll('slot')[0].assignedNodes());
+					node.shadowRoot.querySelectorAll('slot')[0].assignedNodes().forEach(el => {
+						
+						el.textContent = Number(headline) * Number(node.getAttribute('year'))
+					});
+				})
 				return this.children[0].children[0].textContent = headline;
 				//return this.changeHeadline(data);
 			}
@@ -245,6 +253,8 @@
             const headlineView = this.HeadlineView(headlineModel);
 			const headlineCtrl = this.HeadlineCtrl(headlineModel, headlineView);
 			headlineCtrl.register();
+			console.log('nested slots');
+			console.log(this.shadowRoot.querySelectorAll('slot')[0].assignedNodes());
 		}
 	}
 
