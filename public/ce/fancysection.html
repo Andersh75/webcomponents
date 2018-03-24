@@ -1,12 +1,14 @@
 <template>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 	<style>
 		.info-section {
 			display: flex;
   			justify-content: center;
   			flex-direction: column;
 			text-align: center;
-			width: 200px;
+			width: 260px;
 			height: auto;
 			margin: 5px;
 
@@ -57,69 +59,42 @@
 		//Controller
 		HeadlineCtrl(model, view) {
 			let that = this;
-			console.log('that in CTRL');
-			console.log(that);
 
-			events.subscribe('notDefined', function(e) {
-				console.log('here');
-				console.log(that);
-				//that.name = "changed!";
-				return model.newData();
+			events.subscribe('newInput', function(e) {
+				if (e.target.getAttribute('section') === that.section) {
+					return model.updateHeadline(e);
+				}	
 			});
 
-			events.subscribe('updated', function(e) {
-				console.log('here');
-				console.log(e.target.getAttribute('section'));
-				//console.log(e.target.getAttribute('section'));
-				//that.name = "changed!";
+			events.subscribe('newSelect', function(e) {
 				if (e.target.getAttribute('section') === that.section) {
 					return model.updateHeadline(e);
 				}
-				
-			});
-
-			events.subscribe('notDefined', function(e) {
-				console.log('here');
-				console.log(that);
-				console.log('e');
-				console.log(e);
-				//that.name = "changed!";
-				return view.changeBackgroundColor();
-			});
-
-			events.subscribe('newIndex', function(e) {
-				console.log('newIndex catched');
-				console.log('e');
-				console.log(e);
-				console.log(e.target.getAttribute('section'));
-				//that.name = "changed!";
-				if (e.target.getAttribute('section') === that.section) {
-					return model.updateHeadline(e);
-				}
-				
 			});
 
 			events.subscribe('newToggle', function(e) {
-				console.log('newToggle catched');
-				console.log('e');
-				console.log(e);
-				console.log(e.target.getAttribute('toggle'));
-				// //that.name = "changed!";
 				if (e.target.getAttribute('section') === that.section) {
-					if (e.target.getAttribute('toggle') === "off") {
-					return view.hideComponent(e);
-				} else {
-					return view.showComponent(e);
+					if (e.target.getAttribute('toggle') === "off") 	{
+						if (e.target.getAttribute('effect') === "visibility") {
+							return view.ComponentVisibilityOff(e);
+						} 						
+						if (e.target.getAttribute('effect') === "display") {
+							return view.ComponentDisplayOff(e);
+						} 
+					} else {
+						if (e.target.getAttribute('effect') === "visibility") {
+							
+							return view.ComponentVisibilityOn(e);
+						} 						
+						if (e.target.getAttribute('effect') === "display") {
+							return view.ComponentDisplayOn(e);
+						} 
+					}
 				}
-				}
-				
-				
 			});
 
 			return {
 				register: function() {
-					console.log('this in CTRL');
-					console.log(this);
 					return model.register(view, this);
 				},
 				notify: function() {
@@ -132,8 +107,6 @@
 
 		HeadlineModel() {
 			let that = this;
-			console.log('this in Model');
-			console.log(this);
 			
 			const eventTarget = document.createElement('event-target');
 			let data = 1;
@@ -146,8 +119,6 @@
 
 			function updateHeadline(e) {
 				headline = data + e.detail.changedAttribute.newVal;
-				console.log("HEADLINE UPDATED");
-				console.log(headline);
 				return eventTarget.dispatchEvent(new Event('updatedHeadline'));
 			}
 
@@ -176,10 +147,6 @@
 
 		HeadlineView(model) {
 			let that = this;
-			console.log('this in View');
-			console.log(this);
-
-			let elementH1;
 
 			function getData() {
 				return model.getData();
@@ -189,22 +156,9 @@
 				return model.getHeadline();
 			}
 
-			function changeBackgroundColor() {
-				//return this.changeBackgroundColor();
-				return this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
-			}
 
-			function hideComponent() {
-				//return this.changeBackgroundColor();
-				console.log(this);
-				return this.style.visibility = "hidden";
-			}
 
-			function showComponent() {
-				//return this.changeBackgroundColor();
-				console.log(this);
-				return this.style.visibility = "visible";
-			}
+
 
 			function render(data) {
 				return this.children[0].children[0].textContent = data;
@@ -212,60 +166,57 @@
 			}
 
 			function updateHeadline(headline) {
-				console.log("THE HEADLINE");
-				console.log(headline);
 				this.shadowRoot.querySelectorAll('slot')[0].assignedNodes().forEach(node => {
-					console.log(node);
-					console.log(node.shadowRoot.querySelectorAll('slot')[0].assignedNodes());
 					node.shadowRoot.querySelectorAll('slot')[0].assignedNodes().forEach(el => {
-						
 						el.textContent = Number(headline) * Number(node.getAttribute('year'))
 					});
 				})
-				return this.children[0].children[0].textContent = headline;
-				//return this.changeHeadline(data);
 			}
 
-			elementH1 = document.createElement('h1');
+			function ComponentVisibilityOff() {
+				return this.style.visibility = "hidden";
+			}
 
-			h.dom.appendInnerHTMLIO(getData(), elementH1);
+			function ComponentVisibilityOn() {
+				return this.style.visibility = "visible";
+			}
 
-			let DOM = {
-				element: elementH1
+			function ComponentDisplayOff() {
+				return this.style.display = "none";
+			}
+
+			function ComponentDisplayOn() {
+				return this.style.display = "block";
+			}
+
+			function changeBackgroundColor() {
+				return this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
 			}
 
 			return {
-				getDOM: function() {
-					return DOM;
-				},
-				changeBackgroundColor: function() {
-					changeBackgroundColor.call(that);
-				},
+
 				notify: function() {
-					console.log('That in View');
-					console.log(that);
-					//this.changeHeadline2(getData());
 					render.call(that, getData());
 				},
 				updatedHeadline: function() {
-					console.log('That in View updatedHeadline');
-					console.log(that);
-					//this.changeHeadline2(getData());
 					updateHeadline.call(that, getHeadline());
 				},
-				hideComponent: function() {
-					console.log('That in View updatedHeadline');
-					console.log(that);
-					//this.changeHeadline2(getData());
-					hideComponent.call(that);
-				},
-				showComponent: function() {
-					console.log('That in View updatedHeadline');
-					console.log(that);
-					//this.changeHeadline2(getData());
-					showComponent.call(that);
-				}
 
+				changeBackgroundColor: function() {
+					changeBackgroundColor.call(that);
+				},
+				ComponentVisibilityOff: function() {
+					ComponentVisibilityOff.call(that);
+				},
+				ComponentVisibilityOn: function() {
+					ComponentVisibilityOn.call(that);
+				},
+				ComponentDisplayOff: function() {
+					ComponentDisplayOff.call(that);
+				},
+				ComponentDisplayOn: function() {
+					ComponentDisplayOn.call(that);
+				}
 			};          
 		}
 
