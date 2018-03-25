@@ -8,6 +8,7 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
+
   <!--<link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/parmaco-5cd88a.webflow.css" rel="stylesheet" type="text/css"> 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">-->
@@ -113,15 +114,16 @@
         <h1 slot="text">Heat section</h1>
     </info-headline>
 
-    <toggle-button slot="b1" toggle="on" effect="display" section="heat">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
+    <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="newtoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
+    <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="heat-sectiontoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
 
     <info-headline slot="h2">
         <h1 slot="text">Edit heat section headline</h1>
     </info-headline>
 
-    <info-input slot="i1" value="default" section="heat"></info-input>
+    <info-input dispatch="newinput" slot="i1" value="default" section="heat"></info-input>
 
-    <fancy-section slot="s1" section="heat">    
+    <fancy-section slot="s1" section="heat" listener="newinput@changecolor@inputupdated heat-sectiontoggle@toggleupdated">    
         <info-headline slot="headline" year="1">
             <h1 slot="text">A Headline</h1>
         </info-headline>
@@ -144,7 +146,7 @@
 
 
 
-<info-container>
+<!-- <info-container>
     <info-headline slot="h1">
         <h1 slot="text">Water section</h1>
     </info-headline>
@@ -165,7 +167,7 @@
     </fancy-section>
 
     <info-select slot="select1" selectedindex="1" section="water"></info-select>
-</info-container>
+</info-container> -->
 
 
 

@@ -83,6 +83,14 @@
 			return this.setAttribute('toggle', newToggle);
 		}
 
+		get dispatch() {
+			return this.getAttribute('dispatch');
+		}
+
+		set dispatch(newDispatch) {
+			return this.setAttribute('dispatch', newDispatch);
+		}
+
 		// get section() {
 		// 	return this.getAttribute('section');
 		// }
@@ -108,7 +116,7 @@
 
 			switch(name) {
 				case 'toggle':
-					eventDispatcher(el, 'newToggle', details);
+					eventDispatcher(el, this.dispatch, details);
 			}
 		}
 
@@ -117,7 +125,7 @@
 			el.dataset.toggle = this.toggle;
 			console.log('after dataset');
 			console.log(el);
-			eventPublisher('newToggle');
+			eventPublisher(this.dispatch);
 		}
 	}
 

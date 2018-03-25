@@ -24,6 +24,8 @@
 	</div>
 </template>
 
+
+
 <script>
 (function(window, document, undefined) {
 	var thatDoc = document;
@@ -60,9 +62,17 @@
 		HeadlineCtrl(model, view) {
 			let that = this;
 
-			events.subscribe('newInput', function(e) {
+			events.subscribe('inputupdated', function(e) {
+				console.log('redistributed');
 				if (e.target.getAttribute('section') === that.section) {
 					return model.updateHeadline(e);
+				}	
+			});
+
+			events.subscribe('changecolor', function(e) {
+				console.log('redistributed');
+				if (e.target.getAttribute('section') === that.section) {
+					return view.changeBackgroundColor();
 				}	
 			});
 
@@ -72,7 +82,7 @@
 				}
 			});
 
-			events.subscribe('newToggle', function(e) {
+			events.subscribe('toggleupdated', function(e) {
 				if (e.target.getAttribute('section') === that.section) {
 					if (e.target.getAttribute('toggle') === "off") 	{
 						if (e.target.getAttribute('effect') === "visibility") {
@@ -232,7 +242,7 @@
 		}
 			
 		static get observedAttributes() {
-			return [ 'name'];
+			return [ 'name', 'listener'];
 		}
 
 		attributeChangedCallback(name, oldVal, newVal) {
@@ -241,6 +251,25 @@
 				var infoSectionEl = this.shadowRoot.querySelector('.info-section');
 				console.log(this.shadowRoot);
 				infoSectionEl.innerHTML = newVal;
+				case 'listener':
+				console.log('listeners');
+				console.log(this.getAttribute('listener'));
+				let listener = this.getAttribute('listener');
+				let listeners = h.str.stringToArrayUsingSplitter(' ', listener);
+				console.log(listeners);
+				listeners.forEach(listener => {
+					let listeners = h.str.stringToArrayUsingSplitter('@', listener);
+					let remoteEvent = listeners[0];
+					let localEvents = listeners.slice(1);
+
+					localEvents.forEach(localEvent => {
+						events.subscribe(remoteEvent, function(e) {
+						console.log('catched event');
+						events.publish(localEvent, e);	
+					});
+					})
+				});
+
 			}
 		}
 
@@ -251,6 +280,9 @@
 			headlineCtrl.register();
 			console.log('nested slots');
 			console.log(this.shadowRoot.querySelectorAll('slot')[0].assignedNodes());
+
+			
+			
 		}
 	}
 
@@ -261,3 +293,6 @@
 
 <script type="text/javascript" src="/js/curry.js"></script>
 <script type="text/javascript" src="/js/helper.js"></script>
+
+
+

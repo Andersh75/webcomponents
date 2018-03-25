@@ -66,6 +66,14 @@
 			return this.setAttribute('value', newValue);
 		}
 
+		get dispatch() {
+			return this.getAttribute('dispatch');
+		}
+
+		set dispatch(newDispatch) {
+			return this.setAttribute('dispatch', newDispatch);
+		}
+
 			
 		static get observedAttributes() {
 			return [ 'value'];
@@ -78,17 +86,17 @@
 			details.changedAttribute.name = name;
 			details.changedAttribute.oldVal = oldVal;
 			details.changedAttribute.newVal = newVal;
-
+			
 			switch(name) {
 				case 'value':
-					eventDispatcher(el, 'newInput', details);
+					eventDispatcher(el, this.dispatch, details);	
 			}
 		}
 
 		connectedCallback() {
 			let el = this.shadowRoot.querySelector('input');
 			el.value = this.value;
-			eventPublisher('newInput');
+			eventPublisher(this.dispatch);	
 		}
 	}
 
