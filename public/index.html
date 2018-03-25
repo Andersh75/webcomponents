@@ -80,8 +80,6 @@
     let eventPublisher = eventPublisherMaker();
 
     function eventDispatcher(element, eventName, details) {
-        console.log('theEvent');
-        console.log(details);
         element.dispatchEvent(new CustomEvent(eventName, {
             bubbles: true,
             cancelable: true,
@@ -119,12 +117,87 @@
     }
 
     function setConnectedCallback() {
-        const model = this.Model();
-        const view = this.View(model);
-        const ctrl = this.Ctrl(model, view);
-        ctrl.register();
-        setComponentListener.call(this, model);
+        // const model = this.Model();
+        // const view = this.View(model);
+        // const ctrl = this.Ctrl(model, view);
+        // ctrl.register();
+        //this.ctrl.register();
+        setComponentListener.call(this, this.model);
         setComponentDispatcher.call(this);
+    }
+
+    function Ctrl(model, view) {
+			let that = this;
+
+			return {
+				register: function() {
+					return model.register(this);
+				},
+                eval: function(name) {
+                    return eval(name) 
+                }
+			};
+		}
+
+	function View(model) {
+			let that = this;
+
+			return {
+                eval: function(name) {
+                    return eval(name) 
+                }
+			}; 
+		}
+
+	function Model() {
+            let that = this;
+            
+            const eventTarget = document.createElement('event-target');
+
+			return {
+				dispatch: function(eventName, e) {
+                    console.log(eventName);
+					return eventTarget.dispatchEvent(new CustomEvent(eventName, {detail: e}));
+                },
+                register: function() {
+                },
+                eval: function(name) {
+                    return eval(name) 
+                }
+			};
+		}
+
+    class customElement extends HTMLElement {
+
+        constructor() {
+        super();
+
+        this.attachShadow({ mode: 'open' });
+        
+        this.model = Model();
+        this.view = View(this.model);
+        this.ctrl = Ctrl(this.model, this.view);
+        }
+
+        get dispatch() {
+            return this.getAttribute('dispatch');
+        }
+
+        set dispatch(newDispatch) {
+            return this.setAttribute('dispatch', newDispatch);
+        }
+
+        get listener() {
+			return this.getAttribute('listener');
+		}
+
+		set listener(newListener) {
+			return this.setAttribute('listener', newListener);
+		}
+            
+
+
+        
     }
 
 
@@ -132,6 +205,7 @@
 </script>
   
   <link rel="import" href="ce/infoinput.html">
+  <link rel="import" href="ce/infoheadline2.html">
   <link rel="import" href="ce/infoselect.html">
   <link rel="import" href="ce/infoheadline.html">
   <link rel="import" href="ce/infosection.html">
@@ -153,19 +227,13 @@
     <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="newtoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
     <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="heat-section-toggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
 
-    <!-- <info-headline slot="h2">
-        <h1 slot="text">Edit heat section headline</h1>
-    </info-headline> -->
-    <info-headline listener="newinput@changeheadline" slot="headline" year="1">
-        <h1 slot="text">A Headline</h1>
-    </info-headline>
-
     <info-input dispatch="newinput" slot="i1" value="testvalue" section="heat"></info-input>
 
     <fancy-section slot="s1" section="heat" listener="heat-section-toggle@toggleupdated@changecolor">    
-        <!-- <info-headline listener="newinput@changedheadline" slot="headline" year="1">
-            <h1 slot="text">A Headline</h1>
-        </info-headline> -->
+
+        <info-headline2 listener="newinput@changeheadline" slot="headline" year="1">
+            <h1 slot="text">Default</h1>
+        </info-headline2>
         <info-headline slot="headline" year="2">
             <h1 slot="text">A Headline</h1>
         </info-headline>
@@ -180,42 +248,6 @@
 
     <info-select slot="select1" selectedindex="1" section="heat"></info-select>
 </info-container>
-
-
-
-
-<!-- <info-container>
-    <info-headline slot="h1">
-        <h1 slot="text">Water section</h1>
-    </info-headline>
-
-    <toggle-button slot="b1" toggle="on" effect="visibility" section="water">TOGGLE WATER SECTION VISIBILITY</toggle-button>
-
-    <info-headline slot="h2">
-        <h1 slot="text">Edit water section headline</h1>
-    </info-headline>
-
-    <info-input slot="i1" value="default" section="water"></info-input>
-
-    <fancy-section slot="s1" section="water">    
-        <info-headline slot="headline">
-            <h1 slot="text">A Headline</h1>
-        </info-headline>
-        <info-input slot="userinput" section="water"></info-input> 
-    </fancy-section>
-
-    <info-select slot="select1" selectedindex="1" section="water"></info-select>
-</info-container> -->
-
-
-
-
-
-
-
-  
-  
-
 
 
 

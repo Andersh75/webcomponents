@@ -21,7 +21,6 @@
 
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.cloneNode(true));
-		//this._name = "";
 		}
 
 		get listener() {
@@ -52,19 +51,23 @@
 		Ctrl(model, view) {
 			let that = this;
 
-			// events.subscribe('changedheadline', function(e) {
-			// 	//alert('here');
-			// 	return model.changeHeadline(e);
-			// });
+			function updatedHeadline() {
+				return view.updatedHeadline();
+			}
+
+			function changeHeadline(e) {
+				return model.changeHeadline(e);
+			}
 
 			return {
 				register: function() {
-					return model.register(view, this);
+					return model.register(this);
 				},
 				updatedHeadline: function() {
+					return updatedHeadline();
 				},
-				changeHeadline: function() {
-					return model.changeHeadline(e);
+				changeHeadline: function(e) {
+					return changeHeadline(e);
 				}
 			};
 		}
@@ -77,17 +80,12 @@
 			}
 
 			function renderHeadline(obj) {
-				console.log('renderHeadlineOf');
-				console.log(obj);
-				console.log(this.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent);
 				this.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent = obj;
 			}
 
 			return {
 				updatedHeadline: function() {
 					renderHeadline.call(that, getHeadline());
-				},
-				changeHeadline: function() {
 				}
 			}; 
 		}
@@ -95,21 +93,19 @@
 		Model() {
 			let that = this;
 			let headline = "";
-
-			let message = "klklk";
 			
 			const eventTarget = document.createElement('event-target');
 
 			function changeHeadline(e) {
-				headline = e.detail.changedAttribute.newVal;
-				return eventTarget.dispatchEvent(new Event('updatedHeadline'));
+				headline = e.detail.detail.changedAttribute.newVal;
+				return eventTarget.dispatchEvent(new Event('updatedheadline'));
 			}
 
 			return {
 				register: function(...args) {
 					args.forEach(elem => {
-						eventTarget.addEventListener('updatedHeadline', elem.updatedHeadline.bind(that));
-						eventTarget.addEventListener('changeHeadline', elem.changeHeadline.bind(that));
+						eventTarget.addEventListener('updatedheadline', elem.updatedHeadline.bind(that));
+						eventTarget.addEventListener('changeheadline', elem.changeHeadline.bind(that));
 					});
 				},
 				getHeadline: function() {
@@ -123,10 +119,6 @@
 				}
 			};
 		}
-
-
-	
-
 	}
 
 	window.customElements.define('info-headline', InfoHeadline);

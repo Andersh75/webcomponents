@@ -1,0 +1,114 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<style>
+		
+	</style>
+
+	<slot name="text"></slot>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	var thatDoc = document;
+    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+	var template = thisDoc.querySelector( 'template' ).content;
+	
+
+	class InfoHeadline2 extends customElement {
+
+		constructor() {
+		super();
+
+		this.shadowRoot.appendChild(template.cloneNode(true));
+		
+		this.eventTarget = this.model.eval("eventTarget");
+		this.extendModel();
+		this.extendCtrl();
+		this.extendView();
+		this.ctrl.register();
+		
+		
+		}
+
+		// attributeChangedCallback(name, oldVal, newVal) {
+		// 	let details = {};
+		// 	details.changedAttribute = {}
+		// 	details.changedAttribute.name = name;
+		// 	details.changedAttribute.oldVal = oldVal;
+		// 	details.changedAttribute.newVal = newVal;
+
+		// 	switch(name) {
+		// 		case 'toggle':
+		// 			eventDispatcher(this, this.dispatch, details);
+		// 	}
+		// }
+
+		extendModel() {
+			let headline = "";
+			let that = this;
+
+			this.model.register = function(...args) {
+				args.forEach(elem => {
+					console.log(elem);
+					that.eventTarget.addEventListener('updatedheadline', elem.updatedHeadline);
+					that.eventTarget.addEventListener('changeheadline', elem.changeHeadline);
+				});
+			};
+
+			this.model.changeHeadline = function(e) {
+				headline = e.detail.detail.changedAttribute.newVal;
+				return that.model.eval("eventTarget").dispatchEvent(new Event('updatedheadline'));
+			};
+
+			this.model.getHeadline = function() {
+				return headline;
+			};
+		}
+
+		extendCtrl() {
+			let that = this;
+
+			this.ctrl.updatedHeadline = function() {
+				return that.view.updatedHeadline();
+			};
+
+			this.ctrl.changeHeadline = function(e) {
+				return that.model.changeHeadline(e);
+			};
+			
+		}
+
+		extendView() {
+			let that = this;
+
+			this.view.getHeadline = function() {
+				return that.model.getHeadline();
+			};
+
+			this.view.renderHeadline = function(obj) {
+				that.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent = obj;
+			};
+
+			this.view.updatedHeadline = function(obj) {
+				that.view.renderHeadline.call(that, that.view.getHeadline());
+			};
+		}
+
+		connectedCallback() {
+			setConnectedCallback.call(this);
+        }
+
+		
+
+
+
+		
+	}
+
+	window.customElements.define('info-headline2', InfoHeadline2);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
