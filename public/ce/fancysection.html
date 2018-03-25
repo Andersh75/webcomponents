@@ -42,6 +42,23 @@
 		this.shadowRoot.appendChild(template.cloneNode(true));
 		}
 
+		static get observedAttributes() {
+			return ['name'];
+		}
+
+		attributeChangedCallback(name, oldVal, newVal) {
+			switch(name) {
+				case 'name':
+				var infoSectionEl = this.shadowRoot.querySelector('.info-section');
+				console.log(this.shadowRoot);
+				infoSectionEl.innerHTML = newVal;
+			}
+		}
+
+		connectedCallback() {
+			setConnectedCallback.call(this);		
+		}
+
 		get name() {
 			return this.getAttribute('name');
 		}
@@ -58,48 +75,47 @@
 			return this.setAttribute('section', newSection);
 		}
 
+		get listener() {
+			return this.getAttribute('listener');
+		}
+
+		set listener(newListener) {
+			return this.setAttribute('listener', newListener);
+		}
+
+
 		//Controller
-		HeadlineCtrl(model, view) {
+		Ctrl(model, view) {
 			let that = this;
 
-			events.subscribe('inputupdated', function(e) {
-				console.log('redistributed');
-				if (e.target.getAttribute('section') === that.section) {
-					return model.updateHeadline(e);
-				}	
-			});
+			// events.subscribe('inputupdated', function(e) {
+			// 	return model.changeHeadline(e);	
+			// });
 
 			events.subscribe('changecolor', function(e) {
-				console.log('redistributed');
-				if (e.target.getAttribute('section') === that.section) {
-					return view.changeBackgroundColor();
-				}	
+				return view.changeBackgroundColor();	
 			});
 
-			events.subscribe('newSelect', function(e) {
-				if (e.target.getAttribute('section') === that.section) {
-					return model.updateHeadline(e);
-				}
-			});
+			// events.subscribe('newSelect', function(e) {
+			// 	return model.updateHeadline(e);
+			// });
 
 			events.subscribe('toggleupdated', function(e) {
-				if (e.target.getAttribute('section') === that.section) {
-					if (e.target.getAttribute('toggle') === "off") 	{
-						if (e.target.getAttribute('effect') === "visibility") {
-							return view.ComponentVisibilityOff(e);
-						} 						
-						if (e.target.getAttribute('effect') === "display") {
-							return view.ComponentDisplayOff(e);
-						} 
-					} else {
-						if (e.target.getAttribute('effect') === "visibility") {
-							
-							return view.ComponentVisibilityOn(e);
-						} 						
-						if (e.target.getAttribute('effect') === "display") {
-							return view.ComponentDisplayOn(e);
-						} 
-					}
+				if (e.target.getAttribute('toggle') === "off") 	{
+					if (e.target.getAttribute('effect') === "visibility") {
+						return view.ComponentVisibilityOff(e);
+					} 						
+					if (e.target.getAttribute('effect') === "display") {
+						return view.ComponentDisplayOff(e);
+					} 
+				} else {
+					if (e.target.getAttribute('effect') === "visibility") {
+						
+						return view.ComponentVisibilityOn(e);
+					} 						
+					if (e.target.getAttribute('effect') === "display") {
+						return view.ComponentDisplayOn(e);
+					} 
 				}
 			});
 
@@ -115,7 +131,7 @@
 			};
 		}
 
-		HeadlineModel() {
+		Model() {
 			let that = this;
 			
 			const eventTarget = document.createElement('event-target');
@@ -129,6 +145,11 @@
 
 			function updateHeadline(e) {
 				headline = data + e.detail.changedAttribute.newVal;
+				return eventTarget.dispatchEvent(new Event('updatedHeadline'));
+			}
+
+			function changeHeadline(e) {
+				headline = e.detail.changedAttribute.newVal;
 				return eventTarget.dispatchEvent(new Event('updatedHeadline'));
 			}
 
@@ -146,6 +167,9 @@
 				updateHeadline: function(e) {
 					return updateHeadline(e);
 				},
+				changeHeadline: function(e) {
+					return changeHeadline(e);
+				},
 				register: function(...args) {
 					args.forEach(elem => {
 						eventTarget.addEventListener('notify', elem.notify.bind(that));
@@ -155,7 +179,7 @@
 			};
 		}
 
-		HeadlineView(model) {
+		View(model) {
 			let that = this;
 
 			function getData() {
@@ -166,9 +190,10 @@
 				return model.getHeadline();
 			}
 
-
-
-
+			function changeBackgroundColor() {
+				console.log('subscriber');
+				this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
+			}
 
 			function render(data) {
 				return this.children[0].children[0].textContent = data;
@@ -181,6 +206,13 @@
 						el.textContent = Number(headline) * Number(node.getAttribute('year'))
 					});
 				})
+			}
+
+
+			function changeHeadline(obj) {
+				console.log('subscriber');
+				console.log(obj);
+				this.children[0].children[0].textContent = obj;
 			}
 
 			function ComponentVisibilityOff() {
@@ -228,61 +260,6 @@
 					ComponentDisplayOn.call(that);
 				}
 			};          
-		}
-
-		changeBackgroundColor() {
-			console.log('subscriber');
-			this.shadowRoot.querySelector('.info-section').style.backgroundColor = "#AA0000";
-		}
-
-		changeHeadline(obj) {
-			console.log('subscriber');
-			console.log(obj);
-			this.children[0].children[0].textContent = obj;
-		}
-			
-		static get observedAttributes() {
-			return [ 'name', 'listener'];
-		}
-
-		attributeChangedCallback(name, oldVal, newVal) {
-			switch(name) {
-				case 'name':
-				var infoSectionEl = this.shadowRoot.querySelector('.info-section');
-				console.log(this.shadowRoot);
-				infoSectionEl.innerHTML = newVal;
-				case 'listener':
-				console.log('listeners');
-				console.log(this.getAttribute('listener'));
-				let listener = this.getAttribute('listener');
-				let listeners = h.str.stringToArrayUsingSplitter(' ', listener);
-				console.log(listeners);
-				listeners.forEach(listener => {
-					let listeners = h.str.stringToArrayUsingSplitter('@', listener);
-					let remoteEvent = listeners[0];
-					let localEvents = listeners.slice(1);
-
-					localEvents.forEach(localEvent => {
-						events.subscribe(remoteEvent, function(e) {
-						console.log('catched event');
-						events.publish(localEvent, e);	
-					});
-					})
-				});
-
-			}
-		}
-
-		connectedCallback() {
-			const headlineModel = this.HeadlineModel();
-            const headlineView = this.HeadlineView(headlineModel);
-			const headlineCtrl = this.HeadlineCtrl(headlineModel, headlineView);
-			headlineCtrl.register();
-			console.log('nested slots');
-			console.log(this.shadowRoot.querySelectorAll('slot')[0].assignedNodes());
-
-			
-			
 		}
 	}
 

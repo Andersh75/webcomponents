@@ -105,9 +105,6 @@
 		}
 
 		attributeChangedCallback(name, oldVal, newVal) {
-			let el = this.shadowRoot.querySelector('button');
-			console.log('before dispatch');
-			console.log(el);
 			let details = {};
 			details.changedAttribute = {}
 			details.changedAttribute.name = name;
@@ -116,16 +113,35 @@
 
 			switch(name) {
 				case 'toggle':
-					eventDispatcher(el, this.dispatch, details);
+					eventDispatcher(this, this.dispatch, details);
 			}
 		}
 
 		connectedCallback() {
-			let el = this.shadowRoot.querySelector('button');
-			el.dataset.toggle = this.toggle;
-			console.log('after dataset');
-			console.log(el);
-			eventPublisher(this.dispatch);
+			setConnectedCallback.call(this);
+		}
+
+		Ctrl(model, view) {
+			return {
+				register: function() {
+					return model.register(view, this);
+				}
+			};
+		}
+
+		View(model) {
+			return {
+			}; 
+		}
+
+		Model() {
+			return {
+				register: function(...args) {
+					args.forEach(elem => {
+						//eventTarget.addEventListener('notify', elem.notify.bind(that));
+					});
+				}
+			};
 		}
 	}
 

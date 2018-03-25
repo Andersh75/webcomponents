@@ -89,13 +89,14 @@
 			
 			switch(name) {
 				case 'value':
-					eventDispatcher(el, this.dispatch, details);	
+					let el = this.shadowRoot.querySelector('input');
+					el.value = this.value;
+					eventDispatcher(this, this.dispatch, details);	
 			}
 		}
 
 		connectedCallback() {
-			let el = this.shadowRoot.querySelector('input');
-			el.value = this.value;
+			// 
 			eventPublisher(this.dispatch);	
 		}
 	}

@@ -24,6 +24,109 @@
 		//this._name = "";
 		}
 
+		get listener() {
+			return this.getAttribute('listener');
+		}
+
+		set listener(newListener) {
+			return this.setAttribute('listener', newListener);
+		}
+
+		attributeChangedCallback(name, oldVal, newVal) {
+			let details = {};
+			details.changedAttribute = {}
+			details.changedAttribute.name = name;
+			details.changedAttribute.oldVal = oldVal;
+			details.changedAttribute.newVal = newVal;
+
+			switch(name) {
+				case 'toggle':
+					eventDispatcher(this, this.dispatch, details);
+			}
+		}
+
+		connectedCallback() {
+			setConnectedCallback.call(this);
+		}
+
+		Ctrl(model, view) {
+			let that = this;
+
+			// events.subscribe('changedheadline', function(e) {
+			// 	//alert('here');
+			// 	return model.changeHeadline(e);
+			// });
+
+			return {
+				register: function() {
+					return model.register(view, this);
+				},
+				updatedHeadline: function() {
+				},
+				changeHeadline: function() {
+					return model.changeHeadline(e);
+				}
+			};
+		}
+
+		View(model) {
+			let that = this;
+
+			function getHeadline() {
+				return model.getHeadline();
+			}
+
+			function renderHeadline(obj) {
+				console.log('renderHeadlineOf');
+				console.log(obj);
+				console.log(this.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent);
+				this.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent = obj;
+			}
+
+			return {
+				updatedHeadline: function() {
+					renderHeadline.call(that, getHeadline());
+				},
+				changeHeadline: function() {
+				}
+			}; 
+		}
+
+		Model() {
+			let that = this;
+			let headline = "";
+
+			let message = "klklk";
+			
+			const eventTarget = document.createElement('event-target');
+
+			function changeHeadline(e) {
+				headline = e.detail.changedAttribute.newVal;
+				return eventTarget.dispatchEvent(new Event('updatedHeadline'));
+			}
+
+			return {
+				register: function(...args) {
+					args.forEach(elem => {
+						eventTarget.addEventListener('updatedHeadline', elem.updatedHeadline.bind(that));
+						eventTarget.addEventListener('changeHeadline', elem.changeHeadline.bind(that));
+					});
+				},
+				getHeadline: function() {
+					return headline;
+				},
+				changeHeadline: function(e) {
+					return changeHeadline(e);
+				},
+				dispatch: function(eventName, e) {
+					return eventTarget.dispatchEvent(new CustomEvent(eventName, {detail: e}));
+				}
+			};
+		}
+
+
+	
+
 	}
 
 	window.customElements.define('info-headline', InfoHeadline);
