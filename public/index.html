@@ -130,9 +130,9 @@
 			let that = this;
 
 			return {
-				register: function() {
-					return model.register(this);
-				},
+				// register: function() {
+				// 	return model.register(this);
+				// },
                 eval: function(name) {
                     return eval(name) 
                 }
@@ -159,8 +159,8 @@
                     console.log(eventName);
 					return eventTarget.dispatchEvent(new CustomEvent(eventName, {detail: e}));
                 },
-                register: function() {
-                },
+                // register: function() {
+                // },
                 eval: function(name) {
                     return eval(name) 
                 }
@@ -193,7 +193,17 @@
 
 		set listener(newListener) {
 			return this.setAttribute('listener', newListener);
-		}
+        }
+        
+        extend() {
+            this.eventTarget = this.model.eval("eventTarget");
+            this.extendModel(this);
+            this.extendCtrl(this);
+            this.extendView(this);
+            Object.keys(this.ctrl).slice(1).map(key => {
+                this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
+            })
+        }
             
 
 
