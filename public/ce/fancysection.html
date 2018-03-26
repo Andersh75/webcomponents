@@ -196,14 +196,14 @@
 			}
 
 			function render(data) {
-				return this.children[0].children[0].textContent = data;
+				//return this.children[0].children[0].textContent = data;
 				//return this.changeHeadline(data);
 			}
 
 			function updateHeadline(headline) {
 				this.shadowRoot.querySelectorAll('slot')[0].assignedNodes().forEach(node => {
 					node.shadowRoot.querySelectorAll('slot')[0].assignedNodes().forEach(el => {
-						el.textContent = Number(headline) * Number(node.getAttribute('year'))
+						//el.textContent = Number(headline) * Number(node.getAttribute('year'))
 					});
 				})
 			}
@@ -212,7 +212,7 @@
 			function changeHeadline(obj) {
 				console.log('subscriber');
 				console.log(obj);
-				this.children[0].children[0].textContent = obj;
+				//this.children[0].children[0].textContent = obj;
 			}
 
 			function ComponentVisibilityOff() {

@@ -4,7 +4,8 @@
 		
 	</style>
 
-	<slot name="text"></slot>
+	<h1><slot name="text"></slot></h1>
+	
 </template>
 
 <script>
@@ -18,7 +19,7 @@
 
 		extendView(that) {
 			this.view.renderHeadline = function(obj) {
-				that.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent = obj;
+				getSlot('text', that).assignedNodes()[0].textContent = obj;
 			};
 
 			this.view.updatedHeadline = function(obj) {
@@ -41,7 +42,7 @@
 
 			this.model.changeHeadline = function(e) {
 				headline = e.detail.detail.changedAttribute.newVal;
-				eventDispatcher(that.eventTarget, 'updatedheadline')
+				eventDispatcher(that.eventTarget, 'updatedheadline');
 			};
 
 			this.model.getHeadline = function() {

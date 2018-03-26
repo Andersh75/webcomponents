@@ -117,11 +117,6 @@
     }
 
     function setConnectedCallback() {
-        // const model = this.Model();
-        // const view = this.View(model);
-        // const ctrl = this.Ctrl(model, view);
-        // ctrl.register();
-        //this.ctrl.register();
         setComponentListener.call(this, this.model);
         setComponentDispatcher.call(this);
     }
@@ -226,6 +221,10 @@
 		}   
     }
 
+    function getSlot(name, that) {
+		return that.shadowRoot.querySelector("slot[name=" + name + "]");
+	}
+
 
     //NOT DONE
     function defineElement(theClass, className) {
@@ -253,31 +252,27 @@
 <body>
 
 
-
+<info-headline2 listener="newinput@changeheadline">
+    <span slot="text">Default</span>
+</info-headline2>
 <info-container>
-    <info-headline slot="h1">
-        <h1 slot="text">Heat section</h1>
-    </info-headline>
+
 
     <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="newtoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
     <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="heat-section-toggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
 
-    <info-input dispatch="newinput" slot="i1" value="testvalue" section="heat"></info-input>
+    <info-input dispatch="newinput-heatsection" slot="i1" value="testvalue"></info-input>
+    
 
-    <fancy-section slot="s1" section="heat" listener="heat-section-toggle@toggleupdated@changecolor">    
+    <fancy-section slot="s1" listener="heat-section-toggle@toggleupdated@changecolor"> 
+        <info-headline2 listener="newinput-heatsection@changeheadline" slot="headline" year="1">
+            <span slot="text">Default</span>
+        </info-headline2>   
 
         <info-headline2 listener="newinput@changeheadline" slot="headline" year="1">
-            <h1 slot="text">Default</h1>
+            <span slot="text">Default</span>
         </info-headline2>
-        <info-headline slot="headline" year="2">
-            <h1 slot="text">A Headline</h1>
-        </info-headline>
-        <info-headline slot="headline" year="3">
-            <h1 slot="text">A Headline</h1>
-        </info-headline>
-        <info-headline slot="headline" year="4">
-            <h1 slot="text">A Headline</h1>
-        </info-headline>
+        
 
     </fancy-section>
 
