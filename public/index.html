@@ -208,27 +208,35 @@
             Object.keys(this.ctrl).slice(1).map(key => {
                 this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
             });
-            this.addEventListener('keydown', e => {
-				let el = e.composedPath()[0];
-				
-				if (e.keyCode === 32 || e.keyCode === 13) {
-					el.dispatchEvent(
-						new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
-				}
-			});
-
-			this.addEventListener('click', e => {
-				e.stopPropagation;
-				eventDispatcher(this.eventTarget, 'useraction', e);
-				
-            });
+           
 
             if (this.shadowRoot.querySelector('select') !== null) {
                 this.shadowRoot.querySelector('select').addEventListener('change', e => {
 				e.stopPropagation;
                 eventDispatcher(this.eventTarget, 'useraction', e);
 			    });
-            };
+            } else if (this.shadowRoot.querySelector('button') !== null) {
+                this.shadowRoot.querySelector('button').addEventListener('click', e => {
+                    e.stopPropagation;
+                    eventDispatcher(this.eventTarget, 'useraction', e);
+                });
+            } else {
+                this.addEventListener('keydown', e => {
+                    let el = e.composedPath()[0];
+                    
+                    if (e.keyCode === 32 || e.keyCode === 13) {
+                        el.dispatchEvent(
+                            new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
+                    }
+                });
+
+                this.addEventListener('click', e => {
+                    e.stopPropagation;
+                    eventDispatcher(this.eventTarget, 'useraction', e);
+                    
+                });
+            }
+            
             
  
             this.connectedCallback()
@@ -268,28 +276,30 @@
   
   <link rel="import" href="ce/infoinput.html">
   <link rel="import" href="ce/infoinput2.html">
+  <link rel="import" href="ce/infoheadline.html">
   <link rel="import" href="ce/infoheadline2.html">
   <link rel="import" href="ce/infoselect.html">
   <link rel="import" href="ce/infoselect2.html">
-  <link rel="import" href="ce/infoheadline.html">
-  <link rel="import" href="ce/infosection.html">
+  <link rel="import" href="ce/togglebutton.html">
+  <link rel="import" href="ce/togglebutton2.html">
   <link rel="import" href="ce/fancysection.html">
   <link rel="import" href="ce/sectioncontainer.html">
-  <link rel="import" href="ce/togglebutton.html">
+  <link rel="import" href="ce/infosection.html">
+  
 
 
 </head>
 <body>
 
-
+<toggle-button2 toggle="on" effect="display" dispatch="newtoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button2>
 <info-headline2 listener="newinput@changeheadline">
     <span slot="text">Default</span>
 </info-headline2>
 <info-container>
 
 
-    <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="newtoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
-    <toggle-button slot="b1" toggle="on" effect="display" section="heat" dispatch="heat-section-toggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button>
+    
+    <toggle-button2 slot="b1" toggle="on" effect="display" section="heat" dispatch="heat-section-toggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button2>
 
     <info-input2 dispatch="newinput-heatsection" slot="i1" value="testvalue"></info-input2>
     

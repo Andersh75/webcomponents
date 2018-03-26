@@ -1,0 +1,77 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+		.info-section {
+			display: flex;
+  			justify-content: center;
+  			flex-direction: column;
+			text-align: center;
+			width: 200px;
+			height: auto;
+			margin: 5px;
+
+		background-color: lightblue;
+		border-radius: 5px;
+		color: #000;
+		}
+		.info-section-inner {
+
+		}
+	</style>
+	
+	<div class="info-section">
+		<button>
+			<slot></slot>
+		</button>
+	</div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+	
+	class ToggleButton2 extends customElement {
+
+		constructor() {
+			super();
+			this.extend();
+		}
+
+		get toggle() {
+			return this.getAttribute('toggle');
+		}
+
+		set toggle(newToggle) {
+			return this.setAttribute('toggle', newToggle);
+		}
+			
+		static get observedAttributes() {
+			return [ 'toggle' ];
+		}
+
+		extendView(that) {
+		}
+
+		extendCtrl(that) {
+			//local
+			this.ctrl.useraction = function(e) {
+				if(that.toggle === "on") {
+					that.toggle = "off";
+				} else {
+					that.toggle = "on";
+				}
+			};	
+		}
+
+		extendModel(that) {
+		}
+	}
+
+	window.customElements.define('toggle-button2', ToggleButton2);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
