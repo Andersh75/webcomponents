@@ -194,6 +194,11 @@
 		set listener(newListener) {
 			return this.setAttribute('listener', newListener);
         }
+
+        connectedCallback() {
+            setConnectedCallback.call(this);
+            
+        }
         
         extend() {
             this.eventTarget = this.model.eval("eventTarget");
@@ -202,12 +207,18 @@
             this.extendView(this);
             Object.keys(this.ctrl).slice(1).map(key => {
                 this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
-            })
+            });
+            this.connectedCallback()
         }
-            
-
-
         
+        attributeChangedCallback(name, oldVal, newVal) {
+			let details = {};
+			details.changedAttribute = {}
+			details.changedAttribute.name = name;
+			details.changedAttribute.oldVal = oldVal;
+            details.changedAttribute.newVal = newVal;
+            eventDispatcher(this, this.dispatch, details);
+		}   
     }
 
 

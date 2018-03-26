@@ -23,32 +23,10 @@
 		this.extend();
 		}
 
-		// attributeChangedCallback(name, oldVal, newVal) {
-		// 	let details = {};
-		// 	details.changedAttribute = {}
-		// 	details.changedAttribute.name = name;
-		// 	details.changedAttribute.oldVal = oldVal;
-		// 	details.changedAttribute.newVal = newVal;
-
-		// 	switch(name) {
-		// 		case 'toggle':
-		// 			eventDispatcher(this, this.dispatch, details);
-		// 	}
-		// }
-
-
 		extendModel(that) {
 			let headline = "";
-			// this.model.register = function(...args) {
-			// 	args.forEach(elem => {
-			// 		console.log(elem);
-			// 		that.eventTarget.addEventListener('updatedheadline', elem.updatedHeadline);
-			// 		that.eventTarget.addEventListener('changeheadline', elem.changeHeadline);
-			// 	});
-			// };
 
 			this.model.changeHeadline = function(e) {
-				console.log(that.eventTarget);
 				headline = e.detail.detail.changedAttribute.newVal;
 				return that.eventTarget.dispatchEvent(new Event('updatedheadline'));
 			};
@@ -60,7 +38,6 @@
 
 		extendCtrl(that) {
 			this.ctrl.updatedHeadline = function() {
-				alert('here');
 				return that.view.updatedHeadline();
 			};
 
@@ -83,15 +60,8 @@
 			};
 		}
 
-		connectedCallback() {
-			setConnectedCallback.call(this);
-        }
 
-		
-
-
-
-		
+	
 	}
 
 	window.customElements.define('info-headline2', InfoHeadline2);
