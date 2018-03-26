@@ -28,12 +28,21 @@
 		}
 
 		extendCtrl(that) {
+			//local
 			this.ctrl.updatedHeadline = function() {
 				return that.view.updatedHeadline();
 			};
 
+			//global
 			this.ctrl.changeHeadline = function(e) {
 				return that.model.changeHeadline(e);
+			};
+
+			this.ctrl.changeSelect = function(e) {
+				console.log();
+				if (e.detail.detail.changedAttribute.name === 'value') {
+					return that.model.changeHeadlineFromSelect(e);
+				}
 			};	
 		}
 
@@ -42,6 +51,11 @@
 
 			this.model.changeHeadline = function(e) {
 				headline = e.detail.detail.changedAttribute.newVal;
+				eventDispatcher(that.eventTarget, 'updatedheadline');
+			};
+
+			this.model.changeHeadlineFromSelect = function(e) {
+				headline = Number(e.detail.detail.changedAttribute.newVal) + 10;
 				eventDispatcher(that.eventTarget, 'updatedheadline');
 			};
 

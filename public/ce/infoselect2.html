@@ -1,0 +1,86 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+		.info-section {
+			display: flex;
+  			justify-content: center;
+  			flex-direction: column;
+			text-align: center;
+			width: 200px;
+			height: auto;
+			margin: 5px;
+
+		background-color: lightblue;
+		border-radius: 5px;
+		color: #000;
+		}
+		.info-section-inner {
+
+		}
+	</style>
+	
+	<div class="info-section">
+		<select>
+			<option value='1'>1</option>
+			<option value='2'>2</option>
+			<option value='3'>3</option>
+			<option value='4'>4</option>
+			<option value='5'>5</option>
+		</select>
+	</div>
+</template>
+
+<script>
+(function(window, document, undefined) {
+
+	class InfoSelect2 extends customElement {
+
+		constructor() {
+			super();
+			this.extend();
+		}
+
+		get selectedIndex() {
+			return this.getAttribute('selectedindex');
+		}
+
+		set selectedIndex(newSelectedIndex) {
+			return this.setAttribute('selectedindex', newSelectedIndex);
+		}
+
+		get value() {
+			return this.getAttribute('value');
+		}
+
+		set value(newValue) {
+			return this.setAttribute('value', newValue);
+		}
+			
+		static get observedAttributes() {
+			return [ 'selectedindex', 'value'];
+		}
+
+		extendView(that) {
+		}
+
+		extendCtrl(that) {
+			//local
+			this.ctrl.useraction = function(e) {
+				that.selectedIndex = e.detail.composedPath()[0].selectedIndex;
+				that.value = e.detail.composedPath()[0].value;
+			};	
+		}
+
+		extendModel(that) {
+		}
+	}
+
+	window.customElements.define('info-select2', InfoSelect2);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
