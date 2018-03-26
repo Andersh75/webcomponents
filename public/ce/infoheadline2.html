@@ -9,30 +9,20 @@
 
 <script>
 (function(window, document, undefined) {
-	var thatDoc = document;
-    var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
-	var template = thisDoc.querySelector( 'template' ).content;
-	
 
 	class InfoHeadline2 extends customElement {
-
 		constructor() {
 		super();
-
-		this.shadowRoot.appendChild(template.cloneNode(true));
 		this.extend();
 		}
 
-		extendModel(that) {
-			let headline = "";
-
-			this.model.changeHeadline = function(e) {
-				headline = e.detail.detail.changedAttribute.newVal;
-				return that.eventTarget.dispatchEvent(new Event('updatedheadline'));
+		extendView(that) {
+			this.view.renderHeadline = function(obj) {
+				that.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent = obj;
 			};
 
-			this.model.getHeadline = function() {
-				return headline;
+			this.view.updatedHeadline = function(obj) {
+				that.view.renderHeadline.call(that, that.model.getHeadline());
 			};
 		}
 
@@ -46,25 +36,21 @@
 			};	
 		}
 
-		extendView(that) {
-			this.view.getHeadline = function() {
-				return that.model.getHeadline();
+		extendModel(that) {
+			let headline = "";
+
+			this.model.changeHeadline = function(e) {
+				headline = e.detail.detail.changedAttribute.newVal;
+				eventDispatcher(that.eventTarget, 'updatedheadline')
 			};
 
-			this.view.renderHeadline = function(obj) {
-				that.shadowRoot.querySelectorAll('slot')[0].assignedNodes()[0].textContent = obj;
-			};
-
-			this.view.updatedHeadline = function(obj) {
-				that.view.renderHeadline.call(that, that.view.getHeadline());
+			this.model.getHeadline = function() {
+				return headline;
 			};
 		}
-
-
-	
 	}
-
-	window.customElements.define('info-headline2', InfoHeadline2);
+	
+	window.customElements.define('info-headline2', InfoHeadline2)
 
 })(window, document);
 </script>

@@ -171,6 +171,9 @@
 
         constructor() {
         super();
+        this.thatDoc = document;
+    	this.thisDoc = (this.thatDoc._currentScript || this.thatDoc.currentScript).ownerDocument;
+		this.template = this.thisDoc.querySelector( 'template' ).content;
 
         this.attachShadow({ mode: 'open' });
         
@@ -197,11 +200,13 @@
 
         connectedCallback() {
             setConnectedCallback.call(this);
+            //this.extendModel();
             
         }
         
         extend() {
             this.eventTarget = this.model.eval("eventTarget");
+            this.shadowRoot.appendChild(this.template.cloneNode(true));
             this.extendModel(this);
             this.extendCtrl(this);
             this.extendView(this);
@@ -220,6 +225,15 @@
             eventDispatcher(this, this.dispatch, details);
 		}   
     }
+
+
+    //NOT DONE
+    function defineElement(theClass, className) {
+		console.log('hej');
+		console.log(theClass.name);
+		window.customElements.define(className, theClass);
+    }
+
 
 
 
