@@ -11,7 +11,7 @@
 <script>
 (function(window, document, undefined) {
 
-	class InfoHeadline2 extends customElement {
+	class InfoHeadline2 extends CustomElement {
 		constructor() {
 		super();
 		this.extend();
@@ -25,6 +25,10 @@
 			this.view.updatedHeadline = function(obj) {
 				that.view.renderHeadline.call(that, that.model.getHeadline());
 			};
+
+			this.view.makeHeadlineRed = function() {
+				getSlot('text', that).assignedNodes()[0].style.color = "red";
+			};
 		}
 
 		extendCtrl(that) {
@@ -36,6 +40,10 @@
 			//global
 			this.ctrl.changeHeadline = function(e) {
 				return that.model.changeHeadline(e);
+			};
+
+			this.ctrl.makeHeadlineRed = function(e) {
+				return that.view.makeHeadlineRed();
 			};
 
 			this.ctrl.changeSelect = function(e) {
