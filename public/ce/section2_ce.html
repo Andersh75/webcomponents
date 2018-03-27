@@ -1,0 +1,82 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+			:host([color="blue"]) ::slotted(h1) {
+				color: yellow;
+			}
+
+			:host([color="blue"]) ::slotted([data-test]) {
+				color: red;
+			}
+
+			:host([color="blue"]) ::slotted(headline-ce) {
+				color: green;
+			}
+
+			/* ::slotted(h1) {
+			  margin: 0;
+			  font-weight: 600;
+			  color: red;
+			} */
+			::slotted(.title) {
+			   color: blue;
+			}
+			/* DOESN'T WORK (can only select top-level nodes).
+			::slotted(.company),
+			::slotted(.title .company) {
+			  text-transform: uppercase;
+			}
+			*/
+			</style>
+			<slot name="headline"></slot>
+			<slot name="myslot"></slot>
+			<slot></slot>
+
+</template>
+
+
+
+<script>
+(function(window, document, undefined) {
+
+	
+
+	class SectionCE extends CustomElement {
+
+		constructor() {
+		super();
+		this.extend();
+		}
+
+		
+		extendView(that) {
+
+		}
+
+		extendCtrl(that) {
+			//local
+			this.ctrl.run = function() {
+			};
+
+			//global
+
+	
+		}
+
+		extendModel(that) {
+			
+		}
+	}
+
+	window.customElements.define('section-ce', SectionCE);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+
+
+

@@ -3,28 +3,33 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 	<style>
-		.info-section {
-			display: flex;
-  			justify-content: center;
-  			flex-direction: column;
-			text-align: center;
-			width: 200px;
-			height: auto;
-			margin: 5px;
 
-		
-		
-		color: #000;
+		:host {
+			background-color: var(--main-bg-color, yellow);
+			padding: 10px;
 		}
-		button {
+
+		:host([toggle="on"]) button {
 			border-radius: 5px;
-			background-color: var(--main-bg-color, lightblue);
+			background-color: var(--main-bg-color, blue);
 		}
 
-		button:hover {
+		/* button:hover {
 			border-radius: 20px;
 			background-color: var(--main-bg-color, lightblue);
 		}
+
+		button:active {
+			border-color: black;
+			border-width: 3px;
+			background-color: var(--main-bg-color, lightblue);
+		}
+
+		button:focus {
+			border-color: yellow;
+			border-width: 3px;
+			background-color: var(--main-bg-color, lightblue);
+		} */
 
 	</style>
 	
