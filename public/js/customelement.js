@@ -2,12 +2,7 @@ class CustomElement extends HTMLElement {
 
 	constructor() {
 		super();
-		this.thatDoc = document;
-		this.thisDoc = (this.thatDoc._currentScript || this.thatDoc.currentScript).ownerDocument;
-		this.template = this.thisDoc.querySelector( 'template' ).content;
-
 		this.attachShadow({ mode: 'open' });
-		
 		this.model = Model();
 		this.view = View(this.model);
 		this.ctrl = Ctrl(this.model, this.view); 
@@ -29,12 +24,14 @@ class CustomElement extends HTMLElement {
 		return this.setAttribute('listener', newListener);
 	}
 
-	connectedCallback() {
+	connectedCallbackFn() {
+		console.log('here');
 		setConnectedCallback.call(this);  
 	}
 	
 	extend() {
 		this.eventTarget = this.model.eval("eventTarget");
+		this.template = this.thisDoc.querySelector( 'template' ).content;
 		this.shadowRoot.appendChild(this.template.cloneNode(true));
 		this.extendModel(this);
 		this.extendCtrl(this);
@@ -80,7 +77,7 @@ class CustomElement extends HTMLElement {
 		
 		
 
-		this.connectedCallback()
+		//this.connectedCallback();
 		
 	}
 
@@ -92,9 +89,12 @@ class CustomElement extends HTMLElement {
 		details.changedAttribute.name = name;
 		details.changedAttribute.oldVal = oldVal;
 		details.changedAttribute.newVal = newVal;
-		console.log(this);
 		eventDispatcher(this, this.dispatch, details);
-	}   
+	}
+
+	connectedCallback() {
+		this.connectedCallbackFn();
+	}  
 }
 
 function eventDispatcher(element, eventName, details) {
@@ -153,7 +153,8 @@ let eventPublisher = eventPublisherMaker();
 function setConnectedCallback() {
 	setComponentListener.call(this, this.model);
 	setComponentDispatcher.call(this);
-	eventDispatcher(this.eventTarget, 'run');
+	console.log(this.eventTarget);
+	this.eventTarget.dispatchEvent(new CustomEvent('run'));
 }
 
 

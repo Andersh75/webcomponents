@@ -39,11 +39,16 @@
 
 <script>
 (function(window, document, undefined) {
+
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 	
 	class ToggleButtonCE extends CustomElement {
 
 		constructor() {
 			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
 			this.extend();
 		}
 

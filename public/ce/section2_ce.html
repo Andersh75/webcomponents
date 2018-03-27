@@ -30,8 +30,10 @@
 			}
 			*/
 			</style>
+			<slot name="newel"></slot>
 			<slot name="headline"></slot>
 			<slot name="myslot"></slot>
+			<slot name="userinput"></slot>
 			<slot></slot>
 
 </template>
@@ -41,12 +43,15 @@
 <script>
 (function(window, document, undefined) {
 
-	
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
 	class SectionCE extends CustomElement {
 
 		constructor() {
 		super();
+		this.thatDoc = thatDoc;
+		this.thisDoc = thisDoc;
 		this.extend();
 		}
 
@@ -58,6 +63,11 @@
 		extendCtrl(that) {
 			//local
 			this.ctrl.run = function() {
+				console.log('Xhere');
+				let el = document.createElement('input-ce');
+				el.setAttribute('slot', 'newel');
+				el.setAttribute('placeholder', 'testPlace');
+				that.appendChild(el);
 			};
 
 			//global
@@ -68,6 +78,8 @@
 		extendModel(that) {
 			
 		}
+
+
 	}
 
 	window.customElements.define('section-ce', SectionCE);

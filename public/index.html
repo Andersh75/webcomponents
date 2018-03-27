@@ -56,11 +56,9 @@
 
 
 <input-ce dispatch="newinput" value="hej" placeholder="Enter value..."></input-ce>
-
+<togglebutton-ce dispatch="newtoggle" toggle="on" value="TOGGLE HEAT SECTION VISIBILITY"></togglebutton-ce>
 <headline-ce dispatch="newheadline" listener="newinput@changeheadline" value="testvalue"></headline-ce>
 <headline-ce listener="newheadline@makeheadlinered newtoggle@blueifon" value="test2"></headline-ce>
-<togglebutton-ce dispatch="newtoggle" toggle="on" value="TOGGLE HEAT SECTION VISIBILITY"></togglebutton-ce>
-
 
 
 <section-ce color="red" name="fire" style="--main-bg-color: lightblue" color="red" class="darktheme">
@@ -68,6 +66,8 @@
         <input-ce dispatch="newinput-fire" value="hej" placeholder="Enter value..." slot="userinput"></input-ce>
         <h1>testcolor</h1>
 </section-ce>
+
+<div id="myTest"></div>
 
 
 
@@ -106,7 +106,14 @@
     <info-select2 dispatch="newselect" slot="select1" selectedindex="1"></info-select2>
 </info-container> -->
 
-
+<script>
+        let el = document.getElementById('myTest');
+        let newel = document.createElement('input-ce');
+        el.appendChild(newel);
+        console.log('newel');
+        console.log(newel);
+    
+</script>
 
 <script type="text/javascript" src="/js/test.js"></script>
 

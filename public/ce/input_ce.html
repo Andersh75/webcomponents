@@ -12,10 +12,16 @@
 
 <script>
 (function(window, document, undefined) {
+
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 	
+
 	class InputCE extends CustomElement {
 		constructor() {
 			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
 			this.extend();
 		}
 
@@ -46,6 +52,7 @@
 
 			this.view.setPlaceholder = function(obj) {
 				that.shadowRoot.querySelector('input').placeholder = obj;
+				
 			};
 		}
 
