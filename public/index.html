@@ -39,11 +39,11 @@
   <link rel="import" href="ce/infoinput.html">
   <link rel="import" href="ce/input_ce.html">
   <link rel="import" href="ce/infoheadline.html">
-  <link rel="import" href="ce/infoheadline2.html">
+  <link rel="import" href="ce/headline_ce.html">
   <link rel="import" href="ce/infoselect.html">
   <link rel="import" href="ce/infoselect2.html">
   <link rel="import" href="ce/togglebutton.html">
-  <link rel="import" href="ce/togglebutton2.html">
+  <link rel="import" href="ce/togglebutton_ce.html">
   <link rel="import" href="ce/fancysection.html">
   <link rel="import" href="ce/sectioncontainer.html">
   <link rel="import" href="ce/infosection.html">
@@ -55,13 +55,12 @@
 
 
 
-<input-ce dispatch="newinput" value="hej"></input-ce>
-<info-headline2 listener="newinput@changeheadline@makeheadlinered">
-    <span slot="text"></span>
-</info-headline2>
-<info-headline2 listener="newinput@changeheadline">
-    <span slot="text"></span>
-</info-headline2>
+<input-ce dispatch="newinput" value="hej" placeholder="Enter value..."></input-ce>
+
+<headline-ce dispatch="newheadline" listener="newinput@changeheadline" value="testvalue"></headline-ce>
+<headline-ce listener="newheadline@makeheadlinered newtoggle@blueifon" value="test2"></headline-ce>
+<togglebutton-ce dispatch="newtoggle" style="--main-bg-color: brown" toggle="on" value="TOGGLE HEAT SECTION VISIBILITY"></togglebutton-ce>
+
 
 
 

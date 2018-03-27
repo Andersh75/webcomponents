@@ -43,11 +43,26 @@
 			return this.setAttribute('value', newValue);
 		}
 
+		get placeholder() {
+			return this.getAttribute('placeholder');
+		}
+
+		set placeholder(newPlaceholder) {
+			return this.setAttribute('placeholder', newPlaceholder);
+		}
+
 		static get observedAttributes() {
-            return ['value'];
+            return ['value', 'placeholder'];
         };
 
 		extendView(that) {
+			this.view.setValue = function(obj) {
+				that.shadowRoot.querySelector('input').value = obj;
+			};
+
+			this.view.setPlaceholder = function(obj) {
+				that.shadowRoot.querySelector('input').placeholder = obj;
+			};
 		}
 
 		extendCtrl(that) {
@@ -55,9 +70,12 @@
 			this.ctrl.useraction = function(e) {
 				that.value = e.detail.composedPath()[0].value;
 			};
+			this.ctrl.run = function() {
+				that.view.setPlaceholder(that.placeholder);
+			};
 		}
 
-		extendModel(that) {	
+		extendModel(that) {
 		}
 	}
 

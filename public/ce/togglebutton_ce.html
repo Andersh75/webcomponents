@@ -28,21 +28,26 @@
 
 	</style>
 	
-	<div class="info-section">
-		<button>
-			<slot></slot>
-		</button>
-	</div>
+	<button></button>
+
 </template>
 
 <script>
 (function(window, document, undefined) {
 	
-	class ToggleButton2 extends CustomElement {
+	class ToggleButtonCE extends CustomElement {
 
 		constructor() {
 			super();
 			this.extend();
+		}
+
+		get value() {
+			return this.getAttribute('value');
+		}
+
+		set value(newValue) {
+			return this.setAttribute('value', newValue);
 		}
 
 		get toggle() {
@@ -54,10 +59,15 @@
 		}
 			
 		static get observedAttributes() {
-			return [ 'toggle' ];
+			return [ 'toggle', 'value' ];
 		}
 
 		extendView(that) {
+			this.view.renderText = function(obj) {
+				console.log('text to button');
+				console.log(obj);
+				that.shadowRoot.querySelector('button').textContent = obj;
+			};
 		}
 
 		extendCtrl(that) {
@@ -68,14 +78,18 @@
 				} else {
 					that.toggle = "on";
 				}
-			};	
+			};
+			this.ctrl.run = function() {
+				console.log(that.value);
+				that.view.renderText(that.value);
+			};		
 		}
 
 		extendModel(that) {
 		}
 	}
 
-	window.customElements.define('toggle-button2', ToggleButton2);
+	window.customElements.define('togglebutton-ce', ToggleButtonCE);
 
 })(window, document);
 </script>

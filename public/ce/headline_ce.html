@@ -4,22 +4,37 @@
 		
 	</style>
 
-	<h1><slot name="text"></slot></h1>
+
+	<h1></h1>
 	
 </template>
 
 <script>
 (function(window, document, undefined) {
 
-	class InfoHeadline2 extends CustomElement {
+	class HeadlineCE extends CustomElement {
 		constructor() {
 		super();
 		this.extend();
 		}
 
+		get value() {
+			return this.getAttribute('value');
+		}
+
+		set value(newValue) {
+			return this.setAttribute('value', newValue);
+		}
+
+		static get observedAttributes() {
+            return ['value'];
+        };
+
+
+
 		extendView(that) {
 			this.view.renderHeadline = function(obj) {
-				getSlot('text', that).assignedNodes()[0].textContent = obj;
+				that.shadowRoot.querySelector('h1').textContent = obj;
 			};
 
 			this.view.updatedHeadline = function(obj) {
@@ -27,7 +42,11 @@
 			};
 
 			this.view.makeHeadlineRed = function() {
-				getSlot('text', that).assignedNodes()[0].style.color = "red";
+				that.shadowRoot.querySelector('h1').style.color = "red";
+			};
+
+			this.view.makeHeadlineBlue = function() {
+				that.shadowRoot.querySelector('h1').style.color = "blue";
 			};
 		}
 
@@ -39,6 +58,7 @@
 
 			//global
 			this.ctrl.changeHeadline = function(e) {
+				that.value = e.detail.detail.changedAttribute.newVal;
 				return that.model.changeHeadline(e);
 			};
 
@@ -46,11 +66,24 @@
 				return that.view.makeHeadlineRed();
 			};
 
+			this.ctrl.blueIfOn = function(e) {
+				//console.log(e.detail.detail.changedAttribute);
+				if(e.detail.detail.changedAttribute.newVal === "on") {
+					that.view.makeHeadlineBlue();
+				} else {
+					that.view.makeHeadlineRed();
+				}
+			};
+
 			this.ctrl.changeSelect = function(e) {
 				console.log();
 				if (e.detail.detail.changedAttribute.name === 'value') {
 					return that.model.changeHeadlineFromSelect(e);
 				}
+			};
+			this.ctrl.run = function() {
+				console.log(that.value);
+				that.view.renderHeadline(that.value);
 			};	
 		}
 
@@ -73,7 +106,7 @@
 		}
 	}
 	
-	window.customElements.define('info-headline2', InfoHeadline2)
+	window.customElements.define('headline-ce', HeadlineCE)
 
 })(window, document);
 </script>

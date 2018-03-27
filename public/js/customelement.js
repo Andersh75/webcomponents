@@ -54,6 +54,13 @@ class CustomElement extends HTMLElement {
 				e.stopPropagation;
 				eventDispatcher(this.eventTarget, 'useraction', e);
 			});
+		} else if (this.shadowRoot.querySelector('input') !== null) {
+			this.shadowRoot.querySelector('input').addEventListener('keydown', e => {
+				e.stopPropagation;
+				if (e.keyCode === 32 || e.keyCode === 13) {
+					eventDispatcher(this.eventTarget, 'useraction', e);
+				}
+			});
 		} else {
 			this.addEventListener('keydown', e => {
 				let el = e.composedPath()[0];
@@ -146,6 +153,7 @@ let eventPublisher = eventPublisherMaker();
 function setConnectedCallback() {
 	setComponentListener.call(this, this.model);
 	setComponentDispatcher.call(this);
+	eventDispatcher(this.eventTarget, 'run');
 }
 
 
