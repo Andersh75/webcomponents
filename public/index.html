@@ -44,6 +44,9 @@
   <link rel="import" href="ce/section_input_ce.html">
   <link rel="import" href="ce/select_ce.html">
   <link rel="import" href="ce/headline_select_ce.html">
+  <link rel="import" href="ce/inflation_container_ce.html">
+  <link rel="import" href="ce/period_container_ce.html">
+  <link rel="import" href="ce/heat_container_ce.html">
   
 
 
@@ -68,10 +71,15 @@
 
 <select-ce></select-ce>
 
+
 <section-input-ce> 
-    <headline-input-ce title="Inflation" value="5" slot="inflation"></headline-input-ce>
-    <headline-input-ce title="Interest" value="3" slot="interest"></headline-input-ce>
-    <headline-select-ce title="Period" selectedIndex="4" slot="period"></headline-select-ce>
+    <!-- <headline-input-ce title="Inflation" value="5" slot="inflation"></headline-input-ce>
+        <headline-input-ce title="Interest" value="3" slot="interest"></headline-input-ce>
+        <headline-select-ce title="Period" selectedIndex="4" slot="period"></headline-select-ce> -->
+        <inflation-container-ce slot="inflationcontainer"></inflation-container-ce>
+        <period-container-ce slot="periodcontainer"></period-container-ce>
+        <heat-container-ce slot="heatcontainer"></heat-container-ce>
+        
 </section-input-ce>
 
 

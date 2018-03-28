@@ -5,12 +5,16 @@
 	<style>
 			:host {
 				display: inline-grid;
-				grid-template-columns: 100px auto 20px auto 20px auto 100px;
-  				grid-template-rows: 100px 100px 100px auto 100px 100px 100px;
+				padding: 40px;
+				padding-top: 60px;
+				grid-template-columns: auto;
+  				grid-template-rows: auto;
+				grid-column-gap: 20px;
+				grid-row-gap: 20px;
 				background-color: azure
 			}
 			
-			:host([color="blue"]) ::slotted(h1) {
+			/* :host([color="blue"]) ::slotted(h1) {
 				color: yellow;
 			}
 
@@ -20,55 +24,57 @@
 
 			:host([color="blue"]) ::slotted(headline-ce) {
 				color: green;
-			}
+			} */
 
 			#mainheadline {
 				color: green;
-				grid-column-start: 2;
-  				grid-column-end: 2;
-  				grid-row-start: 2;
-  				grid-row-end: 2;
+				grid-column-start: 1;
+  				grid-column-end: 1;
+  				grid-row-start: 1;
+  				grid-row-end: 1;
 			}
 
 			#clearbutton {
 				color: green;
-				grid-column-start: 6;
-  				grid-column-end: 6;
+				justify-self:end;
+				grid-column-start: 3;
+				grid-column-end: 3;
+  				grid-row-start: 1;
+  				grid-row-end: 1;
+			}
+
+			#inflationcontainer::slotted(*) {
+				color: green;
+				grid-column-start: 1;
+  				grid-column-end: 1;
   				grid-row-start: 2;
   				grid-row-end: 2;
 			}
 
-			#inflation::slotted(*) {
+			#periodcontainer::slotted(*) {
 				color: green;
 				grid-column-start: 2;
   				grid-column-end: 2;
-  				grid-row-start: 4;
-  				grid-row-end: 4;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
 			}
 
-			#interest::slotted(*) {
+			#heatcontainer::slotted(*) {
 				color: green;
-				grid-column-start: 4;
-  				grid-column-end: 4;
-  				grid-row-start: 4;
-  				grid-row-end: 4;
-			}
-
-			#period::slotted(*) {
-				color: green;
-				grid-column-start: 6;
-  				grid-column-end: 6;
-  				grid-row-start: 4;
-  				grid-row-end: 4;
+				grid-column-start: 3;
+  				grid-column-end: 3;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
 			}
 
 			</style>
 		
-			<headline-ce value="Allmänt" id="mainheadline"></headline-ce>
+			<headline-ce value="Allmänt" id="mainheadline" class="h3"></headline-ce>
 			<button-ce value="Rensa" id="clearbutton"></button-ce>
-			<slot id="inflation" name="inflation"></slot>
-			<slot id="interest" name="interest"></slot>
-			<slot id="period" name="period"></slot>
+			
+			<slot id="inflationcontainer" name="inflationcontainer"></slot>
+			<slot id="periodcontainer" name="periodcontainer"></slot>
+			<slot id="heatcontainer" name="heatcontainer"></slot>
 
 </template>
 

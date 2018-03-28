@@ -5,27 +5,31 @@
 	<style>
 			:host {
 				display: inline-grid;
-				grid-template-columns: auto;
+				grid-template-columns: 20px auto 20px auto 20px;
   				grid-template-rows: 20px auto 20px auto 20px;
 				background-color: beige
 			}
-			
-			
-
-		
-
+						
 			#headline {
 				color: green;
-				grid-column-start: 1;
-  				grid-column-end: 1;
+				grid-column-start: 2;
+  				grid-column-end: 2;
   				grid-row-start: 2;
   				grid-row-end: 2;
 			}
 
-			#input {
+			#headlineselect {
 				color: green;
-				grid-column-start: 1;
-  				grid-column-end: 1;
+				grid-column-start: 4;
+  				grid-column-end: 4;
+  				grid-row-start: 4;
+  				grid-row-end: 4;
+			}
+
+			#headlineinput {
+				color: green;
+				grid-column-start: 2;
+  				grid-column-end: 2;
   				grid-row-start: 4;
   				grid-row-end: 4;
 			}
@@ -33,10 +37,11 @@
 			
 
 			</style>
-			<!-- <slot id="mainheadline" name="mainheadline"></slot>
-			<slot id="clearbutton" name="clearbutton"></slot> -->
-			<headline-ce id="headline" class="h5"></headline-ce>
-			<input-ce id="input"></input-ce>
+		
+			<headline-ce value="Värmekostnader" id="headline" class="h4"></headline-ce>
+			<headline-input-ce title="Antal kWh/kvm/år" value="antal kWh..." id="headlineinput"></headline-input-ce>
+			<headline-select-ce title="Kostnad per kWh" id="headlineselect" selectedIndex="4"></headline-select-ce>
+			
 </template>
 
 
@@ -47,33 +52,13 @@
 	var thatDoc = document;
 	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
-	class HeadlineInputCE extends CustomElement {
+	class HeatContainerCE extends CustomElement {
 
 		constructor() {
 		super();
 		this.thatDoc = thatDoc;
 		this.thisDoc = thisDoc;
 		this.extend();
-		}
-
-		get value() {
-			return this.getAttribute('value');
-		}
-
-		set value(newValue) {
-			return this.setAttribute('value', newValue);
-		}
-
-		get title() {
-			return this.getAttribute('title');
-		}
-
-		set title(newTitle) {
-			return this.setAttribute('title', newTitle);
-		}
-			
-		static get observedAttributes() {
-			return [ 'title', 'value' ];
 		}
 
 		
@@ -84,10 +69,15 @@
 		extendCtrl(that) {
 			//local
 			this.ctrl.run = function() {
-				let headline = that.shadowRoot.querySelector('headline-ce');
-				eventDispatcher(headline.eventTarget, 'headlinefromparent', that.title);
-				let input = that.shadowRoot.querySelector('input-ce');
-				eventDispatcher(input.eventTarget, 'placeholderfromparent', that.value);
+				// console.log('Xhere');
+				// let el = document.createElement('input-ce');
+				// el.setAttribute('slot', 'newel');
+				// el.setAttribute('placeholder', 'testPlace');
+				// that.appendChild(el);
+				// el = document.createElement('input-ce');
+				// el.setAttribute('slot', 'newel');
+				// el.setAttribute('placeholder', 'testPlace');
+				// that.appendChild(el);
 			};
 
 			//global
@@ -102,7 +92,7 @@
 
 	}
 
-	window.customElements.define('headline-input-ce', HeadlineInputCE);
+	window.customElements.define('heat-container-ce', HeatContainerCE);
 
 })(window, document);
 </script>
