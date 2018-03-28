@@ -5,7 +5,7 @@
 	<style>
 			:host {
 				display: inline-grid;
-				grid-template-columns: 100px auto 20px auto 100px 100px 100px;
+				grid-template-columns: 100px auto 20px auto 20px auto 100px;
   				grid-template-rows: 100px 100px 100px auto 100px 100px 100px;
 				background-color: azure
 			}
@@ -22,36 +22,20 @@
 				color: green;
 			}
 
-			#mainheadline::slotted(*) {
-				color: green;
-				grid-column-start: 2;
-  				grid-column-end: 4;
-  				grid-row-start: 2;
-  				grid-row-end: 3;
-			}
-
-			#clearbutton::slotted(*) {
-				color: green;
-				grid-column-start: 5;
-  				grid-column-end: 7;
-  				grid-row-start: 2;
-  				grid-row-end: 3;
-			}
-
 			#mainheadline {
 				color: green;
 				grid-column-start: 2;
-  				grid-column-end: 4;
+  				grid-column-end: 2;
   				grid-row-start: 2;
-  				grid-row-end: 3;
+  				grid-row-end: 2;
 			}
 
 			#clearbutton {
 				color: green;
-				grid-column-start: 5;
-  				grid-column-end: 7;
+				grid-column-start: 6;
+  				grid-column-end: 6;
   				grid-row-start: 2;
-  				grid-row-end: 3;
+  				grid-row-end: 2;
 			}
 
 			#inflation::slotted(*) {
@@ -70,8 +54,12 @@
   				grid-row-end: 4;
 			}
 
-			::slotted(.title) {
-			   color: blue;
+			#period::slotted(*) {
+				color: green;
+				grid-column-start: 6;
+  				grid-column-end: 6;
+  				grid-row-start: 4;
+  				grid-row-end: 4;
 			}
 
 			</style>
@@ -80,6 +68,7 @@
 			<button-ce value="Rensa" id="clearbutton"></button-ce>
 			<slot id="inflation" name="inflation"></slot>
 			<slot id="interest" name="interest"></slot>
+			<slot id="period" name="period"></slot>
 
 </template>
 

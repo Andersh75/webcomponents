@@ -1,5 +1,5 @@
 <template>
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<style>
 		/* :host-context(.darktheme) {
 			color: green;
@@ -11,7 +11,7 @@
 	</style>
 
 
-	<h1></h1>
+	<span class="h1"></span>
 	
 </template>
 
@@ -45,7 +45,7 @@
 
 		extendView(that) {
 			this.view.renderHeadline = function(obj) {
-				that.shadowRoot.querySelector('h1').textContent = obj;
+				that.shadowRoot.querySelector('span').textContent = obj;
 			};
 
 			this.view.updatedHeadline = function(obj) {
@@ -53,11 +53,11 @@
 			};
 
 			this.view.makeHeadlineRed = function() {
-				that.shadowRoot.querySelector('h1').style.color = "red";
+				that.shadowRoot.querySelector('span').style.color = "red";
 			};
 
 			this.view.makeHeadlineBlue = function() {
-				that.shadowRoot.querySelector('h1').style.color = "blue";
+				that.shadowRoot.querySelector('span').style.color = "blue";
 			};
 		}
 
