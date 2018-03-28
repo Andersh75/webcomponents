@@ -35,10 +35,15 @@
 <script>
 (function(window, document, undefined) {
 
-	class InfoSelect2 extends CustomElement {
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+	class SelectCE extends CustomElement {
 
 		constructor() {
 			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
 			this.extend();
 		}
 
@@ -70,14 +75,23 @@
 			this.ctrl.useraction = function(e) {
 				that.selectedIndex = e.detail.composedPath()[0].selectedIndex;
 				that.value = e.detail.composedPath()[0].value;
-			};	
+			};
+
+			//parent
+			this.ctrl.selectedindexfromparent = function(e) {
+				console.log('e from parent');
+				console.log(e.detail);
+				that.selectedIndex = e.detail;
+				//return that.model.changeSelectedIndexFromParent(that.selectedIndex);
+			};
+
 		}
 
 		extendModel(that) {
 		}
 	}
 
-	window.customElements.define('info-select2', InfoSelect2);
+	window.customElements.define('select-ce', SelectCE);
 
 })(window, document);
 </script>

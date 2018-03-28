@@ -4,9 +4,10 @@
 
 	<style>
 			:host {
-				display: grid;
-				grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
-  				grid-template-rows: 100px 100px 100px 100px 100px 100px 100px;
+				display: inline-grid;
+				grid-template-columns: 100px auto 20px auto 100px 100px 100px;
+  				grid-template-rows: 100px 100px 100px auto 100px 100px 100px;
+				background-color: azure
 			}
 			
 			:host([color="blue"]) ::slotted(h1) {
@@ -53,15 +54,32 @@
   				grid-row-end: 3;
 			}
 
+			#inflation::slotted(*) {
+				color: green;
+				grid-column-start: 2;
+  				grid-column-end: 2;
+  				grid-row-start: 4;
+  				grid-row-end: 4;
+			}
+
+			#interest::slotted(*) {
+				color: green;
+				grid-column-start: 4;
+  				grid-column-end: 4;
+  				grid-row-start: 4;
+  				grid-row-end: 4;
+			}
+
 			::slotted(.title) {
 			   color: blue;
 			}
 
 			</style>
-			<!-- <slot id="mainheadline" name="mainheadline"></slot>
-			<slot id="clearbutton" name="clearbutton"></slot> -->
+		
 			<headline-ce value="Allmänt" id="mainheadline"></headline-ce>
 			<button-ce value="Rensa" id="clearbutton"></button-ce>
+			<slot id="inflation" name="inflation"></slot>
+			<slot id="interest" name="interest"></slot>
 
 </template>
 

@@ -42,6 +42,8 @@
   <link rel="import" href="ce/headline_input_ce.html">
   <link rel="import" href="ce/button_ce.html">
   <link rel="import" href="ce/section_input_ce.html">
+  <link rel="import" href="ce/select_ce.html">
+  <link rel="import" href="ce/headline_select_ce.html">
   
 
 
@@ -64,13 +66,15 @@
 
 <div id="myTest"></div> -->
 
+<select-ce></select-ce>
 
+<section-input-ce>
+    
+    <headline-input-ce title="Inflation" value="5" slot="inflation"></headline-input-ce>
+    <headline-input-ce title="Interest" value="3" slot="interest"></headline-input-ce>
+</section-input-ce>
+<headline-select-ce title="Period" selectedIndex="4"></headline-select-ce>
 
-
-<headline-input-ce title="Allmänt" value="23">
-    <!-- <headline-ce value="Allmänt" slot="mainheadline"></headline-ce>
-    <button-ce value="Rensa" slot="clearbutton"></button-ce> -->
-</headline-input-ce>
 
 <!-- <section-ce color="blue">
     <headline-ce dispatch="newheadline" listener="newinput-fire@changeheadline" value="whatcolor" slot="headline"></headline-ce>
