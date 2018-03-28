@@ -12,26 +12,18 @@
 				background-color: beige
 			}
 						
-			#headline {
+			#headline::slotted(*) {
 				color: green;
-				grid-column-start: 1;
-  				grid-column-end: 1;
+				grid-column-start: auto;
+  				grid-column-end: auto;
   				grid-row-start: 1;
   				grid-row-end: 1;
 			}
 
-			#headlineselect {
+			#anyform::slotted(*) {
 				color: green;
-				grid-column-start: 1;
-  				grid-column-end: 1;
-  				grid-row-start: 2;
-  				grid-row-end: 2;
-			}
-
-			#headlineinput {
-				color: green;
-				grid-column-start: 2;
-  				grid-column-end: 2;
+				grid-column-start: auto;
+  				grid-column-end: auto;
   				grid-row-start: 2;
   				grid-row-end: 2;
 			}
@@ -39,10 +31,10 @@
 			
 
 			</style>
-		
-			<headline-ce value="Kalkylperiod" id="headline" class="h4"></headline-ce>
-			<headline-select-ce title="Startår" id="headlineselect" selectedIndex="4"></headline-select-ce>
-			<headline-input-ce title="Kalkyllängd" value="antal år..." id="headlineinput"></headline-input-ce>
+			<slot name="headline" id="headline"></slot>
+			<slot name="anyform" id="anyform"></slot>
+			
+
 			
 </template>
 
@@ -54,7 +46,7 @@
 	var thatDoc = document;
 	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
-	class PeriodContainerCE extends CustomElement {
+	class AnykindContainerCE extends CustomElement {
 
 		constructor() {
 		super();
@@ -94,7 +86,7 @@
 
 	}
 
-	window.customElements.define('period-container-ce', PeriodContainerCE);
+	window.customElements.define('anykind-container-ce', AnykindContainerCE);
 
 })(window, document);
 </script>

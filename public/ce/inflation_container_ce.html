@@ -4,31 +4,32 @@
 
 	<style>
 			:host {
-				display: inline-grid;
-				grid-template-columns: 20px auto 20px;
-  				grid-template-rows: 20px auto 20px auto 20px;
+				display: grid;
+				grid-template-columns: auto;
+  				grid-template-rows: auto;
+				grid-gap: 20px;
+				padding: 40px;
 				background-color: beige
 			}
 						
 			#headline {
 				color: green;
-				grid-column-start: 2;
-  				grid-column-end: 2;
-  				grid-row-start: 2;
-  				grid-row-end: 2;
+				grid-column-start: 1;
+  				grid-column-end: 1;
+  				grid-row-start: 1;
+  				grid-row-end: 1;
 			}
 
 			#headlineselect {
 				color: green;
-				grid-column-start: 2;
-  				grid-column-end: 2;
-  				grid-row-start: 4;
-  				grid-row-end: 4;
+				grid-column-start: 1;
+  				grid-column-end: 1;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
 			}
 
-			
-
 			</style>
+
 		
 			<headline-ce value="Inflation" id="headline" class="h4"></headline-ce>
 			<headline-select-ce title="Inflation" id="headlineselect" selectedIndex="4"></headline-select-ce>

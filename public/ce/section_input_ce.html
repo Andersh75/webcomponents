@@ -4,14 +4,14 @@
 
 	<style>
 			:host {
-				display: inline-grid;
+				display: grid;
 				padding: 40px;
 				padding-top: 60px;
 				grid-template-columns: auto;
   				grid-template-rows: auto;
 				grid-column-gap: 20px;
 				grid-row-gap: 20px;
-				background-color: azure
+				background-color: var(--main-bg-color, azure)
 			}
 			
 			/* :host([color="blue"]) ::slotted(h1) {
@@ -35,34 +35,40 @@
 			}
 
 			#clearbutton {
-				color: green;
 				justify-self:end;
-				grid-column-start: 3;
-				grid-column-end: 3;
+				grid-column: 4;
   				grid-row-start: 1;
   				grid-row-end: 1;
 			}
 
 			#inflationcontainer::slotted(*) {
 				color: green;
-				grid-column-start: 1;
-  				grid-column-end: 1;
+				grid-column-start: auto;
+  				grid-column-end: auto;
   				grid-row-start: 2;
   				grid-row-end: 2;
 			}
 
 			#periodcontainer::slotted(*) {
 				color: green;
-				grid-column-start: 2;
-  				grid-column-end: 2;
+				grid-column-start: auto;
+  				grid-column-end: auto;
   				grid-row-start: 2;
   				grid-row-end: 2;
 			}
 
 			#heatcontainer::slotted(*) {
 				color: green;
-				grid-column-start: 3;
-  				grid-column-end: 3;
+				grid-column-start: auto;
+  				grid-column-end: auto;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
+			}
+
+			#anycontainer::slotted(*) {
+				color: green;
+				grid-column-start: auto;
+  				grid-column-end: auto;
   				grid-row-start: 2;
   				grid-row-end: 2;
 			}
@@ -70,11 +76,12 @@
 			</style>
 		
 			<headline-ce value="Allmänt" id="mainheadline" class="h3"></headline-ce>
-			<button-ce value="Rensa" id="clearbutton"></button-ce>
+			<button-ce value="Rensa" id="clearbutton" class="btn btn-secondary"></button-ce>
 			
 			<slot id="inflationcontainer" name="inflationcontainer"></slot>
-			<slot id="periodcontainer" name="periodcontainer"></slot>
 			<slot id="heatcontainer" name="heatcontainer"></slot>
+			<slot id="anycontainer" name="anycontainer"></slot>
+			<slot id="periodcontainer" name="periodcontainer"></slot>
 
 </template>
 
