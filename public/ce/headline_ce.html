@@ -1,10 +1,13 @@
 <template>
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<style>
-		:host-context(.darktheme) {
+		/* :host-context(.darktheme) {
 			color: green;
+		} */
+		:host {
+			color:aquamarine;
 		}
-		
+
 	</style>
 
 
@@ -64,6 +67,14 @@
 				return that.view.updatedHeadline();
 			};
 
+			//parent
+			this.ctrl.headlineFromParent = function(e) {
+				console.log('e from parent');
+				console.log(e.detail);
+				that.value = e.detail;
+				return that.model.changeHeadlineFromParent(that.value);
+			};
+
 			//global
 			this.ctrl.changeHeadline = function(e) {
 				that.value = e.detail.detail.changedAttribute.newVal;
@@ -100,6 +111,11 @@
 
 			this.model.changeHeadline = function(e) {
 				headline = e.detail.detail.changedAttribute.newVal;
+				eventDispatcher(that.eventTarget, 'updatedheadline');
+			};
+
+			this.model.changeHeadlineFromParent = function(newVal) {
+				headline = newVal;
 				eventDispatcher(that.eventTarget, 'updatedheadline');
 			};
 

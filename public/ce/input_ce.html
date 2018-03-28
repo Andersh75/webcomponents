@@ -46,6 +46,14 @@
         };
 
 		extendView(that) {
+			this.view.renderPlaceholder = function(obj) {
+				that.shadowRoot.querySelector('input').placeholder = obj;
+			};
+
+			this.view.updatedPlaceholder = function(obj) {
+				that.view.renderPlaceholder.call(that, that.model.getPlaceholder());
+			};
+
 			this.view.setValue = function(obj) {
 				that.shadowRoot.querySelector('input').value = obj;
 			};
@@ -61,12 +69,34 @@
 			this.ctrl.useraction = function(e) {
 				that.value = e.detail.composedPath()[0].value;
 			};
+
+			this.ctrl.updatedPlaceholder = function() {
+				return that.view.updatedPlaceholder();
+			};
 			this.ctrl.run = function() {
 				that.view.setPlaceholder(that.placeholder);
+			};
+
+			//Parent
+			this.ctrl.placeholderFromParent = function(e) {
+				console.log('e from parent');
+				console.log(e.detail);
+				that.placeholder = e.detail;
+				return that.model.changePlaceholderFromParent(that.placeholder);
 			};
 		}
 
 		extendModel(that) {
+			let placeholder = "";
+
+			this.model.changePlaceholderFromParent = function(newVal) {
+				placeholder = newVal;
+				eventDispatcher(that.eventTarget, 'updatedplaceholder');
+			};
+
+			this.model.getPlaceholder = function() {
+				return placeholder;
+			};
 		}
 	}
 

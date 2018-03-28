@@ -15,25 +15,25 @@
 				color: green;
 			}
 
-			/* ::slotted(h1) {
-			  margin: 0;
-			  font-weight: 600;
-			  color: red;
-			} */
+			:host([color="blue"]) #headline::slotted(*) {
+				color: green;
+			}
+
 			::slotted(.title) {
 			   color: blue;
 			}
-			/* DOESN'T WORK (can only select top-level nodes).
-			::slotted(.company),
-			::slotted(.title .company) {
-			  text-transform: uppercase;
-			}
-			*/
+
 			</style>
 			<slot name="newel"></slot>
-			<slot name="headline"></slot>
+			<slot id="headline" name="headline"></slot>
 			<slot name="myslot"></slot>
+			
 			<slot name="userinput"></slot>
+			<slot name="first">
+				
+			</slot>
+			<slot name="second"></slot>
+			
 			<slot></slot>
 
 </template>
@@ -65,6 +65,10 @@
 			this.ctrl.run = function() {
 				console.log('Xhere');
 				let el = document.createElement('input-ce');
+				el.setAttribute('slot', 'newel');
+				el.setAttribute('placeholder', 'testPlace');
+				that.appendChild(el);
+				el = document.createElement('input-ce');
 				el.setAttribute('slot', 'newel');
 				el.setAttribute('placeholder', 'testPlace');
 				that.appendChild(el);

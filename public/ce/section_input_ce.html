@@ -1,0 +1,125 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+			:host {
+				display: grid;
+				grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+  				grid-template-rows: 100px 100px 100px 100px 100px 100px 100px;
+			}
+			
+			:host([color="blue"]) ::slotted(h1) {
+				color: yellow;
+			}
+
+			:host([color="blue"]) ::slotted([data-test]) {
+				color: red;
+			}
+
+			:host([color="blue"]) ::slotted(headline-ce) {
+				color: green;
+			}
+
+			#mainheadline::slotted(*) {
+				color: green;
+				grid-column-start: 2;
+  				grid-column-end: 4;
+  				grid-row-start: 2;
+  				grid-row-end: 3;
+			}
+
+			#clearbutton::slotted(*) {
+				color: green;
+				grid-column-start: 5;
+  				grid-column-end: 7;
+  				grid-row-start: 2;
+  				grid-row-end: 3;
+			}
+
+			#mainheadline {
+				color: green;
+				grid-column-start: 2;
+  				grid-column-end: 4;
+  				grid-row-start: 2;
+  				grid-row-end: 3;
+			}
+
+			#clearbutton {
+				color: green;
+				grid-column-start: 5;
+  				grid-column-end: 7;
+  				grid-row-start: 2;
+  				grid-row-end: 3;
+			}
+
+			::slotted(.title) {
+			   color: blue;
+			}
+
+			</style>
+			<!-- <slot id="mainheadline" name="mainheadline"></slot>
+			<slot id="clearbutton" name="clearbutton"></slot> -->
+			<headline-ce value="Allmänt" id="mainheadline"></headline-ce>
+			<button-ce value="Rensa" id="clearbutton"></button-ce>
+
+</template>
+
+
+
+<script>
+(function(window, document, undefined) {
+
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+	class SectionInputCE extends CustomElement {
+
+		constructor() {
+		super();
+		this.thatDoc = thatDoc;
+		this.thisDoc = thisDoc;
+		this.extend();
+		}
+
+		
+		extendView(that) {
+
+		}
+
+		extendCtrl(that) {
+			//local
+			this.ctrl.run = function() {
+				// console.log('Xhere');
+				// let el = document.createElement('input-ce');
+				// el.setAttribute('slot', 'newel');
+				// el.setAttribute('placeholder', 'testPlace');
+				// that.appendChild(el);
+				// el = document.createElement('input-ce');
+				// el.setAttribute('slot', 'newel');
+				// el.setAttribute('placeholder', 'testPlace');
+				// that.appendChild(el);
+			};
+
+			//global
+
+	
+		}
+
+		extendModel(that) {
+			
+		}
+
+
+	}
+
+	window.customElements.define('section-input-ce', SectionInputCE);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+
+
+

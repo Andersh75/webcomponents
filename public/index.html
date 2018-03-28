@@ -36,17 +36,12 @@
 
 </script>
   
-  <link rel="import" href="ce/infoinput.html">
+
   <link rel="import" href="ce/input_ce.html">
-  <link rel="import" href="ce/infoheadline.html">
   <link rel="import" href="ce/headline_ce.html">
-  <link rel="import" href="ce/infoselect.html">
-  <link rel="import" href="ce/infoselect2.html">
-  <link rel="import" href="ce/togglebutton.html">
-  <link rel="import" href="ce/togglebutton_ce.html">
-  <link rel="import" href="ce/section2_ce.html">
-  <link rel="import" href="ce/sectioncontainer.html">
-  <link rel="import" href="ce/infosection.html">
+  <link rel="import" href="ce/headline_input_ce.html">
+  <link rel="import" href="ce/button_ce.html">
+  <link rel="import" href="ce/section_input_ce.html">
   
 
 
@@ -54,7 +49,7 @@
 <body>
 
 
-
+<!-- 
 <input-ce dispatch="newinput" value="hej" placeholder="Enter value..."></input-ce>
 <togglebutton-ce dispatch="newtoggle" toggle="on" value="TOGGLE HEAT SECTION VISIBILITY"></togglebutton-ce>
 <headline-ce dispatch="newheadline" listener="newinput@changeheadline" value="testvalue"></headline-ce>
@@ -67,18 +62,26 @@
         <h1>testcolor</h1>
 </section-ce>
 
-<div id="myTest"></div>
+<div id="myTest"></div> -->
 
 
 
 
-<section-ce color="blue">
+<headline-input-ce title="Allmänt" value="23">
+    <!-- <headline-ce value="Allmänt" slot="mainheadline"></headline-ce>
+    <button-ce value="Rensa" slot="clearbutton"></button-ce> -->
+</headline-input-ce>
+
+<!-- <section-ce color="blue">
     <headline-ce dispatch="newheadline" listener="newinput-fire@changeheadline" value="whatcolor" slot="headline"></headline-ce>
     <h1 slot="myslot" class="testclass">Eric Bidelman</h1>
-    <span class="title"  data-test="hej">
-        Digital Jedi, <span class="company">Google</span>
+    <span slot="first" class="title"  data-test="hej">
+        Digital Jedi,
     </span>
-</section-ce>
+    <span slot="second" class="company">Google</span>
+    
+    
+</section-ce> -->
 
 
 
@@ -106,14 +109,14 @@
     <info-select2 dispatch="newselect" slot="select1" selectedindex="1"></info-select2>
 </info-container> -->
 
-<script>
+<!-- <script>
         let el = document.getElementById('myTest');
         let newel = document.createElement('input-ce');
         el.appendChild(newel);
         console.log('newel');
         console.log(newel);
     
-</script>
+</script> -->
 
 <script type="text/javascript" src="/js/test.js"></script>
 
