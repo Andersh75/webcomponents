@@ -75,7 +75,9 @@
 			let parent;
 
 			this.ctrl.run = function() {
-				that.view.renderSelectedIndex(that.selectedIndex);
+				if (that.selectedIndex !== null) {
+					that.view.renderSelectedIndex(that.selectedIndex);
+				}
 			};
 
 			//local - from user

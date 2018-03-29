@@ -1,0 +1,101 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+			:host {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+				/*grid-auto-rows: minmax(150px, auto);*/
+				grid-gap: 1em;
+			}
+
+
+			.module {
+			/* Demo-Specific Styles */
+			background: #eaeaea;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			/*height: 200px;*/
+			}
+			
+			
+			</style>
+		
+		<div class="module">1</div>
+		<div class="module">2</div>
+		<div class="module">3</div>
+		<div class="module">4</div>
+		<div class="module">5</div>
+		<div class="module">6</div>
+		<div class="module">7</div>
+		<div class="module">8</div>
+		<div class="module">9</div>
+		<div class="module">10</div>
+		<div class="module">11</div>
+		<div class="module">12</div>
+		<div class="module">13</div>
+		<div class="module">14</div>
+		<div class="module">15</div>
+
+</template>
+
+
+
+<script>
+(function(window, document, undefined) {
+
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+	class SectionOutputCE extends CustomElement {
+
+		constructor() {
+		super();
+		this.thatDoc = thatDoc;
+		this.thisDoc = thisDoc;
+		this.extend();
+		}
+
+		
+		extendView(that) {
+
+		}
+
+		extendCtrl(that) {
+			//local
+			this.ctrl.run = function() {
+			};
+
+			//global
+			this.ctrl.clearsection = function() {
+			// 	console.log('CLEARING SECTION');
+			// 	let anycontainer = that.shadowRoot.querySelector('#anycontainer');
+			// 	//console.log(anycontainer.assignedNodes());
+			// 	Array.prototype.slice.call(anycontainer.assignedNodes()).forEach(node => {
+			// 		eventDispatcher(node.eventTarget, 'clearfromparent');
+			// 		console.log(node);
+			// 	})
+			}
+
+	
+		}
+
+		extendModel(that) {
+			
+		}
+
+
+	}
+
+	window.customElements.define('section-output-ce', SectionOutputCE);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+
+
+

@@ -78,9 +78,17 @@
 		set title(newTitle) {
 			return this.setAttribute('title', newTitle);
 		}
+
+		get dataTarget() {
+			return this.getAttribute('data-target');
+		}
+
+		set dataTarget(newDataTarget) {
+			return this.setAttribute('data-target', newDataTarget);
+		}
 			
 		static get observedAttributes() {
-			return [ 'title', 'value', 'placeholder' ];
+			return [ 'title', 'value', 'placeholder', 'data-target' ];
 		}
 
 		
@@ -93,11 +101,9 @@
 			this.ctrl.run = function() {
 				that.title = that.title;
 				that.selectedIndex = that.selectedIndex;
-				let headline = that.shadowRoot.querySelector('headline-ce');
-				let select = that.shadowRoot.querySelector('select-ce');
-				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
-				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
-				eventDispatcher(select.eventTarget, 'valuefromparent', that);
+				that.dataTarget = that.dataTarget;
+				//alert(that.dataTarget);
+				that.model.updateSelectedIndex(that.selectedIndex);
 			};
 
 			//child
@@ -122,7 +128,14 @@
 			// 	that.value = 'changed from child';
 			// };
 
-			//local
+			//local - from model
+			this.ctrl.updatedSelectedIndex = function() {
+				let headline = that.shadowRoot.querySelector('headline-ce');
+				let select = that.shadowRoot.querySelector('select-ce');
+				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
+				eventDispatcher(select.eventTarget, 'valuefromparent', that);
+			};
 
 
 			//parent
@@ -133,12 +146,25 @@
 			};
 
 			//global
-
-	
 		}
 
 		extendModel(that) {
-			
+			let value = "";
+			let selectedIndex = "0";
+
+			this.model.updateSelectedIndex = function(newIndex) {
+				window[that.dataTarget] = "newIndex";
+				selectedIndex = newIndex;
+				eventDispatcher(that.eventTarget, 'updatedselectedindex');
+			};
+
+			this.model.getSelectedIndex = function() {
+				return selectedIndex;
+			};
+
+			this.model.getValue = function() {
+				return value;
+			};
 		}
 
 

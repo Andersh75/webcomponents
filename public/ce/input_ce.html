@@ -72,8 +72,12 @@
 			let parent;
 
 			this.ctrl.run = function() {
-				that.view.renderValue(that.value);
-				that.view.renderPlaceholder(that.placeholder);
+				if (that.value !== null) {
+					that.view.renderValue(that.value);
+				}
+				if (that.placeholder !== null) {
+					that.view.renderPlaceholder(that.placeholder);
+				}
 			};
 
 			//local - from user

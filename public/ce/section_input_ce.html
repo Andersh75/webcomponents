@@ -92,7 +92,7 @@
 	var thatDoc = document;
 	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
-	class SectionInputGeneralCE extends CustomElement {
+	class SectionInputCE extends CustomElement {
 
 		constructor() {
 		super();
@@ -132,7 +132,7 @@
 
 	}
 
-	window.customElements.define('section-input-general-ce', SectionInputGeneralCE);
+	window.customElements.define('section-input-ce', SectionInputCE);
 
 })(window, document);
 </script>

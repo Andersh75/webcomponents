@@ -50,7 +50,9 @@
 			let parent;
 
 			this.ctrl.run = function() {
-				that.view.renderHeadline(that.title);
+				if (that.title !== null) {
+					that.view.renderHeadline(that.title);
+				}
 			};	
 
 			//local - from model
