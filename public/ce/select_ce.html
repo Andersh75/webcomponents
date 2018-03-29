@@ -53,10 +53,6 @@
 		}
 
 		extendView(that) {
-			this.view.updatedSelectedIndex = function() {
-				that.view.renderSelectedIndex.call(that, that.model.getSelectedIndex());
-			};
-
 			this.view.renderSelectedIndex = function(obj) {
 				console.log(that.shadowRoot.querySelector('select').children[obj]);
 				Array.prototype.slice.call(that.shadowRoot.querySelector('select')).forEach(child => {
@@ -69,47 +65,68 @@
 				that.shadowRoot.querySelector('select').children[obj].setAttribute('selected', 'selected');
 				console.log(that.shadowRoot.querySelector('select').children[obj]);
 			};
+
+			this.view.updatedSelectedIndex = function() {
+				that.view.renderSelectedIndex.call(that, that.model.getSelectedIndex());
+			};
 		}
 
 		extendCtrl(that) {
-			//local
+			let parent;
+
+			this.ctrl.run = function() {
+				that.view.renderSelectedIndex(that.selectedIndex);
+			};
+
+			//local - from user
 			this.ctrl.useraction = function(e) {
-				console.log('look');
-				console.log(e.detail.composedPath()[0].selectedIndex);
 				that.selectedIndex = e.detail.composedPath()[0].selectedIndex;
-				that.value = e.detail.composedPath()[0].value;
 				that.model.updateSelectedIndex(that.selectedIndex);
-
 			};
 
-			this.ctrl.clearedSelectedIndex = function() {
-				that.view.updatedSelectedIndex(); 
-				//console.log("clearedValue");
-			};
-
+			//local - from model
 			this.ctrl.updatedSelectedIndex = function() {
-				that.view.updatedSelectedIndex(); 
-				//console.log("clearedValue");
+				that.view.updatedSelectedIndex();
+				eventDispatcher(parent.eventTarget, 'updatedselectedindexfromchild', that); 
 			};
+
+
+			// this.ctrl.clearedSelectedIndex = function() {
+			// 	that.view.updatedSelectedIndex();
+			// 	eventDispatcher(e.detail.eventTarget, 'clearedselectfromchild');
+			// 	//console.log("clearedValue");
+			// };
+
+
 
 			//parent
 			this.ctrl.selectedindexfromparent = function(e) {
-				console.log('e from parent');
-				console.log(e.detail);
-				that.selectedIndex = e.detail;
-				//return that.model.changeSelectedIndexFromParent(that.selectedIndex);
+				parent = e.detail;
+				console.log(e);
+				that.selectedIndex = e.detail.selectedIndex;
+				console.log('that.selectedIndex');
+				console.log(that.selectedIndex);
+				that.model.updateSelectedIndex(that.selectedIndex);
 			};
 
+			// this.ctrl.clearfromparent = function(e) {
+			// 	console.log('clear from parent');
+			// 	console.log('END STATION - SELECT');
+			// 	that.selectedIndex = "0"
+			// 	that.value = "0"
+			// 	that.model.updateSelectedIndex(that.selectedIndex);
+			// };
+
 			//global
-			this.ctrl.clearfield = function(e) {
-				that.selectedIndex = "0"
-				that.value = "0"
-				that.model.updateSelectedIndex(that.selectedIndex);
-				console.log("clearfield");
-				// console.log(e);
-				// that.value = e.detail.detail.changedAttribute.newVal;
-				// return that.model.changeHeadline(e);
-			};
+			// this.ctrl.clearfield = function(e) {
+			// 	that.selectedIndex = "0"
+			// 	that.value = "0"
+			// 	that.model.updateSelectedIndex(that.selectedIndex);
+			// 	console.log("clearfield");
+			// 	// console.log(e);
+			// 	// that.value = e.detail.detail.changedAttribute.newVal;
+			// 	// return that.model.changeHeadline(e);
+			// };
 
 		}
 
@@ -117,24 +134,27 @@
 			let value = "";
 			let selectedIndex = "0";
 
+			this.model.updateSelectedIndex = function(newIndex) {
+				selectedIndex = newIndex;
+				eventDispatcher(that.eventTarget, 'updatedselectedindex');
+			};
 
 			this.model.getSelectedIndex = function() {
 				return selectedIndex;
 			};
 
-			this.model.clearValue = function() {
-				that.value = "";
-				value = "";
-				that.selectedIndex = "0";
-				eventDispatcher(that.eventTarget, 'clearedselectedindex');
+			this.model.getValue = function() {
+				return value;
 			};
 
-			this.model.updateSelectedIndex = function(newVal) {
-				console.log('newVal');
-				console.log(newVal);
-				selectedIndex = newVal;
-				eventDispatcher(that.eventTarget, 'updatedselectedindex');
-			};
+			// this.model.clearValue = function() {
+			// 	that.value = "";
+			// 	value = "";
+			// 	that.selectedIndex = "0";
+			// 	eventDispatcher(that.eventTarget, 'clearedselectedindex');
+			// };
+
+
 		}
 	}
 

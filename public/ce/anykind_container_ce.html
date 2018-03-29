@@ -74,6 +74,20 @@
 				// that.appendChild(el);
 			};
 
+			//parent
+			this.ctrl.clearfromparent = function(e) {
+				console.log('clear from parent');
+				let anyform = that.shadowRoot.querySelector('#anyform');
+				console.log(anyform);
+				//console.log(anyform.assignedNodes());
+				Array.prototype.slice.call(anyform.assignedNodes()).forEach(node => {
+					eventDispatcher(node.eventTarget, 'clearfromparent');
+					console.log(node);
+				})
+				// that.selectedIndex = e.detail;
+				//return that.model.changeSelectedIndexFromParent(that.selectedIndex);
+			};
+
 			//global
 
 	

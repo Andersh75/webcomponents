@@ -59,36 +59,33 @@
 
 
 <!--Input section-->
-<section-input-general-ce style="">
+<section-input-general-ce style="" listener="cleargeneralinputsection@clearsection">
 
-    <!--Period-->
+    <!--
     <period-container-ce slot="anycontainer"></period-container-ce>
 
-
-    <!--Inflation-->
     <anykind-container-ce slot="anycontainer">
         <headline-ce value="Inflation" class="h4" slot="headline"></headline-ce>
         <headline-select-ce title="Inflation" selectedIndex="4" slot="anyform"></headline-select-ce>
     </anykind-container-ce>
 
-    <!--Discount rate-->
     <anykind-container-ce slot="anycontainer">
         <headline-ce value="Kalkylränta" class="h4" slot="headline"></headline-ce>
         <headline-select-ce title="Kalkylränta" selectedIndex="4" slot="anyform"></headline-select-ce>
     </anykind-container-ce> 
 
-    <!--Heat-->
-    <heat-container-ce slot="anycontainer"></heat-container-ce>
-    
-    <!--Users-->
+    <heat-container-ce slot="anycontainer"></heat-container-ce> -->
+    <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
+	<button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton"></button-ce>
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Brukare" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Antal brukare" value="antal brukare..." slot="anyform"></headline-input-ce>
+            <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Antal brukare" value="dssdfd" placeholder="antal brukare..." slot="anyform"></headline-input-ce>
+            <headline-select-ce title="Kalkylränta" selectedindex="3" slot="anyform"></headline-select-ce>
     </anykind-container-ce> 
 
         
 </section-input-general-ce>
-
+<!-- 
 <section-input-rent-ce>
     
     <anykind-container-ce slot="anycontainer">
@@ -137,7 +134,7 @@
 </section-input-own-ce>
 
 
-
+ -->
 
 
 

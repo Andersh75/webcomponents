@@ -59,57 +59,90 @@
 				that.shadowRoot.querySelector('input').value = obj;
 			};
 
-			this.view.updatedPlaceholder = function(obj) {
-				that.view.renderPlaceholder.call(that, that.model.getPlaceholder());
-			};
-
-			this.view.updatedValue = function(obj) {
+			this.view.updatedValue = function() {
 				that.view.renderValue.call(that, that.model.getValue());
 			};
 
-			this.view.setValue = function(obj) {
-				that.shadowRoot.querySelector('input').value = obj;
-			};
-
-			this.view.setPlaceholder = function(obj) {
-				that.shadowRoot.querySelector('input').placeholder = obj;
-				
+			this.view.updatedPlaceholder = function() {
+				that.view.renderPlaceholder.call(that, that.model.getPlaceholder());
 			};
 		}
 
 		extendCtrl(that) {
-			//local
-			this.ctrl.useraction = function(e) {
-				that.value = e.detail.composedPath()[0].value;
+			let parent;
+
+			this.ctrl.run = function() {
+				that.view.renderValue(that.value);
+				that.view.renderPlaceholder(that.placeholder);
 			};
 
-			this.ctrl.clearedValue = function(e) {
-				that.view.updatedValue(); 
-				//console.log("clearedValue");
+			//local - from user
+			this.ctrl.useraction = function(e) {
+				that.value = e.detail.composedPath()[0].value;
+				that.model.updateValue(that.value);
+			};
+
+			//local - from model
+			this.ctrl.updatedValue = function() {
+				that.view.updatedValue();
+				eventDispatcher(parent.eventTarget, 'updatedvaluefromchild', that);
 			};
 
 			this.ctrl.updatedPlaceholder = function() {
-				return that.view.updatedPlaceholder();
+				that.view.updatedPlaceholder();
+				eventDispatcher(parent.eventTarget, 'updatedplaceholderfromchild', that);
 			};
-			this.ctrl.run = function() {
-				that.view.setPlaceholder(that.placeholder);
-			};
+
+
+
+
+
+
+
+			// this.ctrl.clearedValue = function(e) {
+			// 	that.view.updatedValue();
+			// 	eventDispatcher(parent.eventTarget, 'clearedinputfromchild');
+			// 	//console.log("clearedValue");
+			// };
+
+
+
+
+
+
 
 			//Parent
 			this.ctrl.placeholderFromParent = function(e) {
-				console.log('e from parent');
-				console.log(e.detail);
-				that.placeholder = e.detail;
-				return that.model.changePlaceholderFromParent(that.placeholder);
+				parent = e.detail;
+				that.placeholder = e.detail.placeholder;
+				that.model.updatePlaceholder(that.placeholder);
 			};
+
+			this.ctrl.valueFromParent = function(e) {
+				parent = e.detail;
+				that.value = e.detail.value;
+				that.model.updateValue(that.value);
+			};
+
+
+
+
+			// this.ctrl.clearfromparent = function(e) {
+			// 	parent = e.detail;
+			// 	console.log('clear from parent');
+			// 	console.log(e.detail);
+			// 	console.log('END STATION - INPUT');
+			// 	return that.model.clearValue(e);
+			// };
+
 			//global
-			this.ctrl.clearfield = function(e) {
-				return that.model.clearValue();
-				// console.log("clearfield");
-				// console.log(e);
-				// that.value = e.detail.detail.changedAttribute.newVal;
-				// return that.model.changeHeadline(e);
-			};
+			// this.ctrl.clearfield = function(e) {
+			// 	return that.model.clearValue();
+			// 	// console.log("clearfield");
+			// 	// console.log(e);
+			// 	// that.value = e.detail.detail.changedAttribute.newVal;
+			// 	// return that.model.changeHeadline(e);
+			// };
 
 		}
 
@@ -117,7 +150,16 @@
 			let placeholder = "";
 			let value = "";
 
-			this.model.changePlaceholderFromParent = function(newVal) {
+			this.model.updateValue = function(newVal) {
+				value = newVal;
+				eventDispatcher(that.eventTarget, 'updatedvalue');
+			};
+
+			this.model.getValue = function() {
+				return value;
+			};
+
+			this.model.updatePlaceholder = function(newVal) {
 				placeholder = newVal;
 				eventDispatcher(that.eventTarget, 'updatedplaceholder');
 			};
@@ -126,15 +168,15 @@
 				return placeholder;
 			};
 
-			this.model.getValue = function() {
-				return value;
-			};
 
-			this.model.clearValue = function() {
-				that.value = "";
-				value = "";
-				eventDispatcher(that.eventTarget, 'clearedvalue');
-			};
+
+
+
+			// this.model.clearValue = function(e) {
+			// 	that.value = "";
+			// 	value = "";
+			// 	eventDispatcher(that.eventTarget, 'clearedvalue', e.detail);
+			// };
 		}
 	}
 

@@ -36,7 +36,7 @@
 			<!-- <slot id="mainheadline" name="mainheadline"></slot>
 			<slot id="clearbutton" name="clearbutton"></slot> -->
 			<headline-ce id="headline" class="h5"></headline-ce>
-			<input-ce id="input" listener="cleargeneralinputsection@clearfield"></input-ce>
+			<input-ce id="input"></input-ce>
 </template>
 
 
@@ -64,6 +64,14 @@
 			return this.setAttribute('value', newValue);
 		}
 
+		get placeholder() {
+			return this.getAttribute('placeholder');
+		}
+
+		set placeholder(newPlaceholder) {
+			return this.setAttribute('placeholder', newPlaceholder);
+		}
+
 		get title() {
 			return this.getAttribute('title');
 		}
@@ -73,7 +81,7 @@
 		}
 			
 		static get observedAttributes() {
-			return [ 'title', 'value' ];
+			return [ 'title', 'value', 'placeholder' ];
 		}
 
 		
@@ -82,12 +90,60 @@
 		}
 
 		extendCtrl(that) {
-			//local
+
 			this.ctrl.run = function() {
+				that.title = that.title;
+				that.value = that.value;
+				that.placeholder = that.placeholder;
 				let headline = that.shadowRoot.querySelector('headline-ce');
-				eventDispatcher(headline.eventTarget, 'headlinefromparent', that.title);
 				let input = that.shadowRoot.querySelector('input-ce');
-				eventDispatcher(input.eventTarget, 'placeholderfromparent', that.value);
+				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+				eventDispatcher(input.eventTarget, 'placeholderfromparent', that);
+				eventDispatcher(input.eventTarget, 'valuefromparent', that);
+			};
+			
+			//child
+			this.ctrl.updatedvaluefromchild = function(e) {
+				console.log('UPDATED INPUT VALUE FROM CHILD');
+				that.value = e.detail.value;
+			};
+
+			this.ctrl.updatedplaceholderfromchild = function(e) {
+				console.log('UPDATED INPUT PLACEHOLDER FROM CHILD');
+				that.placeholder = e.detail.placeholder;
+			};
+
+			this.ctrl.updatedtitlefromchild = function(e) {
+				console.log('UPDATED HEADLINE TITLE FROM CHILD');
+				console.log(e.detail);
+				that.title = e.detail.title;
+			};
+
+
+
+
+
+			
+			// this.ctrl.clearedinputfromchild = function(e) {
+			// 	console.log('CLEARED INPUT FROM CHILD');
+			// 	that.value = '';
+			// };
+
+			// this.ctrl.valuefromchild = function(e) {
+			// 	console.log('INPUT VALUE FROM CHILD');
+			// 	//that.value = '';
+			// };
+
+
+
+			//local
+
+
+			//parent
+			this.ctrl.clearfromparent = function(e) {
+				that.value = "";
+				let input = that.shadowRoot.querySelector('input-ce');
+				eventDispatcher(input.eventTarget, 'valuefromparent', that);
 			};
 
 			//global

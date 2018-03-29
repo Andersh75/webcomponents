@@ -34,8 +34,8 @@
 
 			</style>
 
-			<headline-ce id="headline" value="hej" class="h5"></headline-ce>
-			<select-ce id="select" listener="cleargeneralinputsection@clearfield"></select-ce>
+			<headline-ce id="headline" class="h5"></headline-ce>
+			<select-ce id="select"></select-ce>
 </template>
 
 
@@ -64,11 +64,11 @@
 		}
 
 		get selectedIndex() {
-			return this.getAttribute('selectedIndex');
+			return this.getAttribute('selectedindex');
 		}
 
 		set selectedIndex(newSelectedIndex) {
-			return this.setAttribute('selectedIndex', newSelectedIndex);
+			return this.setAttribute('selectedindex', newSelectedIndex);
 		}
 
 		get title() {
@@ -80,7 +80,7 @@
 		}
 			
 		static get observedAttributes() {
-			return [ 'title', 'value' ];
+			return [ 'title', 'value', 'placeholder' ];
 		}
 
 		
@@ -89,12 +89,47 @@
 		}
 
 		extendCtrl(that) {
-			//local
+
 			this.ctrl.run = function() {
+				that.title = that.title;
+				that.selectedIndex = that.selectedIndex;
 				let headline = that.shadowRoot.querySelector('headline-ce');
-				eventDispatcher(headline.eventTarget, 'headlinefromparent', that.title);
 				let select = that.shadowRoot.querySelector('select-ce');
-				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that.selectedIndex);
+				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
+				eventDispatcher(select.eventTarget, 'valuefromparent', that);
+			};
+
+			//child
+			this.ctrl.updatedSelectedIndexFromChild = function(e) {
+				console.log('UPDATED SELECT SELECTEDINDEX FROM CHILD');
+				that.selectedIndex = e.detail.selectedIndex;
+			};
+
+			this.ctrl.updatedtitlefromchild = function(e) {
+				console.log('UPDATED HEADLINE TITLE FROM CHILD');
+				console.log(e.detail);
+				that.title = e.detail.title;
+			};
+
+
+
+
+
+
+			// this.ctrl.clearedselectfromchild = function(e) {
+			// 	console.log('CLEARED SELECT FROM CHILD');
+			// 	that.value = 'changed from child';
+			// };
+
+			//local
+
+
+			//parent
+			this.ctrl.clearfromparent = function(e) {
+				that.selectedIndex = "0";
+				let select = that.shadowRoot.querySelector('select-ce');
+				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
 			};
 
 			//global
