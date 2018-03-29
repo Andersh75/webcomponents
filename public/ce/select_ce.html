@@ -74,6 +74,8 @@
 		extendCtrl(that) {
 			//local
 			this.ctrl.useraction = function(e) {
+				console.log('look');
+				console.log(e.detail.composedPath()[0].selectedIndex);
 				that.selectedIndex = e.detail.composedPath()[0].selectedIndex;
 				that.value = e.detail.composedPath()[0].value;
 				that.model.updateSelectedIndex(that.selectedIndex);
