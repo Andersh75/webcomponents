@@ -60,81 +60,95 @@
 
 <!--Input section-->
 <section-input-general-ce style="" listener="cleargeneralinputsection@clearsection">
-
-    <!--
-    <period-container-ce slot="anycontainer"></period-container-ce>
-
+    <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
+    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton"></button-ce>
+    
     <anykind-container-ce slot="anycontainer">
-        <headline-ce value="Inflation" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Inflation" selectedIndex="4" slot="anyform"></headline-select-ce>
+        <headline-ce title="Kalkylperiod" class="h4" slot="headline"></headline-ce>
+        <headline-select-ce title="startår" selectedindex="0" slot="anyform"></headline-select-ce>
+        <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce>     
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
-        <headline-ce value="Kalkylränta" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Kalkylränta" selectedIndex="4" slot="anyform"></headline-select-ce>
+        <headline-ce title="Inflation" class="h4" slot="headline"></headline-ce>
+        <headline-select-ce title="Inflation" selectedindex="0" slot="anyform"></headline-select-ce>   
     </anykind-container-ce> 
 
-    <heat-container-ce slot="anycontainer"></heat-container-ce> -->
-    <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-	<button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton"></button-ce>
     <anykind-container-ce slot="anycontainer">
-            <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Antal brukare" value="dssdfd" placeholder="antal brukare..." slot="anyform"></headline-input-ce>
-            <headline-select-ce title="Kalkylränta" selectedindex="3" slot="anyform"></headline-select-ce>
+        <headline-ce title="Kalkylränta" class="h4" slot="headline"></headline-ce>
+        <headline-select-ce title="Kalkylränta" selectedindex="0" slot="anyform"></headline-select-ce>   
+    </anykind-container-ce> 
+
+    <anykind-container-ce slot="anycontainer">
+        <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
+        <headline-input-ce title="Antal kWh/kvm/år" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce> 
+        <headline-select-ce title="Kostnad per kWh" selectedindex="0" slot="anyform"></headline-select-ce>
+    </anykind-container-ce>
+
+    <anykind-container-ce slot="anycontainer">
+        <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
+        <headline-input-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce>
     </anykind-container-ce> 
 
         
 </section-input-general-ce>
-<!-- 
-<section-input-rent-ce>
+
+
+<section-input-rent-ce listener="clearrentinputsection@clearsection">
+    <headline-ce title="Hyra" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
+    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="clearrentinputsection" slot="anybutton"></button-ce>
+    
     
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Initial ytstorlek" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Antal kvadratmeter" value="antal kvm..." slot="anyform"></headline-input-ce>
+            <headline-ce title="Initial ytstorlek" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Antal kvadratmeter" placeholder="Antal kvm..." value="" slot="anyform"></headline-input-ce>
     </anykind-container-ce> 
 
     
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Hyresnivå och hyresutveckling" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Hyreskostnad per kvm" value="" slot="anyform"></headline-input-ce>
-            <headline-select-ce title="Hyreshöjningstakt" selectedIndex="4" slot="anyform"></headline-select-ce>
+            <headline-ce title="Hyresnivå och hyresutveckling" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Hyreskostnad per kvm" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+            <headline-select-ce title="Hyreshöjningstakt" selectedIndex="0" slot="anyform"></headline-select-ce>
     </anykind-container-ce>
 
     
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Uppförande och avvecklingskostnader" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Etableringskostnad" value="kr/kvm..." slot="anyform"></headline-input-ce>
-            <headline-input-ce title="Expansionskostnad" value="kr/kvm..." slot="anyform"></headline-input-ce>
-            <headline-input-ce title="Avvecklingskostnad" value="kr/kvm..." slot="anyform"></headline-input-ce>
+            <headline-ce title="Uppförande och avvecklingskostnader" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Etableringskostnad" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+            <headline-input-ce title="Expansionskostnad" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+            <headline-input-ce title="Avvecklingskostnad" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
     </anykind-container-ce>
 
 </section-input-rent-ce>
 
-<section-input-own-ce>
+<section-input-own-ce listener="clearowninputsection@clearsection">
+    <headline-ce title="Äga" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
+    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton"></button-ce>
+    
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Initial ytstorlek" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Antal kvadratmeter" value="kvm..." slot="anyform"></headline-input-ce>
+            <headline-ce title="Initial ytstorlek" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Antal kvadratmeter" placeholder="Antal kvm..." value="" slot="anyform"></headline-input-ce>
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Uppförandekostnader" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Uppförandekostnad" value="kr/kvm..." slot="anyform"></headline-input-ce>
+            <headline-ce title="Uppförandekostnader" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Uppförandekostnad" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Livslängd" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Livslängd" value="år..." slot="anyform"></headline-input-ce>
+            <headline-ce title="Livslängd" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Livslängd" placeholder="Antal år..." value="" slot="anyform"></headline-input-ce>
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
-            <headline-ce value="Reparationer och löpande underhåll" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Reparationer och löpande underhål" value="kr/kvm..." slot="anyform"></headline-input-ce>
-            <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" selectedIndex="4" slot="anyform"></headline-select-ce>
+            <headline-ce title="Reparationer och löpande underhåll" class="h4" slot="headline"></headline-ce>
+            <headline-input-ce title="Reparationer och löpande underhål" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+            <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" selectedIndex="0" slot="anyform"></headline-select-ce>
     </anykind-container-ce>
 </section-input-own-ce>
 
 
- -->
+
 
 
 

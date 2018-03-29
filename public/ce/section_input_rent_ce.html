@@ -26,7 +26,7 @@
 				color: green;
 			} */
 
-			#mainheadline {
+			#anyheadline::slotted(*) {
 				color: green;
 				grid-column-start: 1;
   				grid-column-end: 1;
@@ -34,9 +34,9 @@
   				grid-row-end: 1;
 			}
 
-			#clearbutton {
+			#anybutton::slotted(*) {
 				justify-self:end;
-				grid-column: 4;
+				grid-column: 5;
   				grid-row-start: 1;
   				grid-row-end: 1;
 			}
@@ -75,10 +75,10 @@
 
 			</style>
 		
-			<headline-ce value="Hyra" id="mainheadline" class="h3"></headline-ce>
-			<button-ce value="Rensa" id="clearbutton" class="btn btn-secondary"></button-ce>
 			
 			
+			<slot id="anyheadline" name="anyheadline"></slot>
+			<slot id="anybutton" name="anybutton"></slot>
 			<slot id="anycontainer" name="anycontainer"></slot>
 			
 
@@ -109,18 +109,18 @@
 		extendCtrl(that) {
 			//local
 			this.ctrl.run = function() {
-				// console.log('Xhere');
-				// let el = document.createElement('input-ce');
-				// el.setAttribute('slot', 'newel');
-				// el.setAttribute('placeholder', 'testPlace');
-				// that.appendChild(el);
-				// el = document.createElement('input-ce');
-				// el.setAttribute('slot', 'newel');
-				// el.setAttribute('placeholder', 'testPlace');
-				// that.appendChild(el);
 			};
 
 			//global
+			this.ctrl.clearsection = function() {
+				console.log('CLEARING SECTION');
+				let anycontainer = that.shadowRoot.querySelector('#anycontainer');
+				//console.log(anycontainer.assignedNodes());
+				Array.prototype.slice.call(anycontainer.assignedNodes()).forEach(node => {
+					eventDispatcher(node.eventTarget, 'clearfromparent');
+					console.log(node);
+				})
+			}
 
 	
 		}
