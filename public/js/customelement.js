@@ -58,13 +58,20 @@ class CustomElement extends HTMLElement {
 					eventDispatcher(this.eventTarget, 'useraction', e);
 				}
 			});
+			this.shadowRoot.querySelector('input').addEventListener('blur', e => {
+				e.stopPropagation;
+				eventDispatcher(this.eventTarget, 'useraction', e);
+			});
 		} else {
+
+
+
 			this.addEventListener('keydown', e => {
 				let el = e.composedPath()[0];
 				
 				if (e.keyCode === 32 || e.keyCode === 13) {
-					el.dispatchEvent(
-						new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
+					
+					el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
 				}
 			});
 
@@ -73,6 +80,8 @@ class CustomElement extends HTMLElement {
 				eventDispatcher(this.eventTarget, 'useraction', e);
 				
 			});
+
+
 		}
 		
 		

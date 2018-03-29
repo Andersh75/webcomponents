@@ -53,8 +53,16 @@
 				that.shadowRoot.querySelector('input').placeholder = obj;
 			};
 
+			this.view.renderValue = function(obj) {
+				that.shadowRoot.querySelector('input').value = obj;
+			};
+
 			this.view.updatedPlaceholder = function(obj) {
 				that.view.renderPlaceholder.call(that, that.model.getPlaceholder());
+			};
+
+			this.view.updatedValue = function(obj) {
+				that.view.renderValue.call(that, that.model.getValue());
 			};
 
 			this.view.setValue = function(obj) {
@@ -73,6 +81,11 @@
 				that.value = e.detail.composedPath()[0].value;
 			};
 
+			this.ctrl.clearedValue = function(e) {
+				that.view.updatedValue(); 
+				//console.log("clearedValue");
+			};
+
 			this.ctrl.updatedPlaceholder = function() {
 				return that.view.updatedPlaceholder();
 			};
@@ -87,10 +100,20 @@
 				that.placeholder = e.detail;
 				return that.model.changePlaceholderFromParent(that.placeholder);
 			};
+			//global
+			this.ctrl.clearfield = function(e) {
+				return that.model.clearValue();
+				// console.log("clearfield");
+				// console.log(e);
+				// that.value = e.detail.detail.changedAttribute.newVal;
+				// return that.model.changeHeadline(e);
+			};
+
 		}
 
 		extendModel(that) {
 			let placeholder = "";
+			let value = "";
 
 			this.model.changePlaceholderFromParent = function(newVal) {
 				placeholder = newVal;
@@ -99,6 +122,16 @@
 
 			this.model.getPlaceholder = function() {
 				return placeholder;
+			};
+
+			this.model.getValue = function() {
+				return value;
+			};
+
+			this.model.clearValue = function() {
+				that.value = "";
+				value = "";
+				eventDispatcher(that.eventTarget, 'clearedvalue');
 			};
 		}
 	}

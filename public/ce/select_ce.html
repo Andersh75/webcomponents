@@ -6,7 +6,7 @@
 	</style>
 		<div class="input-group mb-3">
 			<select class="custom-select">
-			  <option selected>välj...</option>
+			  <option disabled selected value="">välj...</option>
 			  <option value="1">One</option>
 			  <option value="2">Two</option>
 			  <option value="3">Three</option>
@@ -53,6 +53,22 @@
 		}
 
 		extendView(that) {
+			this.view.updatedSelectedIndex = function() {
+				that.view.renderSelectedIndex.call(that, that.model.getSelectedIndex());
+			};
+
+			this.view.renderSelectedIndex = function(obj) {
+				console.log(that.shadowRoot.querySelector('select').children[obj]);
+				Array.prototype.slice.call(that.shadowRoot.querySelector('select')).forEach(child => {
+					
+					child.removeAttribute('selected');
+					console.log(child);
+				})
+				console.log('obj');
+				console.log(obj);
+				that.shadowRoot.querySelector('select').children[obj].setAttribute('selected', 'selected');
+				console.log(that.shadowRoot.querySelector('select').children[obj]);
+			};
 		}
 
 		extendCtrl(that) {
@@ -60,6 +76,18 @@
 			this.ctrl.useraction = function(e) {
 				that.selectedIndex = e.detail.composedPath()[0].selectedIndex;
 				that.value = e.detail.composedPath()[0].value;
+				that.model.updateSelectedIndex(that.selectedIndex);
+
+			};
+
+			this.ctrl.clearedSelectedIndex = function() {
+				that.view.updatedSelectedIndex(); 
+				//console.log("clearedValue");
+			};
+
+			this.ctrl.updatedSelectedIndex = function() {
+				that.view.updatedSelectedIndex(); 
+				//console.log("clearedValue");
 			};
 
 			//parent
@@ -70,9 +98,41 @@
 				//return that.model.changeSelectedIndexFromParent(that.selectedIndex);
 			};
 
+			//global
+			this.ctrl.clearfield = function(e) {
+				that.selectedIndex = "0"
+				that.value = "0"
+				that.model.updateSelectedIndex(that.selectedIndex);
+				console.log("clearfield");
+				// console.log(e);
+				// that.value = e.detail.detail.changedAttribute.newVal;
+				// return that.model.changeHeadline(e);
+			};
+
 		}
 
 		extendModel(that) {
+			let value = "";
+			let selectedIndex = "0";
+
+
+			this.model.getSelectedIndex = function() {
+				return selectedIndex;
+			};
+
+			this.model.clearValue = function() {
+				that.value = "";
+				value = "";
+				that.selectedIndex = "0";
+				eventDispatcher(that.eventTarget, 'clearedselectedindex');
+			};
+
+			this.model.updateSelectedIndex = function(newVal) {
+				console.log('newVal');
+				console.log(newVal);
+				selectedIndex = newVal;
+				eventDispatcher(that.eventTarget, 'updatedselectedindex');
+			};
 		}
 	}
 
