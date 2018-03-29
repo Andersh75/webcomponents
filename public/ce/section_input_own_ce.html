@@ -75,13 +75,12 @@
 
 			</style>
 		
-			<headline-ce value="Allmänt" id="mainheadline" class="h3"></headline-ce>
+			<headline-ce value="Äga" id="mainheadline" class="h3"></headline-ce>
 			<button-ce value="Rensa" id="clearbutton" class="btn btn-secondary"></button-ce>
 			
-			<slot id="inflationcontainer" name="inflationcontainer"></slot>
-			<slot id="heatcontainer" name="heatcontainer"></slot>
+			
 			<slot id="anycontainer" name="anycontainer"></slot>
-			<slot id="periodcontainer" name="periodcontainer"></slot>
+			
 
 </template>
 
@@ -93,7 +92,7 @@
 	var thatDoc = document;
 	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
-	class SectionInputCE extends CustomElement {
+	class SectionInputOwnCE extends CustomElement {
 
 		constructor() {
 		super();
@@ -133,7 +132,7 @@
 
 	}
 
-	window.customElements.define('section-input-ce', SectionInputCE);
+	window.customElements.define('section-input-own-ce', SectionInputOwnCE);
 
 })(window, document);
 </script>

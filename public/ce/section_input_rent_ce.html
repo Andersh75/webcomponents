@@ -1,0 +1,144 @@
+<template>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+			:host {
+				display: grid;
+				padding: 40px;
+				padding-top: 60px;
+				grid-template-columns: auto;
+  				grid-template-rows: auto;
+				grid-column-gap: 20px;
+				grid-row-gap: 20px;
+				background-color: var(--main-bg-color, azure)
+			}
+			
+			/* :host([color="blue"]) ::slotted(h1) {
+				color: yellow;
+			}
+
+			:host([color="blue"]) ::slotted([data-test]) {
+				color: red;
+			}
+
+			:host([color="blue"]) ::slotted(headline-ce) {
+				color: green;
+			} */
+
+			#mainheadline {
+				color: green;
+				grid-column-start: 1;
+  				grid-column-end: 1;
+  				grid-row-start: 1;
+  				grid-row-end: 1;
+			}
+
+			#clearbutton {
+				justify-self:end;
+				grid-column: 4;
+  				grid-row-start: 1;
+  				grid-row-end: 1;
+			}
+
+			#inflationcontainer::slotted(*) {
+				color: green;
+				grid-column-start: auto;
+  				grid-column-end: auto;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
+			}
+
+			#periodcontainer::slotted(*) {
+				color: green;
+				grid-column-start: auto;
+  				grid-column-end: auto;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
+			}
+
+			#heatcontainer::slotted(*) {
+				color: green;
+				grid-column-start: auto;
+  				grid-column-end: auto;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
+			}
+
+			#anycontainer::slotted(*) {
+				color: green;
+				grid-column-start: auto;
+  				grid-column-end: auto;
+  				grid-row-start: 2;
+  				grid-row-end: 2;
+			}
+
+			</style>
+		
+			<headline-ce value="Hyra" id="mainheadline" class="h3"></headline-ce>
+			<button-ce value="Rensa" id="clearbutton" class="btn btn-secondary"></button-ce>
+			
+			
+			<slot id="anycontainer" name="anycontainer"></slot>
+			
+
+</template>
+
+
+
+<script>
+(function(window, document, undefined) {
+
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+
+	class SectionInputRentCE extends CustomElement {
+
+		constructor() {
+		super();
+		this.thatDoc = thatDoc;
+		this.thisDoc = thisDoc;
+		this.extend();
+		}
+
+		
+		extendView(that) {
+
+		}
+
+		extendCtrl(that) {
+			//local
+			this.ctrl.run = function() {
+				// console.log('Xhere');
+				// let el = document.createElement('input-ce');
+				// el.setAttribute('slot', 'newel');
+				// el.setAttribute('placeholder', 'testPlace');
+				// that.appendChild(el);
+				// el = document.createElement('input-ce');
+				// el.setAttribute('slot', 'newel');
+				// el.setAttribute('placeholder', 'testPlace');
+				// that.appendChild(el);
+			};
+
+			//global
+
+	
+		}
+
+		extendModel(that) {
+			
+		}
+
+
+	}
+
+	window.customElements.define('section-input-rent-ce', SectionInputRentCE);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>
+
+
+
