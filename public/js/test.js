@@ -87,6 +87,17 @@ Rx.Observable.merge(stockholm, oslo)
 	//.subscribe(x => console.log(x.city + ' har ' + x.temp + ' grader'));
 	.subscribe(x => document.querySelector('#' + x.city).textContent = x.city + ' har ' + x.temp + ' grader');
 
+const panel = document.querySelector("#dragtarget");
+
+Rx.Observable.fromEvent(panel, 'mousedown')
+.concatMap(() => Rx.Observable.fromEvent(document, 'mousemove').takeUntil(Rx.Observable.fromEvent(document, 'mouseup')))
+.subscribe(event => {
+	console.log(event.clientX);
+	// panel.style.left = event.clientX + 'px';
+	// panel.style.top = event.clientY + 'px';
+});
+
+
 // const currentWeather$ = Rx.Observable.fromPromise(fetchData());
 
 // const twoSecond$ = Rx.Observable.interval(2000);
