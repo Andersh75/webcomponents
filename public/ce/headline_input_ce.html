@@ -100,6 +100,20 @@
 				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
 				eventDispatcher(input.eventTarget, 'placeholderfromparent', that);
 				eventDispatcher(input.eventTarget, 'valuefromparent', that);
+
+				myRxmq.channel('posts').observe('post.add')
+				//.take(2)
+				.subscribe(
+					// following methods are same as for Rx.Observable.subscribe
+					(data) => {
+						console.log(data);
+						that.value = data;
+						eventDispatcher(input.eventTarget, 'valuefromparent', that);
+					},
+					(error) => {
+						// handle error ...
+					}
+				);
 			};
 			
 			//child
