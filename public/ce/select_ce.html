@@ -89,7 +89,15 @@
 			//local - from model
 			this.ctrl.updatedSelectedIndex = function() {
 				that.view.updatedSelectedIndex();
-				eventDispatcher(parent.eventTarget, 'updatedselectedindexfromchild', that); 
+				console.log('the parent');
+				console.log(parent);
+				if (parent !== undefined) {
+					console.log('I have a parent');
+					eventDispatcher(parent.eventTarget, 'updatedselectedindexfromchild', that); 
+				} else {
+					console.log('No parent...');
+				}
+				
 			};
 
 
