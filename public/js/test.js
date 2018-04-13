@@ -189,12 +189,12 @@ Rx.Observable.fromEvent(panel, 'mousedown')
 //         }
 // 	);
 
-let clearbutton = document.querySelector('#clearbutton');
-let click = Rx.Observable.fromEvent(clearbutton, 'click');
+// let clearbutton = document.querySelector('#clearbutton');
+// let click = Rx.Observable.fromEvent(clearbutton, 'click');
 
-// let intervalFromClick = click.switchMap((ev) => Rx.Observable.interval(1000));
+// // let intervalFromClick = click.switchMap((ev) => Rx.Observable.interval(1000));
 				
-click.subscribe(myRxmq.channel('posts').subject('hej'));
+// click.subscribe(myRxmq.channel('clearbutton1').subject('click'));
 
 // intervalFromClick
 // .subscribe(console.log);

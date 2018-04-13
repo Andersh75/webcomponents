@@ -91,6 +91,7 @@
 		//extends this.ctrl in CustomElement
 		extendCtrl(that) {
 
+			//local
 			this.ctrl.run = function() {
 				that.title = that.title;
 				that.value = that.value;
@@ -101,70 +102,50 @@
 				eventDispatcher(input.eventTarget, 'placeholderfromparent', that);
 				eventDispatcher(input.eventTarget, 'valuefromparent', that);
 
-				let localSubject = new Rx.Subject();
-
-				// myRxmq.channel(that.rc).observe(that.rs)
-				// // .subscribe(
-				// // 	// following methods are same as for Rx.Observable.subscribe
-				// // 	(data) => {
-				// // 		//console.log(data);
-				// // 		that.value = data;
-				// // 		eventDispatcher(input.eventTarget, 'valuefromparent', that);
-				// // 	},
-				// // 	(error) => {
-				// // 		// handle error ...
-				// // 	}
-				// // );
-				// // .subscribe(localSubject);
-
-				// // localSubject
-				// .switchMap((ev) => Rx.Observable.interval(1000))
-				// .subscribe(
-				// 	// following methods are same as for Rx.Observable.subscribe
-				// 	(data) => {
-				// 		//console.log(data);
-				// 		that.value = data;
-				// 		eventDispatcher(input.eventTarget, 'valuefromparent', that);
-				// 	},
-				// 	(error) => {
-				// 		// handle error ...
-				// 	}
-				// );
-
-				
-
-
-
+				Rx.Observable.fromEvent(that.shadowRoot.querySelector('#input'), 'keyup')
+				.subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
 			};
-			this.ctrl.stream = function(e) {
-				console.log('STREAM');
-				console.log(e);
-				console.log(e.detail[0]);
-				console.log(e.detail[1]);
-				let headline = that.shadowRoot.querySelector('headline-ce');
-				let input = that.shadowRoot.querySelector('input-ce');
-				myRxmq.channel(e.detail[0]).observe(e.detail[1])
-				// .subscribe(
-				// 	// following methods are same as for Rx.Observable.subscribe
-				// 	(data) => {
-				// 		//console.log(data);
-				// 		that.value = data;
-				// 		eventDispatcher(input.eventTarget, 'valuefromparent', that);
-				// 	},
-				// 	(error) => {
-				// 		// handle error ...
-				// 	}
-				// );
-				// .subscribe(localSubject);
 
-				// localSubject
+			//global
+			this.ctrl.updateheadline$ = function(e) {
+				myRxmq.channel(e.detail[0]).observe(e.detail[1])
+				.switchMap((ev) => Rx.Observable.interval(1000))
+				.subscribe(
+					(data) => {
+						that.title = data;
+						let headline = that.shadowRoot.querySelector('#headline');
+						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+					},
+					(error) => {
+						// handle error ...
+					}
+				);
+			}
+
+			this.ctrl.updateheadline2$ = function(e) {
+				myRxmq.channel(e.detail[0]).observe(e.detail[1])
 				.switchMap((ev) => Rx.Observable.interval(1000))
 				.map(x => x*2)
 				.subscribe(
-					// following methods are same as for Rx.Observable.subscribe
 					(data) => {
-						//console.log(data);
 						that.title = data;
+						let headline = that.shadowRoot.querySelector('#headline');
+						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+					},
+					(error) => {
+						// handle error ...
+					}
+				);
+			}
+
+			this.ctrl.updateheadline3$ = function(e) {
+				myRxmq.channel(e.detail[0]).observe(e.detail[1])
+				// .do(x => console.log(x))
+				.map(ev => ev.path[0].value)
+				.subscribe(
+					(data) => {
+						that.title = data;
+						let headline = that.shadowRoot.querySelector('#headline');
 						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
 					},
 					(error) => {

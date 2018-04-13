@@ -63,12 +63,12 @@
 
 <section-input-ce listener="cleargeneralinputsection@clearsection">
     <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton"></button-ce>
+    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-ce>
     
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Kalkylperiod" class="h4" slot="headline"></headline-ce>
         <headline-select-ce title="startår" selectedindex="0" slot="anyform" data-target="startyear"></headline-select-ce>
-        <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sr="posts:hej@stream"></headline-input-ce>     
+        <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sb="textinput1:keyup" sr="textinput1:keyup@updateheadline3$"></headline-input-ce>     
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
@@ -83,7 +83,7 @@
 
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
-        <headline-input-ce title="Antal kWh/kvm/år" value="" placeholder="Antal brukare..." slot="anyform" sr="posts:hej@stream"></headline-input-ce> 
+        <headline-input-ce title="Antal kWh/kvm/år" value="" placeholder="Antal brukare..." slot="anyform" sr="clearbutton2:click@updateheadline2$"></headline-input-ce> 
         <headline-select-ce title="Kostnad per kWh" selectedindex="0" slot="anyform"></headline-select-ce>
     </anykind-container-ce>
 
@@ -98,7 +98,7 @@
 
 <section-input-ce listener="clearowninputsection@clearsection">
     <headline-ce title="Äga" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton"></button-ce>
+    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>
     
     <anykind-container-ce slot="anycontainer">
             <headline-ce title="Initial ytstorlek" class="h4" slot="headline"></headline-ce>

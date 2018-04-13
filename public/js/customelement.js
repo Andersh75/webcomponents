@@ -26,13 +26,7 @@ class CustomElement extends HTMLElement {
 		return this.setAttribute('listener', newListener);
 	}
 
-	// get rc() {
-	// 	return this.getAttribute('rc');
-	// }
 
-	// set rc(newRc) {
-	// 	return this.setAttribute('rc', newRc);
-	// }
 
 	get sr() {
 		return this.getAttribute('sr');
@@ -41,6 +35,32 @@ class CustomElement extends HTMLElement {
 	set sr(newSr) {
 		return this.setAttribute('sr', newSr);
 	}
+
+	get sb() {
+		return this.getAttribute('sb');
+	}
+
+	set sb(newSb) {
+		return this.setAttribute('sb', newSb);
+	}
+
+	get sbChannel() {
+		return this._sbChannel;
+	}
+
+	set sbChannel(newSbChannel) {
+		this._sbChannel = newSbChannel;
+	}
+
+	get sbSubject() {
+		return this._sbSubject;
+	}
+
+	set sbSubject(newSbSubject) {
+		this._sbSubject = newSbSubject;
+	}
+
+
 	//-----------
 	
 	extend() {
@@ -113,6 +133,7 @@ class CustomElement extends HTMLElement {
 		details.changedAttribute.oldVal = oldVal;
 		details.changedAttribute.newVal = newVal;
 		eventDispatcher(this, this.dispatch, details);
+		
 	}
 
 	//
@@ -124,7 +145,7 @@ class CustomElement extends HTMLElement {
 
 
 		setComponentObserver.call(this, this.model); //this.model is an object with dispatch and eval functions
-
+		setComponentObservable.call(this);
 		//Activates components specific run functions upon connected callback
 		this.ctrl.run();
 	}  
@@ -179,8 +200,22 @@ function setComponentObserver(model) {
 		let local = remoteAndLocal.slice(1)[0];
 
 		this.eventTarget.dispatchEvent(new CustomEvent(local, {detail: [channel, subject]}));
-	}
-	
+	}	
+}
+
+function setComponentObservable() {
+	let sb = this.sb; //string from attribute listener
+	console.log('here...');
+
+	if (h.boolean.isString(sb)) {
+		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sb); //makes an array of [remote, local...] listener
+		
+		this.sbChannel = channelAndSubject[0];
+		this.sbSubject = channelAndSubject[1];
+		console.log('this.sbChannel');
+		console.log(this.sbChannel);
+		
+	}	
 }
 
 
