@@ -64,22 +64,6 @@
 			return this.setAttribute('value', newValue);
 		}
 
-		get rc() {
-			return this.getAttribute('rc');
-		}
-
-		set rc(newRc) {
-			return this.setAttribute('rc', newRc);
-		}
-
-		get rs() {
-			return this.getAttribute('rs');
-		}
-
-		set rs(newRs) {
-			return this.setAttribute('rs', newRs);
-		}
-
 		get placeholder() {
 			return this.getAttribute('placeholder');
 		}
@@ -100,11 +84,11 @@
 			return [ 'title', 'value', 'placeholder' ];
 		}
 
-		
+		//extends this.view in CustomElement
 		extendView(that) {
 
 		}
-
+		//extends this.ctrl in CustomElement
 		extendCtrl(that) {
 
 			this.ctrl.run = function() {
@@ -117,20 +101,77 @@
 				eventDispatcher(input.eventTarget, 'placeholderfromparent', that);
 				eventDispatcher(input.eventTarget, 'valuefromparent', that);
 
-				myRxmq.channel(that.rc).observe(that.rs)
-				//.take(2)
+				let localSubject = new Rx.Subject();
+
+				// myRxmq.channel(that.rc).observe(that.rs)
+				// // .subscribe(
+				// // 	// following methods are same as for Rx.Observable.subscribe
+				// // 	(data) => {
+				// // 		//console.log(data);
+				// // 		that.value = data;
+				// // 		eventDispatcher(input.eventTarget, 'valuefromparent', that);
+				// // 	},
+				// // 	(error) => {
+				// // 		// handle error ...
+				// // 	}
+				// // );
+				// // .subscribe(localSubject);
+
+				// // localSubject
+				// .switchMap((ev) => Rx.Observable.interval(1000))
+				// .subscribe(
+				// 	// following methods are same as for Rx.Observable.subscribe
+				// 	(data) => {
+				// 		//console.log(data);
+				// 		that.value = data;
+				// 		eventDispatcher(input.eventTarget, 'valuefromparent', that);
+				// 	},
+				// 	(error) => {
+				// 		// handle error ...
+				// 	}
+				// );
+
+				
+
+
+
+			};
+			this.ctrl.stream = function(e) {
+				console.log('STREAM');
+				console.log(e);
+				console.log(e.detail[0]);
+				console.log(e.detail[1]);
+				let headline = that.shadowRoot.querySelector('headline-ce');
+				let input = that.shadowRoot.querySelector('input-ce');
+				myRxmq.channel(e.detail[0]).observe(e.detail[1])
+				// .subscribe(
+				// 	// following methods are same as for Rx.Observable.subscribe
+				// 	(data) => {
+				// 		//console.log(data);
+				// 		that.value = data;
+				// 		eventDispatcher(input.eventTarget, 'valuefromparent', that);
+				// 	},
+				// 	(error) => {
+				// 		// handle error ...
+				// 	}
+				// );
+				// .subscribe(localSubject);
+
+				// localSubject
+				.switchMap((ev) => Rx.Observable.interval(1000))
+				.map(x => x*2)
 				.subscribe(
 					// following methods are same as for Rx.Observable.subscribe
 					(data) => {
 						//console.log(data);
-						that.value = data;
-						eventDispatcher(input.eventTarget, 'valuefromparent', that);
+						that.title = data;
+						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
 					},
 					(error) => {
 						// handle error ...
 					}
 				);
-			};
+			}
 			
 			//child
 			this.ctrl.updatedvaluefromchild = function(e) {
@@ -180,7 +221,7 @@
 
 	
 		}
-
+		//extends this.model from CustomElement
 		extendModel(that) {
 			
 		}

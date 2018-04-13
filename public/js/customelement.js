@@ -1,12 +1,14 @@
 class CustomElement extends HTMLElement {
 
 	constructor() {
-		super();
+		super(); 
 		this.attachShadow({ mode: 'open' });
-		this.model = Model();
-		this.view = View(this.model);
-		this.ctrl = Ctrl(this.model, this.view); 
+		this.model = Model(); //Model() returns an object with own this.
+		this.view = View(this.model); //View() returns an object with own this.
+		this.ctrl = Ctrl(this.model, this.view); //Ctrl() returns an object with own this.
 	}
+
+	//getters and setters for communication attributes -----
 
 	get dispatch() {
 		return this.getAttribute('dispatch');
@@ -24,10 +26,22 @@ class CustomElement extends HTMLElement {
 		return this.setAttribute('listener', newListener);
 	}
 
-	connectedCallbackFn() {
-		console.log('here');
-		setConnectedCallback.call(this);  
+	// get rc() {
+	// 	return this.getAttribute('rc');
+	// }
+
+	// set rc(newRc) {
+	// 	return this.setAttribute('rc', newRc);
+	// }
+
+	get sr() {
+		return this.getAttribute('sr');
 	}
+
+	set sr(newSr) {
+		return this.setAttribute('sr', newSr);
+	}
+	//-----------
 	
 	extend() {
 		this.eventTarget = this.model.eval("eventTarget");
@@ -36,9 +50,14 @@ class CustomElement extends HTMLElement {
 		this.extendModel(this);
 		this.extendCtrl(this);
 		this.extendView(this);
+
+
 		Object.keys(this.ctrl).slice(1).map(key => {
 			this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
 		});
+
+
+
 	   
 
 		if (this.shadowRoot.querySelector('select') !== null) {
@@ -83,97 +102,99 @@ class CustomElement extends HTMLElement {
 
 
 		}
-		
-		
 
-		//this.connectedCallback();
 		
 	}
 
-
-	
 	attributeChangedCallback(name, oldVal, newVal) {
 		let details = {};
-		details.changedAttribute = {}
+		details.changedAttribute = {};
 		details.changedAttribute.name = name;
 		details.changedAttribute.oldVal = oldVal;
 		details.changedAttribute.newVal = newVal;
 		eventDispatcher(this, this.dispatch, details);
 	}
 
+	//
 	connectedCallback() {
-		this.connectedCallbackFn();
+		//makes component fire local events when remote event fires. Remote event is attached in each local event.
+		setComponentListener.call(this, this.model); //this.model is an object with dispatch and eval functions
+
+		setComponentDispatcher(this.dispatch); //this.dispatch is name of remote event that get published from component
+
+
+		setComponentObserver.call(this, this.model); //this.model is an object with dispatch and eval functions
+
+		//Activates components specific run functions upon connected callback
+		this.ctrl.run();
 	}  
 }
 
-function eventDispatcher(element, eventName, details) {
-	element.dispatchEvent(new CustomEvent(eventName, {
-		bubbles: true,
-		cancelable: true,
-		composed: true,
-		detail: details
-	}));
-}
-
+/**
+ * setComponentListener
+ * @param {*} model is an object with dispatch and eval functions
+ */
 function setComponentListener(model) {
-	let listener = this.listener;
+	let listener = this.listener; //string from attribute listener
 
 	if (h.boolean.isString(listener)) {
-		let listeners = h.str.stringToArrayUsingSplitter(' ', listener);
+		let listeners = h.str.stringToArrayUsingSplitter(' ', listener); //makes an array of all remote@local listeners from the string
 		listeners.forEach(listener => {
-			let listeners = h.str.stringToArrayUsingSplitter('@', listener);
+			let listeners = h.str.stringToArrayUsingSplitter('@', listener); //makes an array of [remote, local...] listener
 			let remoteEvent = listeners[0];
-			let localEvents = listeners.slice(1);
+			let localEvents = listeners.slice(1); //array of local events
 
 			localEvents.forEach(localEvent => {
-				events.subscribe(remoteEvent, function(e) {
-				model.dispatch(localEvent, e);	
+				events.subscribe(remoteEvent, function(e) { //tells events name of remoteEvent to subscribe to.
+				model.dispatch(localEvent, e);	//fires local event with attached remote event each time remote event fires
 				});
 			});
 		});
+	}	
+}
+/**
+ * setComponentDispatcher sets eventlistener in document with eventName (makes listender global)
+ * @param {string} eventName event name to communicate with other components
+ */
+function setComponentDispatcher(eventName) {
+	/**
+	 * publishEvent publishes to pub/sub the event
+	 * @param {*} e the event
+	 */
+	function publishEvent(e) {
+		return events.publish(eventName, e);
+	}
+
+	document.addEventListener(eventName, publishEvent);
+}
+
+function setComponentObserver(model) {
+	let sr = this.sr; //string from attribute listener
+
+	if (h.boolean.isString(sr)) {
+		let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', sr); //makes an array of [remote, local...] listener
+		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', remoteAndLocal[0]); //makes an array of [remote, local...] listener
+		let channel = channelAndSubject[0];
+		let subject = channelAndSubject[1];
+		let local = remoteAndLocal.slice(1)[0];
+
+		this.eventTarget.dispatchEvent(new CustomEvent(local, {detail: [channel, subject]}));
 	}
 	
 }
 
-function setComponentDispatcher() {
-	eventPublisher(this.dispatch);
-}
 
-function eventPublisherMaker() {
-	let eventNames = [];
-
-	return function eventPublisher(eventName) {
-
-		if (eventNames.indexOf(eventName) == -1) {
-			eventNames.push(eventName);
-
-			function publishEvent(e) {
-				return events.publish(eventName, e);
-			}
-
-			document.addEventListener(eventName, publishEvent);
-		}
-	};
-}
-
-let eventPublisher = eventPublisherMaker();
-
-
-function setConnectedCallback() {
-	setComponentListener.call(this, this.model);
-	setComponentDispatcher.call(this);
-	console.log(this.eventTarget);
-	this.eventTarget.dispatchEvent(new CustomEvent('run'));
-}
-
-
+/**
+ * Model has responsibility for calculations etc
+ */
 function Model() {
 	let that = this;
 	
 	const eventTarget = document.createElement('event-target');
 
 	return {
-		dispatch: function(eventName, e) {
+		//dispatches custom event with eventName witch contains remoteEvent
+		dispatch: function(eventName, e) { //eventName is name of localEvent. e is remoteEvent
 			return eventTarget.dispatchEvent(new CustomEvent(eventName, {detail: e}));
 		},
 		eval: function(name) {
@@ -202,7 +223,16 @@ function Ctrl(model, view) {
 	};
 }
 
+function eventDispatcher(element, eventName, details) {
+	element.dispatchEvent(new CustomEvent(eventName, {
+		bubbles: true,
+		cancelable: true,
+		composed: true,
+		detail: details
+	}));
+}
 
+//Pub/sub communication station with subscribers and publishers
 var events = (function () {
 	var topics = {};
 	var hOP = topics.hasOwnProperty;
@@ -239,3 +269,12 @@ var events = (function () {
 		}
 	};
 })();
+
+
+
+
+
+
+
+
+

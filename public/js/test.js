@@ -189,27 +189,31 @@ Rx.Observable.fromEvent(panel, 'mousedown')
 //         }
 // 	);
 
+let clearbutton = document.querySelector('#clearbutton');
+let click = Rx.Observable.fromEvent(clearbutton, 'click');
+
+// let intervalFromClick = click.switchMap((ev) => Rx.Observable.interval(1000));
+				
+click.subscribe(myRxmq.channel('posts').subject('hej'));
+
+// intervalFromClick
+// .subscribe(console.log);
+
+// myRxmq.channel('posts').observe('hej')
+// //.take(2)
+// .subscribe(
+// 	// following methods are same as for Rx.Observable.subscribe
+// 	(data) => {
+// 		console.log(data);
+// 		// that.value = data;
+// 		// eventDispatcher(input.eventTarget, 'valuefromparent', that);
+// 	},
+// 	(error) => {
+// 		// handle error ...
+// 	}
+// );
 
 
-
-
-
-myRxmq.channel('posts').observe('hej')
-//.take(2)
-.subscribe(
-	// following methods are same as for Rx.Observable.subscribe
-	(data) => {
-		console.log(data);
-		// that.value = data;
-		// eventDispatcher(input.eventTarget, 'valuefromparent', that);
-	},
-	(error) => {
-		// handle error ...
-	}
-);
-
-Rx.Observable.interval(1000)
-	.subscribe(myRxmq.channel('posts').subject('hej'));
 
 
 // myRxmq.channel('posts').subject('post.add').next({
