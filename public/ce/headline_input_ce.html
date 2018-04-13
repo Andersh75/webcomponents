@@ -64,6 +64,22 @@
 			return this.setAttribute('value', newValue);
 		}
 
+		get rc() {
+			return this.getAttribute('rc');
+		}
+
+		set rc(newRc) {
+			return this.setAttribute('rc', newRc);
+		}
+
+		get rs() {
+			return this.getAttribute('rs');
+		}
+
+		set rs(newRs) {
+			return this.setAttribute('rs', newRs);
+		}
+
 		get placeholder() {
 			return this.getAttribute('placeholder');
 		}
@@ -101,12 +117,12 @@
 				eventDispatcher(input.eventTarget, 'placeholderfromparent', that);
 				eventDispatcher(input.eventTarget, 'valuefromparent', that);
 
-				myRxmq.channel('posts').observe('post.add')
+				myRxmq.channel(that.rc).observe(that.rs)
 				//.take(2)
 				.subscribe(
 					// following methods are same as for Rx.Observable.subscribe
 					(data) => {
-						console.log(data);
+						//console.log(data);
 						that.value = data;
 						eventDispatcher(input.eventTarget, 'valuefromparent', that);
 					},

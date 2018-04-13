@@ -190,8 +190,27 @@ Rx.Observable.fromEvent(panel, 'mousedown')
 // 	);
 
 
+
+
+
+
+myRxmq.channel('posts').observe('hej')
+//.take(2)
+.subscribe(
+	// following methods are same as for Rx.Observable.subscribe
+	(data) => {
+		console.log(data);
+		// that.value = data;
+		// eventDispatcher(input.eventTarget, 'valuefromparent', that);
+	},
+	(error) => {
+		// handle error ...
+	}
+);
+
 Rx.Observable.interval(1000)
-	.subscribe(myRxmq.channel('posts').subject('post.add'));
+	.subscribe(myRxmq.channel('posts').subject('hej'));
+
 
 // myRxmq.channel('posts').subject('post.add').next({
 // 	title: 'Woo-hoo, first post!',

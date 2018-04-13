@@ -1,33 +1,18 @@
-
-class EndlessReplaySubject extends Rx.ReplaySubject {
-
-	complete() {}
-	error(error) {
-	  this.error = error;
-	  this.observers.forEach(os => {
-		os.error(error);
-		os.isStopped = false;
-	  });
-	}
-  }
-  
-  class EndlessSubject extends Rx.Subject {
+class EndlessSubject extends Rx.Subject {
   
 	complete() {}
 	error(error) {
-	  this.thrownError = error;
-	  this.observers.forEach(os => {
+		this.thrownError = error;
+		this.observers.forEach(os => {
 		os.destination._error.call(os.destination._context, error);
-	  });
+		});
 	}
-  }
+}
   
   class Channel {
   
 	constructor() {
 	  this.subjects = [];
-	  this.channelBus = new EndlessReplaySubject();
-	  this.channelStream = this.channelBus.publish().refCount();
 	}
   
 	subject(name, {Subject = EndlessSubject} = {}) {
@@ -36,7 +21,6 @@ class EndlessReplaySubject extends Rx.ReplaySubject {
 		s = new Subject();
 		s.name = name;
 		this.subjects.push(s);
-		this.channelBus.next(s);
 	  }
 	  return s;
 	}
