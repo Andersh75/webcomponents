@@ -2,10 +2,10 @@ class CustomElement extends HTMLElement {
 
 	constructor() {
 		super(); 
-		this.attachShadow({ mode: 'open' });
-		this.model = Model(); //Model() returns an object with own this.
-		this.view = View(this.model); //View() returns an object with own this.
-		this.ctrl = Ctrl(this.model, this.view); //Ctrl() returns an object with own this.
+		this.attachShadow({ mode: 'open' }); //activates shadow dom.
+		this.model = Model(); //Model() returns an object with own this and with dispatch and eval methods.
+		this.view = View(this.model); //View() returns an object with own this and with eval method.
+		this.ctrl = Ctrl(this.model, this.view); //Ctrl() returns an object with own this and with eval method.
 	}
 
 	//getters and setters for communication attributes -----
@@ -25,8 +25,6 @@ class CustomElement extends HTMLElement {
 	set listener(newListener) {
 		return this.setAttribute('listener', newListener);
 	}
-
-
 
 	get sr() {
 		return this.getAttribute('sr');
@@ -63,49 +61,72 @@ class CustomElement extends HTMLElement {
 
 	//-----------
 	
+	//will be run from each custom component constructor.
 	extend() {
-		this.eventTarget = this.model.eval("eventTarget");
-		this.template = this.thisDoc.querySelector( 'template' ).content;
-		this.shadowRoot.appendChild(this.template.cloneNode(true));
-		this.extendModel(this);
-		this.extendCtrl(this);
-		this.extendView(this);
+		this.eventTarget = this.model.eval("eventTarget"); //creates a pointer to the const eventTarget, a DOM element that is outside this model but within its scope.
+		this.template = this.thisDoc.querySelector( 'template' ).content; //creates a pointer at the content of the template of the custom component.
+		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
+		this.extendModel(this); //adds new methods to this.model
+		this.extendCtrl(this); //adds new methods to this.ctrl
+		this.extendView(this); //adds new methods to this.view
 
-
-		Object.keys(this.ctrl).slice(1).map(key => {
+		//gets keys from this.ctrl and puts them in an array. Removes first element, the eval method.
+		//for every key it maps an eventlistener on the eventTarget which listens to the event with the same name as the key and runs its method.
+		Object.keys(this.ctrl).slice(1).map(key => { 
 			this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
 		});
 
 
+		// Event bubbling and capturing are two ways of event propagation in the HTML DOM API, when an event occurs in an element inside another element, and both elements have registered a handle for that event. The event propagation mode determines in which order the elements receive the event.
 
+		// With bubbling, the event is first captured and handled by the innermost element and then propagated to outer elements.
+		
+		// With capturing, the event is first captured by the outermost element and propagated to the inner elements.
+
+		// Almost all events bubble.
+		// The key word in this phrase is “almost”.
+
+		// For instance, a focus event does not bubble. There are other examples too, we’ll meet them. But still it’s an exception, rather than a rule, most events do bubble.
 	   
 
-		if (this.shadowRoot.querySelector('select') !== null) {
+		//Adds proper eventlistener to the user-input elements-----
+
+		//select
+		if (this.shadowRoot.querySelector('select') !== null) { 
 			this.shadowRoot.querySelector('select').addEventListener('change', e => {
-			e.stopPropagation;
-			eventDispatcher(this.eventTarget, 'useraction', e);
+			e.stopPropagation; //prevents from bubbling and capturing
+			e.preventDefault; //prevent browser specific default actions for elements.
+			eventDispatcher(this.eventTarget, 'useraction', e); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
 			});
+
+			//button
 		} else if (this.shadowRoot.querySelector('button') !== null) {
 			this.shadowRoot.querySelector('button').addEventListener('click', e => {
 				e.stopPropagation;
-				eventDispatcher(this.eventTarget, 'useraction', e);
+				e.preventDefault;
+				eventDispatcher(this.eventTarget, 'useraction', e); 
 			});
+
+			//input
 		} else if (this.shadowRoot.querySelector('input') !== null) {
 			this.shadowRoot.querySelector('input').addEventListener('keydown', e => {
 				e.stopPropagation;
+				e.preventDefault;
 				if (e.keyCode === 32 || e.keyCode === 13) {
 					eventDispatcher(this.eventTarget, 'useraction', e);
 				}
 			});
 			this.shadowRoot.querySelector('input').addEventListener('blur', e => {
 				e.stopPropagation;
+				e.preventDefault;
 				eventDispatcher(this.eventTarget, 'useraction', e);
 			});
 		} else {
-
-
-
+			
+			//keydown and click to components without own user-iput elements
 			this.addEventListener('keydown', e => {
+				e.stopPropagation;
+				e.preventDefault;
 				let el = e.composedPath()[0];
 				
 				if (e.keyCode === 32 || e.keyCode === 13) {
@@ -116,6 +137,7 @@ class CustomElement extends HTMLElement {
 
 			this.addEventListener('click', e => {
 				e.stopPropagation;
+				e.preventDefault;
 				eventDispatcher(this.eventTarget, 'useraction', e);
 				
 			});
@@ -126,14 +148,18 @@ class CustomElement extends HTMLElement {
 		
 	}
 
+
+
+	//each time an observed attribute changes it will run this function. Name, old value, new value of attribute will be passed.
+	//Returns an object called details
+	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
 		let details = {};
 		details.changedAttribute = {};
 		details.changedAttribute.name = name;
 		details.changedAttribute.oldVal = oldVal;
 		details.changedAttribute.newVal = newVal;
-		eventDispatcher(this, this.dispatch, details);
-		
+		eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
 	}
 
 	//
@@ -149,10 +175,11 @@ class CustomElement extends HTMLElement {
 		//Activates components specific run functions upon connected callback
 		this.ctrl.run();
 	}  
-}
+} //Class ends here!
+
 
 /**
- * setComponentListener
+ * setComponentListener set subscribers to Pub/sub
  * @param {*} model is an object with dispatch and eval functions
  */
 function setComponentListener(model) {
@@ -166,7 +193,7 @@ function setComponentListener(model) {
 			let localEvents = listeners.slice(1); //array of local events
 
 			localEvents.forEach(localEvent => {
-				events.subscribe(remoteEvent, function(e) { //tells events name of remoteEvent to subscribe to.
+				events.subscribe(remoteEvent, function(e) { //tells events(pub/sub) name of remoteEvent to subscribe to.
 				model.dispatch(localEvent, e);	//fires local event with attached remote event each time remote event fires
 				});
 			});
@@ -183,10 +210,10 @@ function setComponentDispatcher(eventName) {
 	 * @param {*} e the event
 	 */
 	function publishEvent(e) {
-		return events.publish(eventName, e);
+		return events.publish(eventName, e); //events(pub/sub) publishes event with name of this.dispatch.
 	}
 
-	document.addEventListener(eventName, publishEvent);
+	document.addEventListener(eventName, publishEvent); 
 }
 
 function setComponentObserver(model) {
