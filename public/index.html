@@ -47,7 +47,7 @@
   
 
   <link rel="import" href="ce/input_ce.html">
-  <link rel="import" href="ce/headline_ce.html">
+  <link rel="import" href="ce/low_level/headline_ce.html">
   <link rel="import" href="ce/button_ce.html">
   <link rel="import" href="ce/select_ce.html">
   <link rel="import" href="ce/headline_input_ce.html">
@@ -67,24 +67,24 @@
     
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Kalkylperiod" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Startår" value="" selectedindex="0" slot="anyform" datatarget="startyear"></headline-select-ce>
+        <headline-select-ce title="Startår" selectedindex="3" slot="anyform" datatarget="startyear"></headline-select-ce>
         <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sb="textinput1:keyup" sr="textinput1:keyup@updateheadline3$"></headline-input-ce>     
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Inflation" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Inflation" value="" selectedindex="0" slot="anyform" datatarget="inflation"></headline-select-ce>   
+        <headline-select-ce title="Inflation" selectedindex="0" slot="anyform" datatarget="inflation"></headline-select-ce>   
     </anykind-container-ce> 
 
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Kalkylränta" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Kalkylränta" value="" selectedindex="0" slot="anyform" datatarget="discountrate"></headline-select-ce>   
+        <headline-select-ce title="Kalkylränta" selectedindex="0" slot="anyform" datatarget="discountrate"></headline-select-ce>   
     </anykind-container-ce> 
 
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
         <headline-input-ce title="Antal kWh/kvm/år" value="" placeholder="Antal brukare..." slot="anyform" sr="clearbutton2:click@updateheadline2$"></headline-input-ce> 
-        <headline-select-ce title="Kostnad per kWh" value="" selectedindex="0" slot="anyform" datatarget="heatcost"></headline-select-ce>
+        <headline-select-ce title="Kostnad per kWh" selectedindex="0" slot="anyform" datatarget="heatcost"></headline-select-ce>
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
@@ -118,7 +118,7 @@
     <anykind-container-ce slot="anycontainer">
             <headline-ce title="Reparationer och löpande underhåll" class="h4" slot="headline"></headline-ce>
             <headline-input-ce title="Reparationer och löpande underhål" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-            <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" value="" selectedIndex="0" slot="anyform" datatarget="repaircost"></headline-select-ce>
+            <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" selectedIndex="0" slot="anyform" datatarget="repaircost"></headline-select-ce>
     </anykind-container-ce>
     
 </section-input-ce>
@@ -139,7 +139,8 @@
     <p id="oslo"></p>
     <p id="stockholm"></p>
 </div>
-    
+
+<select-ce selectedindex></select-ce>
     
 <!-- 
     <section-input-ce listener="clearrentinputsection@clearsection">

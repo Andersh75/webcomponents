@@ -1,3 +1,8 @@
+<!-- 
+	specific:
+	required attributes: headline-ce: title, select-ce: selectedindex
+ -->
+
 <template>
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -30,8 +35,8 @@
 
 			</style>
 
-			<headline-ce id="headline" class="h5"></headline-ce>
-			<select-ce id="select" selectedindex=""></select-ce>
+			<headline-ce id="headline" title class="h5"></headline-ce>
+			<select-ce id="select" selectedindex></select-ce>
 </template>
 
 
@@ -45,44 +50,38 @@
 	class HeadlineSelectCE extends CustomElement {
 
 		constructor() {
-		super();
-		//this.thatDoc = thatDoc;
-		this.thisDoc = thisDoc;
-		this.extend();
+			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
 		}
 			
 		static get observedAttributes() {
-			return [ 'title', 'value', 'placeholder', 'datatarget' ];
-		}
-		
-		extendView(that) {
-
+			return [ 'title', 'placeholder', 'datatarget', 'selectedindex' ];
 		}
 
 		extendCtrl(that) {
+			let parent;
+
+			//init
 			this.ctrl.run = function() {
-				that.title = that.title;
-				that.selectedindex = that.selectedindex;
-				that.datatarget = that.datatarget;
-				that.model.updateSelectedIndex(that.selectedindex);
+				let headline = that.shadowRoot.querySelector('#headline');
+				let select = that.shadowRoot.querySelector('#select');
+				eventDispatcher(headline.eventTarget, 'titleattributefromparent', that);
+				eventDispatcher(select.eventTarget, 'selectedindexattributefromparent', that);
+
 			};
 
-			//child
-			this.ctrl.updatedSelectedIndexFromChild = function(e) {
-				console.log('UPDATED SELECT SELECTEDINDEX FROM CHILD');
-				that.selectedindex = e.detail.selectedindex;
+			//initiated by child
+			this.ctrl.updatedSelectedIndexAttributeFromChild = function(e) {
+				let child = e.detail;
+				that.selectedindex = child.selectedindex;
 			};
 
-			this.ctrl.updatedtitlefromchild = function(e) {
-				console.log('UPDATED HEADLINE TITLE FROM CHILD');
-				console.log(e.detail);
-				that.title = e.detail.title;
+			this.ctrl.updatedTitleAttributeFromChild = function(e) {
+				let child = e.detail;
+				that.title = child.title;
 			};
-
-
-
-
-
 
 			// this.ctrl.clearedselectfromchild = function(e) {
 			// 	console.log('CLEARED SELECT FROM CHILD');
@@ -90,42 +89,42 @@
 			// };
 
 			//local - from model
-			this.ctrl.updatedSelectedIndex = function() {
-				let headline = that.shadowRoot.querySelector('headline-ce');
-				let select = that.shadowRoot.querySelector('select-ce');
-				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
-				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
-				eventDispatcher(select.eventTarget, 'valuefromparent', that);
-			};
+
 
 
 			//parent
-			this.ctrl.clearfromparent = function(e) {
-				that.selectedindex = "0";
-				let select = that.shadowRoot.querySelector('select-ce');
-				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
-			};
+			// this.ctrl.clearfromparent = function(e) {
+			// 	that.selectedindex = "0";
+			// 	let select = that.shadowRoot.querySelector('select-ce');
+			// 	eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
+			// };
 
 			//global
 		}
+		
+		//View
+		extendView(that) {
 
+		}
+		
+		//Model
 		extendModel(that) {
-			let value = "";
-			let selectedindex = "0";
+			// let value = "";
+			// let selectedindex = "0";
 
-			this.model.updateSelectedIndex = function(newIndex) {
-				window[that.datatarget] = "newIndex";
-				selectedindex = newIndex;
-				eventDispatcher(that.eventTarget, 'updatedselectedindex');
-			};
+			// this.model.updateSelectedIndex = function(newIndex) {
+			// 	window[that.datatarget] = "newIndex";
+			// 	selectedindex = newIndex;
+			// 	eventDispatcher(that.eventTarget, 'updatedselectedindex');
+			// };
 
-			this.model.getSelectedIndex = function() {
-				return selectedindex;
-			};
+			// this.model.getSelectedIndex = function() {
+			// 	return selectedindex;
+			// };
 
-			this.model.getValue = function() {
-				return value;
-			};
+			// this.model.getValue = function() {
+			// 	return value;
+			// };
 		}
 
 

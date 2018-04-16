@@ -1,3 +1,12 @@
+<!-- 
+	Low level component with no children.
+	No slots.
+	Included ce-components: headline-ce, input-ce.
+	Id pattern: same as component.
+	Sections in controller: init, local, global, child, parent.
+
+ -->
+
 <template>
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -10,10 +19,6 @@
 				background-color: beige
 			}
 			
-			
-
-		
-
 			#headline {
 				color: green;
 				grid-column-start: 1;
@@ -30,13 +35,10 @@
   				grid-row-end: 4;
 			}
 
-			
-
 			</style>
-			<!-- <slot id="mainheadline" name="mainheadline"></slot>
-			<slot id="clearbutton" name="clearbutton"></slot> -->
-			<headline-ce id="headline" class="h5"></headline-ce>
-			<input-ce id="input"></input-ce>
+
+			<headline-ce id="headline" title class="h5"></headline-ce>
+			<input-ce id="input" placeholder value></input-ce>
 </template>
 
 
@@ -50,40 +52,54 @@
 	class HeadlineInputCE extends CustomElement {
 
 		constructor() {
-		super();
-		this.thatDoc = thatDoc;
-		this.thisDoc = thisDoc;
-		this.extend();
+			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
 		}
 
-			
 		static get observedAttributes() {
-			return [ 'title', 'value', 'placeholder' ];
+			return [ 'title', 'placeholder', 'value' ];
 		}
 
-		//extends this.view in CustomElement
-		extendView(that) {
-
-		}
 		//extends this.ctrl in CustomElement
 		extendCtrl(that) {
-
-			//local
+			
+			//intit
 			this.ctrl.run = function() {
-				that.title = that.title;
-				that.value = that.value;
-				that.placeholder = that.placeholder;
-				let headline = that.shadowRoot.querySelector('headline-ce');
-				let input = that.shadowRoot.querySelector('input-ce');
-				eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
-				eventDispatcher(input.eventTarget, 'placeholderfromparent', that);
-				eventDispatcher(input.eventTarget, 'valuefromparent', that);
-
-				Rx.Observable.fromEvent(that.shadowRoot.querySelector('#input'), 'keyup')
-				.subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
+				let headline = that.shadowRoot.querySelector('#headline');
+				let input = that.shadowRoot.querySelector('#input');
+				eventDispatcher(headline.eventTarget, 'titleattributefromparent', that); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(input.eventTarget, 'placeholderattributefromparent', that); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(input.eventTarget, 'valueattributefromparent', that); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				
+				// Rx.Observable.fromEvent(that.shadowRoot.querySelector('#input'), 'keyup')
+				// .subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
 			};
 
-			//global  
+			//initiated by child
+			this.ctrl.updatedValueAttributeFromChild = function(e) {
+				let child = e.detail;
+				that.value = child.value;
+			};
+			
+			this.ctrl.updatedPlaceholderAttributeFromChild = function(e) {
+				let child = e.detail;
+				console.log('parent.placeholder');
+				console.log(child.placeholder);
+				that.placeholder = child.placeholder;
+			};
+			
+			this.ctrl.updatedTitleFromChild = function(e) {
+				let child = e.detail;
+				that.title = child.title;
+			};
+
+
+
+			//local
+
+			//global - from stream
 			this.ctrl.updateheadline$ = function(e) {
 				myRxmq.channel(e.detail[0]).observe(e.detail[1])
 				.switchMap((ev) => Rx.Observable.interval(1000))
@@ -98,7 +114,7 @@
 					}
 				);
 			}
-
+			
 			this.ctrl.updateheadline2$ = function(e) {
 				myRxmq.channel(e.detail[0]).observe(e.detail[1])
 				.switchMap((ev) => Rx.Observable.interval(1000))
@@ -114,7 +130,7 @@
 					}
 				);
 			}
-
+			
 			this.ctrl.updateheadline3$ = function(e) {
 				myRxmq.channel(e.detail[0]).observe(e.detail[1])
 				// .do(x => console.log(x))
@@ -131,66 +147,52 @@
 				);
 			}
 			
-			//child
-			this.ctrl.updatedvaluefromchild = function(e) {
-				console.log('UPDATED INPUT VALUE FROM CHILD');
-				that.value = e.detail.value;
-			};
-
-			this.ctrl.updatedplaceholderfromchild = function(e) {
-				console.log('UPDATED INPUT PLACEHOLDER FROM CHILD');
-				that.placeholder = e.detail.placeholder;
-			};
-
-			this.ctrl.updatedtitlefromchild = function(e) {
-				console.log('UPDATED HEADLINE TITLE FROM CHILD');
-				console.log(e.detail);
-				that.title = e.detail.title;
-			};
-
-
-
-
-
+		
 			
 			// this.ctrl.clearedinputfromchild = function(e) {
-			// 	console.log('CLEARED INPUT FROM CHILD');
-			// 	that.value = '';
-			// };
+				// 	console.log('CLEARED INPUT FROM CHILD');
+				// 	that.value = '';
+				// };
+				
+				// this.ctrl.valuefromchild = function(e) {
+					// 	console.log('INPUT VALUE FROM CHILD');
+					// 	//that.value = '';
+					// };
+					
+					
+					
+					//local
+					
+					
+					//parent
+					// this.ctrl.clearfromparent = function(e) {
+					// 	that.value = "";
+					// 	let input = that.shadowRoot.querySelector('input-ce');
+					// 	eventDispatcher(input.eventTarget, 'valuefromparent', that);
+					// };
+					
+					//global
+					
+					
+				}
 
-			// this.ctrl.valuefromchild = function(e) {
-			// 	console.log('INPUT VALUE FROM CHILD');
-			// 	//that.value = '';
-			// };
+				//extends this.view in CustomElement
+				extendView(that) {
+				
+				}
 
-
-
-			//local
-
-
-			//parent
-			this.ctrl.clearfromparent = function(e) {
-				that.value = "";
-				let input = that.shadowRoot.querySelector('input-ce');
-				eventDispatcher(input.eventTarget, 'valuefromparent', that);
-			};
-
-			//global
-
-	
-		}
-		//extends this.model from CustomElement
-		extendModel(that) {
+				//extends this.model from CustomElement
+				extendModel(that) {
+					
+				}
+				
+				
+			}
 			
-		}
-
-
-	}
-
-	window.customElements.define('headline-input-ce', HeadlineInputCE);
-
-})(window, document);
-</script>
+			window.customElements.define('headline-input-ce', HeadlineInputCE);
+			
+		})(window, document);
+		</script>
 
 <script type="text/javascript" src="/js/curry.js"></script>
 <script type="text/javascript" src="/js/helper.js"></script>

@@ -1,3 +1,16 @@
+<!-- 
+	specific:
+	required attributes: select-ce: selectedindex
+	
+	General notes:
+	Preferrably query select by id.
+	Set id on tags.
+	All event names initiated by parent to be run by child should end with "FromParent".
+	First line in functions initiated by parent should always start with: "parent = e.detail;"
+	Model and View announce thru local events. Controller calls function in Model and View directly. If present controller announce to parent and child thru the parents and childrens local events.
+	View is always passive.
+	Always let parent in first line of extend ctrl.
+ -->
 <template>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -5,7 +18,7 @@
 		
 	</style>
 		<div class="input-group mb-3">
-			<select class="custom-select">
+			<select id="select" class="custom-select">
 			  <option disabled selected value="">välj...</option>
 			  <option value="1">One</option>
 			  <option value="2">Two</option>
@@ -36,59 +49,36 @@
 			
 		static get observedAttributes() {
 
-			return [ 'selectedindex', 'value'];
+			return [ 'selectedindex'];
 
 		}
 
-		extendView(that) {
-			this.view.renderSelectedIndex = function(obj) {
-				console.log(that.shadowRoot.querySelector('select').children[obj]);
-				Array.prototype.slice.call(that.shadowRoot.querySelector('select')).forEach(child => {
-					
-					child.removeAttribute('selected');
-					console.log(child);
-				})
-				console.log('obj');
-				console.log(obj);
-				that.shadowRoot.querySelector('select').children[obj].setAttribute('selected', 'selected');
-				console.log(that.shadowRoot.querySelector('select').children[obj]);
-			};
-
-			this.view.updatedSelectedIndex = function() {
-				that.view.renderSelectedIndex.call(that, that.model.getSelectedIndex());
-			};
-		}
-
+		
+		//Controller
 		extendCtrl(that) {
 			let parent;
-
+			
+			//intit
 			this.ctrl.run = function() {
-				console.log('ONRUN1');
-				console.log(that.selectedindex);
-				if (that.selectedindex !== null && that.selectedindex !== undefined && that.selectedindex !== "") {
-					console.log('ONRUN2');
-				console.log(that.selectedindex);
-					that.view.renderSelectedIndex(that.selectedindex);
+				if (!h.boolean.isEmpty(that.selectedindex)) {
+					that.view.updatedSelectedIndex(that.selectedindex);
 				}
 			};
 
-			//local - from user
+			//local events - from user
 			this.ctrl.useraction = function(e) {
-				console.log('theE');
-				console.log(e);
-				console.log(e.detail.composedPath()[0]);
 				that.selectedindex = e.detail.composedPath()[0].selectedIndex;
-				that.model.updateSelectedIndex(that.selectedindex);
+				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
 			};
 
-			//local - from model
+			//local events - from model
 			this.ctrl.updatedSelectedIndex = function() {
-				that.view.updatedSelectedIndex();
-				console.log('the parent');
-				console.log(parent);
+				let selectedIndex = that.model.getSelectedIndex();
+				
+				that.view.updatedSelectedIndex(selectedIndex);
+		
 				if (parent !== undefined) {
-					console.log('I have a parent');
-					eventDispatcher(parent.eventTarget, 'updatedselectedindexfromchild', that); 
+					eventDispatcher(parent.eventTarget, 'updatedselectedindexattributefromchild', that); 
 				} else {
 					console.log('No parent...');
 				}
@@ -104,15 +94,13 @@
 
 
 
-			//parent
-			this.ctrl.selectedindexfromparent = function(e) {
+			//initiated by parent
+			this.ctrl.selectedIndexAttributeFromParent = function(e) {
 				parent = e.detail;
-				console.log('e');
-				console.log(e);
-				that.selectedindex = e.detail.selectedindex;
-				console.log('that.selectedindex');
+				that.selectedindex = parent.selectedindex;
+				console.log('SELECTEDINDEX');
 				console.log(that.selectedindex);
-				that.model.updateSelectedIndex(that.selectedindex);
+				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
 			};
 
 			// this.ctrl.clearfromparent = function(e) {
@@ -135,26 +123,44 @@
 			// };
 
 		}
+		
 
+		//View
+		//always passive
+		extendView(that) {
+			this.view.render = function(obj) {
+				Array.prototype.slice.call(that.shadowRoot.querySelector('#select')).forEach(child => {
+					child.removeAttribute('selected');
+				})
+				console.log(that.shadowRoot.querySelector('#select'));
+				console.log(obj);
+				that.shadowRoot.querySelector('#select').children[obj].setAttribute('selected', 'selected');
+			};
+
+			this.view.updatedSelectedIndex = function(selectedIndex) {
+				
+				that.view.render.call(that, selectedIndex);
+			};
+		}
+		
+		//Model
 		extendModel(that) {
-			let value = "";
-			let selectedindex = "0";
+			let db ={};
+			db.value = "";
+			db.selectedIndex = "0";
 
-			this.model.updateSelectedIndex = function(newIndex) {
-				console.log('THENEWINDEX');
-				console.log(newIndex);
-				selectedindex = newIndex;
+			this.model.updateModelWithSelectedIndexAttribute = function(newVal) {
+				db.selectedIndex = newVal;
 				eventDispatcher(that.eventTarget, 'updatedselectedindex');
 			};
 
 			this.model.getSelectedIndex = function() {
-				console.log('THESELECTEDINDEX');
-				console.log(selectedindex);
-				return selectedindex;
+				//alert(db.selectedIndex);
+				return db.selectedIndex;
 			};
 
 			this.model.getValue = function() {
-				return value;
+				return db.value;
 			};
 
 			// this.model.clearValue = function() {
