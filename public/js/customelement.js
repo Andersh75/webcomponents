@@ -1,68 +1,18 @@
 class CustomElement extends HTMLElement {
 
 	constructor() {
-		super(); 
+		super();
 		this.attachShadow({ mode: 'open' }); //activates shadow dom.
 		this.model = Model(); //Model() returns an object with own this and with dispatch and eval methods.
 		this.view = View(this.model); //View() returns an object with own this and with eval method.
 		this.ctrl = Ctrl(this.model, this.view); //Ctrl() returns an object with own this and with eval method.
 	}
 
-	//getters and setters for communication attributes -----
-
-	get dispatch() {
-		return this.getAttribute('dispatch');
-	}
-
-	set dispatch(newDispatch) {
-		return this.setAttribute('dispatch', newDispatch);
-	}
-
-	get listener() {
-		return this.getAttribute('listener');
-	}
-
-	set listener(newListener) {
-		return this.setAttribute('listener', newListener);
-	}
-
-	get sr() {
-		return this.getAttribute('sr');
-	}
-
-	set sr(newSr) {
-		return this.setAttribute('sr', newSr);
-	}
-
-	get sb() {
-		return this.getAttribute('sb');
-	}
-
-	set sb(newSb) {
-		return this.setAttribute('sb', newSb);
-	}
-
-	get sbChannel() {
-		return this._sbChannel;
-	}
-
-	set sbChannel(newSbChannel) {
-		this._sbChannel = newSbChannel;
-	}
-
-	get sbSubject() {
-		return this._sbSubject;
-	}
-
-	set sbSubject(newSbSubject) {
-		this._sbSubject = newSbSubject;
-	}
-
-
 	//-----------
 	
 	//will be run from each custom component constructor.
 	extend() {
+
 		this.eventTarget = this.model.eval("eventTarget"); //creates a pointer to the const eventTarget, a DOM element that is outside this model but within its scope.
 		this.template = this.thisDoc.querySelector( 'template' ).content; //creates a pointer at the content of the template of the custom component.
 		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
@@ -109,7 +59,7 @@ class CustomElement extends HTMLElement {
 
 			//input
 		} else if (this.shadowRoot.querySelector('input') !== null) {
-			this.shadowRoot.querySelector('input').addEventListener('keydown', e => {
+			this.shadowRoot.querySelector('input').addEventListener('keyup', e => {
 				e.stopPropagation;
 				e.preventDefault;
 				if (e.keyCode === 32 || e.keyCode === 13) {
@@ -154,6 +104,7 @@ class CustomElement extends HTMLElement {
 	//Returns an object called details
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
+
 		let details = {};
 		details.changedAttribute = {};
 		details.changedAttribute.name = name;
@@ -163,7 +114,23 @@ class CustomElement extends HTMLElement {
 	}
 
 	//
+
 	connectedCallback() {
+		//Create setters and getters for all attributes
+		for (let i = 0; i < this.attributes.length; i++) {
+			console.log(this.attributes.item(i).name);
+			let attribute = this.attributes.item(i).name;
+			Object.defineProperty(this, attribute, {
+				get: function() {
+					return this.getAttribute(attribute);
+				},
+				set: function(newString) {
+					return this.setAttribute(attribute, newString);
+				}
+			});
+			console.log(this[attribute]);
+		}
+
 		//makes component fire local events when remote event fires. Remote event is attached in each local event.
 		setComponentListener.call(this, this.model); //this.model is an object with dispatch and eval functions
 
@@ -174,6 +141,9 @@ class CustomElement extends HTMLElement {
 		setComponentObservable.call(this);
 		//Activates components specific run functions upon connected callback
 		this.ctrl.run();
+		
+		
+		
 	}  
 } //Class ends here!
 

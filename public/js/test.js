@@ -166,6 +166,26 @@ Rx.Observable.fromEvent(panel, 'mousedown')
 });
 
 
+
+
+let msft = Rx.Observable.interval(3000)
+	.switchMap(i => Rx.Observable.fromPromise(fetchData('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=compact&apikey=WZVV3KUCJVSFO1KR')))
+	.map(x => x[Object.keys(x)[1]])
+	.map(x => x[Object.keys(x)[0]])
+	.map(x => x[Object.keys(x)[0]]);
+
+let aapl = Rx.Observable.interval(3000)
+	.switchMap(i => Rx.Observable.fromPromise(fetchData('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=compact&apikey=WZVV3KUCJVSFO1KR')))
+	.map(x => x[Object.keys(x)[1]])
+	.map(x => x[Object.keys(x)[0]])
+	.map(x => x[Object.keys(x)[0]]);
+
+Rx.Observable.fromEvent(document, 'click')
+.switchMap(x => Rx.Observable.merge(msft, aapl))
+.subscribe(console.log);
+
+
+
 // const currentWeather$ = Rx.Observable.fromPromise(fetchData());
 
 // const twoSecond$ = Rx.Observable.interval(2000);

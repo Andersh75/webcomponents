@@ -30,21 +30,6 @@
 			this.extend();
 		}
 
-		get value() {
-			return this.getAttribute('value');
-		}
-
-		set value(newValue) {
-			return this.setAttribute('value', newValue);
-		}
-
-		get placeholder() {
-			return this.getAttribute('placeholder');
-		}
-
-		set placeholder(newPlaceholder) {
-			return this.setAttribute('placeholder', newPlaceholder);
-		}
 
 		static get observedAttributes() {
             return ['value', 'placeholder'];

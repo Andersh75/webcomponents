@@ -56,29 +56,6 @@
 		this.extend();
 		}
 
-		get value() {
-			return this.getAttribute('value');
-		}
-
-		set value(newValue) {
-			return this.setAttribute('value', newValue);
-		}
-
-		get placeholder() {
-			return this.getAttribute('placeholder');
-		}
-
-		set placeholder(newPlaceholder) {
-			return this.setAttribute('placeholder', newPlaceholder);
-		}
-
-		get title() {
-			return this.getAttribute('title');
-		}
-
-		set title(newTitle) {
-			return this.setAttribute('title', newTitle);
-		}
 			
 		static get observedAttributes() {
 			return [ 'title', 'value', 'placeholder' ];
@@ -106,7 +83,7 @@
 				.subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
 			};
 
-			//global
+			//global  
 			this.ctrl.updateheadline$ = function(e) {
 				myRxmq.channel(e.detail[0]).observe(e.detail[1])
 				.switchMap((ev) => Rx.Observable.interval(1000))

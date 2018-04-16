@@ -10,10 +10,6 @@
 				background-color: beige
 			}
 			
-			
-
-		
-
 			#headline {
 				color: green;
 				grid-column-start: 1;
@@ -35,7 +31,7 @@
 			</style>
 
 			<headline-ce id="headline" class="h5"></headline-ce>
-			<select-ce id="select"></select-ce>
+			<select-ce id="select" selectedindex=""></select-ce>
 </template>
 
 
@@ -50,66 +46,31 @@
 
 		constructor() {
 		super();
-		this.thatDoc = thatDoc;
+		//this.thatDoc = thatDoc;
 		this.thisDoc = thisDoc;
 		this.extend();
 		}
-
-		get value() {
-			return this.getAttribute('value');
-		}
-
-		set value(newValue) {
-			return this.setAttribute('value', newValue);
-		}
-
-		get selectedIndex() {
-			return this.getAttribute('selectedindex');
-		}
-
-		set selectedIndex(newSelectedIndex) {
-			return this.setAttribute('selectedindex', newSelectedIndex);
-		}
-
-		get title() {
-			return this.getAttribute('title');
-		}
-
-		set title(newTitle) {
-			return this.setAttribute('title', newTitle);
-		}
-
-		get dataTarget() {
-			return this.getAttribute('data-target');
-		}
-
-		set dataTarget(newDataTarget) {
-			return this.setAttribute('data-target', newDataTarget);
-		}
 			
 		static get observedAttributes() {
-			return [ 'title', 'value', 'placeholder', 'data-target' ];
+			return [ 'title', 'value', 'placeholder', 'datatarget' ];
 		}
-
 		
 		extendView(that) {
 
 		}
 
 		extendCtrl(that) {
-
 			this.ctrl.run = function() {
 				that.title = that.title;
-				that.selectedIndex = that.selectedIndex;
-				that.dataTarget = that.dataTarget;
-				//alert(that.dataTarget);
-				that.model.updateSelectedIndex(that.selectedIndex);
+				that.selectedindex = that.selectedindex;
+				that.datatarget = that.datatarget;
+				that.model.updateSelectedIndex(that.selectedindex);
 			};
 
 			//child
 			this.ctrl.updatedSelectedIndexFromChild = function(e) {
 				console.log('UPDATED SELECT SELECTEDINDEX FROM CHILD');
-				that.selectedIndex = e.detail.selectedIndex;
+				that.selectedindex = e.detail.selectedindex;
 			};
 
 			this.ctrl.updatedtitlefromchild = function(e) {
@@ -140,7 +101,7 @@
 
 			//parent
 			this.ctrl.clearfromparent = function(e) {
-				that.selectedIndex = "0";
+				that.selectedindex = "0";
 				let select = that.shadowRoot.querySelector('select-ce');
 				eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
 			};
@@ -150,16 +111,16 @@
 
 		extendModel(that) {
 			let value = "";
-			let selectedIndex = "0";
+			let selectedindex = "0";
 
 			this.model.updateSelectedIndex = function(newIndex) {
-				window[that.dataTarget] = "newIndex";
-				selectedIndex = newIndex;
+				window[that.datatarget] = "newIndex";
+				selectedindex = newIndex;
 				eventDispatcher(that.eventTarget, 'updatedselectedindex');
 			};
 
 			this.model.getSelectedIndex = function() {
-				return selectedIndex;
+				return selectedindex;
 			};
 
 			this.model.getValue = function() {

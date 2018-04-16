@@ -32,24 +32,12 @@
 			this.extend();
 		}
 
-		get selectedIndex() {
-			return this.getAttribute('selectedindex');
-		}
 
-		set selectedIndex(newSelectedIndex) {
-			return this.setAttribute('selectedindex', newSelectedIndex);
-		}
-
-		get value() {
-			return this.getAttribute('value');
-		}
-
-		set value(newValue) {
-			return this.setAttribute('value', newValue);
-		}
 			
 		static get observedAttributes() {
+
 			return [ 'selectedindex', 'value'];
+
 		}
 
 		extendView(that) {
@@ -75,15 +63,22 @@
 			let parent;
 
 			this.ctrl.run = function() {
-				if (that.selectedIndex !== null) {
-					that.view.renderSelectedIndex(that.selectedIndex);
+				console.log('ONRUN1');
+				console.log(that.selectedindex);
+				if (that.selectedindex !== null && that.selectedindex !== undefined && that.selectedindex !== "") {
+					console.log('ONRUN2');
+				console.log(that.selectedindex);
+					that.view.renderSelectedIndex(that.selectedindex);
 				}
 			};
 
 			//local - from user
 			this.ctrl.useraction = function(e) {
-				that.selectedIndex = e.detail.composedPath()[0].selectedIndex;
-				that.model.updateSelectedIndex(that.selectedIndex);
+				console.log('theE');
+				console.log(e);
+				console.log(e.detail.composedPath()[0]);
+				that.selectedindex = e.detail.composedPath()[0].selectedIndex;
+				that.model.updateSelectedIndex(that.selectedindex);
 			};
 
 			//local - from model
@@ -112,26 +107,27 @@
 			//parent
 			this.ctrl.selectedindexfromparent = function(e) {
 				parent = e.detail;
+				console.log('e');
 				console.log(e);
-				that.selectedIndex = e.detail.selectedIndex;
-				console.log('that.selectedIndex');
-				console.log(that.selectedIndex);
-				that.model.updateSelectedIndex(that.selectedIndex);
+				that.selectedindex = e.detail.selectedindex;
+				console.log('that.selectedindex');
+				console.log(that.selectedindex);
+				that.model.updateSelectedIndex(that.selectedindex);
 			};
 
 			// this.ctrl.clearfromparent = function(e) {
 			// 	console.log('clear from parent');
 			// 	console.log('END STATION - SELECT');
-			// 	that.selectedIndex = "0"
+			// 	that.selectedindex = "0"
 			// 	that.value = "0"
-			// 	that.model.updateSelectedIndex(that.selectedIndex);
+			// 	that.model.updateSelectedIndex(that.selectedindex);
 			// };
 
 			//global
 			// this.ctrl.clearfield = function(e) {
-			// 	that.selectedIndex = "0"
+			// 	that.selectedindex = "0"
 			// 	that.value = "0"
-			// 	that.model.updateSelectedIndex(that.selectedIndex);
+			// 	that.model.updateSelectedIndex(that.selectedindex);
 			// 	console.log("clearfield");
 			// 	// console.log(e);
 			// 	// that.value = e.detail.detail.changedAttribute.newVal;
@@ -142,15 +138,19 @@
 
 		extendModel(that) {
 			let value = "";
-			let selectedIndex = "0";
+			let selectedindex = "0";
 
 			this.model.updateSelectedIndex = function(newIndex) {
-				selectedIndex = newIndex;
+				console.log('THENEWINDEX');
+				console.log(newIndex);
+				selectedindex = newIndex;
 				eventDispatcher(that.eventTarget, 'updatedselectedindex');
 			};
 
 			this.model.getSelectedIndex = function() {
-				return selectedIndex;
+				console.log('THESELECTEDINDEX');
+				console.log(selectedindex);
+				return selectedindex;
 			};
 
 			this.model.getValue = function() {
@@ -160,7 +160,7 @@
 			// this.model.clearValue = function() {
 			// 	that.value = "";
 			// 	value = "";
-			// 	that.selectedIndex = "0";
+			// 	that.selectedindex = "0";
 			// 	eventDispatcher(that.eventTarget, 'clearedselectedindex');
 			// };
 

@@ -22,14 +22,6 @@
 		this.extend();
 		}
 
-		get title() {
-			return this.getAttribute('title');
-		}
-
-		set title(newTitle) {
-			return this.setAttribute('title', newTitle);
-		}
-
 		static get observedAttributes() {
             return ['title'];
         };
