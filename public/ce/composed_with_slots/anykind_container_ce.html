@@ -28,13 +28,9 @@
   				grid-row-end: 2;
 			}
 
-			
-
 			</style>
 			<slot name="headline" id="headline"></slot>
 			<slot name="anyform" id="anyform"></slot>
-			
-
 			
 </template>
 
@@ -49,59 +45,34 @@
 	class AnykindContainerCE extends CustomElement {
 
 		constructor() {
-		super();
-		this.thatDoc = thatDoc;
-		this.thisDoc = thisDoc;
-		this.extend();
-		}
-
-		
-		extendView(that) {
-
+			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
 		}
 
 		extendCtrl(that) {
 			//local
 			this.ctrl.run = function() {
-				// console.log('Xhere');
-				// let el = document.createElement('input-ce');
-				// el.setAttribute('slot', 'newel');
-				// el.setAttribute('placeholder', 'testPlace');
-				// that.appendChild(el);
-				// el = document.createElement('input-ce');
-				// el.setAttribute('slot', 'newel');
-				// el.setAttribute('placeholder', 'testPlace');
-				// that.appendChild(el);
 			};
 
 			//parent
-			this.ctrl.clearfromparent = function(e) {
-				console.log('clear from parent');
+			this.ctrl.clearAnyformsFromParent = function(e) {
 				let anyform = that.shadowRoot.querySelector('#anyform');
-				console.log(anyform);
-				//console.log(anyform.assignedNodes());
 				Array.prototype.slice.call(anyform.assignedNodes()).forEach(node => {
-					eventDispatcher(node.eventTarget, 'clearfromparent');
-					console.log(node);
+					eventDispatcher(node.eventTarget, 'clearallfromparent');
 				})
-				// that.selectedIndex = e.detail;
-				//return that.model.changeSelectedIndexFromParent(that.selectedIndex);
 			};
+		}
 
-			//global
-			this.ctrl.testFn = function(e) {
-				console.log('I hear!!');
-			};
+				
+		extendView(that) {
 
-
-	
 		}
 
 		extendModel(that) {
 			
 		}
-
-
 	}
 
 	window.customElements.define('anykind-container-ce', AnykindContainerCE);

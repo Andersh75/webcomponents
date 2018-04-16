@@ -75,8 +75,6 @@
 
 			</style>
 		
-			
-			
 			<slot id="anyheadline" name="anyheadline"></slot>
 			<slot id="anybutton" name="anybutton"></slot>
 			<slot id="anycontainer" name="anycontainer"></slot>
@@ -95,15 +93,10 @@
 	class SectionInputCE extends CustomElement {
 
 		constructor() {
-		super();
-		this.thatDoc = thatDoc;
-		this.thisDoc = thisDoc;
-		this.extend();
-		}
-
-		
-		extendView(that) {
-
+			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
 		}
 
 		extendCtrl(that) {
@@ -111,31 +104,27 @@
 			this.ctrl.run = function() {
 			};
 
-			//global
-			this.ctrl.clearsection = function() {
-				console.log('CLEARING SECTION');
+			//initiated by remote event
+			this.ctrl.clearAnykindContainers = function() {
 				let anycontainer = that.shadowRoot.querySelector('#anycontainer');
-				//console.log(anycontainer.assignedNodes());
 				Array.prototype.slice.call(anycontainer.assignedNodes()).forEach(node => {
-					eventDispatcher(node.eventTarget, 'clearfromparent');
-					console.log(node);
+					eventDispatcher(node.eventTarget, 'clearanyformsfromparent');
 				})
 			}
+		}
+		
+		extendView(that) {
 
-	
 		}
 
 		extendModel(that) {
 			
 		}
 
-
 	}
 
 	window.customElements.define('section-input-ce', SectionInputCE);
 
-	console.log('window.customElements');
-	console.log(window);
 
 })(window, document);
 </script>

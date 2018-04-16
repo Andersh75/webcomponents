@@ -45,12 +45,8 @@
 			this.extend();
 		}
 
-
-			
 		static get observedAttributes() {
-
 			return [ 'selectedindex'];
-
 		}
 
 		
@@ -98,18 +94,13 @@
 			this.ctrl.selectedIndexAttributeFromParent = function(e) {
 				parent = e.detail;
 				that.selectedindex = parent.selectedindex;
-				console.log('SELECTEDINDEX');
-				console.log(that.selectedindex);
 				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
 			};
 
-			// this.ctrl.clearfromparent = function(e) {
-			// 	console.log('clear from parent');
-			// 	console.log('END STATION - SELECT');
-			// 	that.selectedindex = "0"
-			// 	that.value = "0"
-			// 	that.model.updateSelectedIndex(that.selectedindex);
-			// };
+			this.ctrl.clearFromParent = function(e) {
+				that.selectedindex = "0"
+				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
+			};
 
 			//global
 			// this.ctrl.clearfield = function(e) {
@@ -146,7 +137,6 @@
 		//Model
 		extendModel(that) {
 			let db ={};
-			db.value = "";
 			db.selectedIndex = "0";
 
 			this.model.updateModelWithSelectedIndexAttribute = function(newVal) {
@@ -155,13 +145,9 @@
 			};
 
 			this.model.getSelectedIndex = function() {
-				//alert(db.selectedIndex);
 				return db.selectedIndex;
 			};
 
-			this.model.getValue = function() {
-				return db.value;
-			};
 
 			// this.model.clearValue = function() {
 			// 	that.value = "";

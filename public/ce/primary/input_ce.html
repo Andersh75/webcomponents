@@ -63,6 +63,8 @@
 				let value = that.model.getValue();
 				that.view.updatedValue(value);
 
+				//that.updateparent();
+
 				if (parent !== undefined) {
 					eventDispatcher(parent.eventTarget, 'updatedvalueattributefromchild', that);
 				} else {
@@ -75,7 +77,7 @@
 				let placeholder = that.model.getPlaceholder();
 				that.view.updatedPlaceholder(placeholder);
 
-
+				
 				if (parent !== undefined) {
 					eventDispatcher(parent.eventTarget, 'updatedplaceholderattributefromchild', that);
 				} else {
@@ -117,13 +119,10 @@
 
 
 
-			// this.ctrl.clearfromparent = function(e) {
-			// 	parent = e.detail;
-			// 	console.log('clear from parent');
-			// 	console.log(e.detail);
-			// 	console.log('END STATION - INPUT');
-			// 	return that.model.clearValue(e);
-			// };
+			this.ctrl.clearFromParent = function(e) {
+				that.value = "0"
+				that.model.updateModelWithValueAttribute(that.value);
+			};
 
 			//global
 			// this.ctrl.clearfield = function(e) {

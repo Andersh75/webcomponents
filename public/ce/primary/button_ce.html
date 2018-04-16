@@ -1,0 +1,152 @@
+<template>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+
+	</style>
+	
+	<button type="button" class="btn btn-secondary"></button>
+
+</template>
+
+<script>
+(function(window, document, undefined) {
+
+	var thatDoc = document;
+	var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+	
+	class ButtonCE extends CustomElement {
+
+		constructor() {
+			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
+		}
+
+			
+		static get observedAttributes() {
+			return [ 'toggle', 'value' ];
+		}
+
+		extendCtrl(that) {
+			let parent;
+
+			//init
+			this.ctrl.run = function() {
+				if (!h.boolean.isEmpty(that.value)) {
+					console.log('INIT RUN');
+					that.view.updatedValue(that.value);
+				}
+				if (!h.boolean.isEmpty(that.placeholder)) {
+					console.log('INIT RUN');
+					that.view.updatedToggle(that.toggle);
+				}
+
+				// Rx.Observable.fromEvent(that.shadowRoot.querySelector('button'), 'click')
+				// .subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
+
+			};
+
+			//initiated by parent
+			this.ctrl.toggleAttributeFromParent = function(e) {
+				parent = e.detail;
+				that.toggle = parent.toggle;
+				that.model.updateModelWithToggleAttribute(that.toggle);
+			};
+
+			this.ctrl.valueAttributeFromParent = function(e) {
+				parent = e.detail;
+				that.value = parent.value;
+				that.model.updateModelWithValueAttribute(that.value);
+			};
+
+
+			//local events - from model
+			this.ctrl.updatedToggle = function() {
+				let toggle = that.model.getToggle();
+				
+				that.view.updatedToggle(toggle);
+		
+				if (parent !== undefined) {
+					eventDispatcher(parent.eventTarget, 'updatedtoggleattributefromchild', that); 
+				} else {
+					console.log('No parent...');
+				}	
+			};
+
+			this.ctrl.updatedValue = function() {
+				let value = that.model.getValue();
+				
+				that.view.updatedValue(value);
+		
+				if (parent !== undefined) {
+					eventDispatcher(parent.eventTarget, 'updatedvalueattributefromchild', that); 
+				} else {
+					console.log('No parent...');
+				}
+				
+			};
+			
+			//local events - from user
+			this.ctrl.useraction = function(e) {
+				if(that.toggle === "on") {
+					that.toggle = "off";
+					that.model.updateModelWithToggleAttribute(that.toggle);
+				} else {
+					that.toggle = "on";
+					that.model.updateModelWithToggleAttribute(that.toggle);
+					
+				}
+			};
+		
+		}
+
+		extendView(that) {
+			this.view.renderValue = function(obj) {
+				that.shadowRoot.querySelector('button').textContent = obj;
+			};
+
+			this.view.updatedToggle = function(toggle) {
+				//that.view.render.call(that, toggle);
+			};
+
+			this.view.updatedValue = function(value) {
+				that.view.renderValue.call(that, value);
+			};
+		}
+
+		extendModel(that) {
+			let db ={};
+			db.toggle;
+			db.value;
+
+			this.model.updateModelWithToggleAttribute = function(newVal) {
+				db.toggle = newVal;
+				eventDispatcher(that.eventTarget, 'updatedtoggle');
+			};
+
+			this.model.getToggle = function() {
+				return db.toggle;
+			};
+
+			this.model.updateModelWithValueAttribute = function(newVal) {
+				db.value = newVal;
+				eventDispatcher(that.eventTarget, 'updatedvalue');
+			};
+
+			this.model.getValue = function() {
+				return db.value;
+			};
+		}
+	}
+
+
+
+	window.customElements.define('button-ce', ButtonCE);
+
+})(window, document);
+</script>
+
+<script type="text/javascript" src="/js/curry.js"></script>
+<script type="text/javascript" src="/js/helper.js"></script>

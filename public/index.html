@@ -46,24 +46,24 @@
 </script>
   
 
-  <link rel="import" href="ce/input_ce.html">
-  <link rel="import" href="ce/low_level/headline_ce.html">
-  <link rel="import" href="ce/button_ce.html">
-  <link rel="import" href="ce/select_ce.html">
-  <link rel="import" href="ce/headline_input_ce.html">
-  <link rel="import" href="ce/headline_select_ce.html">
-  <link rel="import" href="ce/anykind_container_ce.html">
-  <link rel="import" href="ce/section_input_ce.html">
-  <link rel="import" href="ce/section_output_ce.html">
+  <link rel="import" href="ce/primary/input_ce.html">
+  <link rel="import" href="ce/primary/headline_ce.html">
+  <link rel="import" href="ce/primary/button_ce.html">
+  <link rel="import" href="ce/primary/select_ce.html">
+  <link rel="import" href="ce/composed_without_slots/headline_input_ce.html">
+  <link rel="import" href="ce/composed_without_slots/headline_select_ce.html">
+  <link rel="import" href="ce/composed_with_slots/anykind_container_ce.html">
+  <link rel="import" href="ce/composed_with_slots/section_input_ce.html">
+  <link rel="import" href="ce/composed_with_slots/section_output_ce.html">
 
   
 </head>
 <body>
 
 
-<section-input-ce listener="cleargeneralinputsection@clearsection">
+<section-input-ce listener="cleargeneralinputsection@clearanykindcontainers">
     <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-    <button-ce value="Rensa" toggle="off" id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-ce>
+    <button-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-ce>
     
     <anykind-container-ce slot="anycontainer">
         <headline-ce title="Kalkylperiod" class="h4" slot="headline"></headline-ce>
@@ -98,7 +98,7 @@
 
 <section-input-ce listener="clearowninputsection@clearsection">
     <headline-ce title="Äga" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-    <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>
+    <button-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>
     
     <anykind-container-ce slot="anycontainer">
             <headline-ce title="Initial ytstorlek" class="h4" slot="headline"></headline-ce>

@@ -52,15 +52,10 @@
 	class SectionOutputCE extends CustomElement {
 
 		constructor() {
-		super();
-		this.thatDoc = thatDoc;
-		this.thisDoc = thisDoc;
-		this.extend();
-		}
-
-		
-		extendView(that) {
-
+			super();
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
 		}
 
 		extendCtrl(that) {
@@ -78,15 +73,15 @@
 			// 		console.log(node);
 			// 	})
 			}
-
-	
 		}
+
+		extendView(that) {
+			
+		}		
 
 		extendModel(that) {
 			
 		}
-
-
 	}
 
 	window.customElements.define('section-output-ce', SectionOutputCE);

@@ -98,7 +98,9 @@ class CustomElement extends HTMLElement {
 		
 	}
 
-
+	updateparent() {
+		//alert('hej');
+	}
 
 	//each time an observed attribute changes it will run this function. Name, old value, new value of attribute will be passed.
 	//Returns an object called details
@@ -139,7 +141,7 @@ class CustomElement extends HTMLElement {
 
 		setComponentObserver.call(this, this.model); //this.model is an object with dispatch and eval functions
 		setComponentObservable.call(this);
-		
+
 		//Activates components specific run functions upon connected callback
 		this.ctrl.run();
 		

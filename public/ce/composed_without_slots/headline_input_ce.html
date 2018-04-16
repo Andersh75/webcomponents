@@ -165,11 +165,10 @@
 					
 					
 					//parent
-					// this.ctrl.clearfromparent = function(e) {
-					// 	that.value = "";
-					// 	let input = that.shadowRoot.querySelector('input-ce');
-					// 	eventDispatcher(input.eventTarget, 'valuefromparent', that);
-					// };
+					this.ctrl.clearallfromparent = function(e) {
+						let input = that.shadowRoot.querySelector('#input');
+						eventDispatcher(input.eventTarget, 'clearfromparent', that);
+					};
 					
 					//global
 					

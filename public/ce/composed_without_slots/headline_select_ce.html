@@ -31,7 +31,6 @@
   				grid-row-end: 4;
 			}
 
-			
 
 			</style>
 
@@ -93,11 +92,10 @@
 
 
 			//parent
-			// this.ctrl.clearfromparent = function(e) {
-			// 	that.selectedindex = "0";
-			// 	let select = that.shadowRoot.querySelector('select-ce');
-			// 	eventDispatcher(select.eventTarget, 'selectedindexfromparent', that);
-			// };
+			this.ctrl.clearallfromparent = function(e) {
+				let select = that.shadowRoot.querySelector('#select');
+				eventDispatcher(select.eventTarget, 'clearfromparent', that);
+			};
 
 			//global
 		}
