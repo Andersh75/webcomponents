@@ -96,7 +96,7 @@
 			this.ctrl.updatedAttributeFromChild = function(e) {
 				let child = e.detail.child;
 				let attribute = e.detail.attribute;
-				that[attribute] = child[attribute];
+				that[attribute] = e.detail.newVal;
 			};
 
 

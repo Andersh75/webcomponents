@@ -65,16 +65,12 @@
 
 
 			//local events initiated by parent
-			this.ctrl.clearFromParent = function(e) {
-				that.parent = e.detail.parent;
-				that.updateAttributeAndModel(e, that)
-			};
 
 
 			//local events initiated by model
-			this.ctrl.updatedModel = function(e) {
-				that.updateViewAndParentAttribute(e, that, that.parent);
-			};
+			// this.ctrl.updatedModel = function(e) {
+			// 	that.updateViewAndParentAttribute(e, that, that.parent);
+			// };
 		}
 
 
@@ -124,7 +120,7 @@
 						//console.log()
 						oldVal = db.selectedindex;
 						db.selectedindex = newVal;
-						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'selectedindex', oldVal: oldVal, newVal: db.selectedindex});
+						eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: db.selectedindex});
 						break;
 				} 
 			};

@@ -207,14 +207,14 @@ class CustomElement extends HTMLElement {
 	}  
 } //Class ends here!
 
-function updateAttributeAndModel(e, that, model) {
-	let attribute = e.detail.attribute;
-	let data = e.detail.data;
-	that[attribute] = data;
-	console.log('that[attribute]');
-	console.log(that[attribute]);
-	model.updateModelWithAttribute(attribute, that[attribute]);
-}
+// function updateAttributeAndModel(e, that, model) {
+// 	let attribute = e.detail.attribute;
+// 	let data = e.detail.data;
+// 	that[attribute] = data;
+// 	console.log('that[attribute]');
+// 	console.log(that[attribute]);
+// 	model.updateModelWithAttribute(attribute, that[attribute]);
+// }
 
 // function updateViewAndParentAttribute(e, that, parent, model, view) {
 // 	let attribute = e.detail.name;
@@ -348,9 +348,43 @@ function Ctrl(model, view) {
 		useraction: function(e) { //local events initiated by users
 			let attribute = e.detail.attribute;
 			let data = e.detail.data;
+			console.log('THEDATA');
+			console.log(data);
 			if (attribute !== undefined) {
 				model.updateModelWithAttribute(attribute, data);
 			}		
+		},
+		clearFromParent: function(e) { //local events initiated by users
+			let parent = e.detail.parent;
+			let attribute = e.detail.attribute;
+			let data = e.detail.data;
+			that[attribute] = data;
+			if (attribute !== undefined) {
+				model.updateModelWithAttribute(attribute, data, parent);
+			}	
+		},
+		updatedModel: function(e) { //local events initiated by users
+			let parent = e.detail.parent;
+			let attribute = e.detail.name;
+			let child = e.detail.child;
+			let newVal = e.detail.newVal;
+			console.log('PARENT IN UPDATED MODEL');
+			console.log(parent);
+			
+			if (attribute !== undefined) {
+				let item = model.get(attribute);
+				view.updateView(attribute, item);
+				
+				if (parent !== undefined) {
+					console.log('UPDATE PARENT');
+					console.log(that);
+					console.log(parent.eventTarget);
+					console.log(attribute);
+					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, attribute: attribute, newVal: newVal});
+				} else {
+					console.log('No parent...');
+				}
+			}
 		},
 		attributeFromParent: function(e) {
 			let parent = e.detail.parent;

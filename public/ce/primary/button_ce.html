@@ -78,9 +78,9 @@
 
 
 			//local events initiated by model
-			this.ctrl.updatedModel = function(e) {
-				that.updateViewAndParentAttribute(e, that, parent);
-			};
+			// this.ctrl.updatedModel = function(e) {
+			// 	that.updateViewAndParentAttribute(e, that, parent);
+			// };
 
 			
 
@@ -117,12 +117,12 @@
 					case 'toggle':
 						oldVal = db.toggle;
 						db.toggle = newVal;
-						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'toggle', oldVal: oldVal, newVal: db.toggle});
+						eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'toggle', oldVal: oldVal, newVal: db.toggle});
 						break;
 					case 'value':
 						oldVal = db.value;
 						db.value = newVal;
-						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'value', oldVal: oldVal, newVal: db.value});
+						eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: db.value});
 						break;
 				} 
 				
