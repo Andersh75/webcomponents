@@ -59,7 +59,7 @@
 			return [ 'title', 'placeholder', 'datatarget', 'selectedindex' ];
 		}
 
-		extendCtrl(that) {
+		extendCtrl(that, model, view) {
 			let parent;
 
 			//init
@@ -71,64 +71,29 @@
 
 			};
 
-			//initiated by child
-			// this.ctrl.updatedSelectedIndexAttributeFromChild = function(e) {
-			// 	let child = e.detail.child;
-			// 	that.selectedindex = child.selectedindex;
-			// };
 
-			// this.ctrl.updatedTitleAttributeFromChild = function(e) {
-			// 	let child = e.detail.child;
-			// 	that.title = child.title;
-			// };
-
-			this.ctrl.updatedAttributeFromChild = function(e) {
-				let child = e.detail.child;
-				let attribute = e.detail.attribute;
-				that[attribute] = e.detail.newVal;
-			};
-
-			// this.ctrl.clearedselectfromchild = function(e) {
-			// 	console.log('CLEARED SELECT FROM CHILD');
-			// 	that.value = 'changed from child';
-			// };
-
-			//local - from model
+			//local events initiated by user
 
 
+			//local events initiated by child
 
-			//parent
+
+			//local events initiated by parent
 			this.ctrl.clearallfromparent = function(e) {
 				let select = that.shadowRoot.querySelector('#select');
-				eventDispatcher(select.eventTarget, 'clearfromparent', {parent: that, attribute: 'selectedindex', data: 0});
+				eventDispatcher(select.eventTarget, 'clearselffromparent', {parent: that, attribute: 'selectedindex', data: 0});
 			};
 
-			//global
 		}
 		
 		//View
-		extendView(that) {
+		extendView(that, model) {
 
 		}
 		
 		//Model
 		extendModel(that) {
-			// let value = "";
-			// let selectedindex = "0";
 
-			// this.model.updateSelectedIndex = function(newIndex) {
-			// 	window[that.datatarget] = "newIndex";
-			// 	selectedindex = newIndex;
-			// 	eventDispatcher(that.eventTarget, 'updatedselectedindex');
-			// };
-
-			// this.model.getSelectedIndex = function() {
-			// 	return selectedindex;
-			// };
-
-			// this.model.getValue = function() {
-			// 	return value;
-			// };
 		}
 
 

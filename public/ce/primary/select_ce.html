@@ -39,8 +39,7 @@
 	class SelectCE extends CustomElement {
 
 		constructor() {
-			super();
-			this.parent;
+			super();		
 			this.thatDoc = thatDoc;
 			this.thisDoc = thisDoc;
 			this.extend();
@@ -52,39 +51,40 @@
 
 		
 		//Controller
-		extendCtrl(that) {
-			//let parent;
+		extendCtrl(that, model, view) {
 			
 			//intit
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.selectedindex)) {
 					let attribute = 'selectedindex';
-					that.view.updateView(attribute, that[attribute]);
+					view.updateView(attribute, that[attribute]);
 				}
 			};
+
+			this.ctrl.addedUserAction = function(data, attribute) {
+				return new Promise((resolve, reject) => {
+					console.log('FRIST HERE');
+					resolve({data: data, attribute: attribute});
+				}
+			)};
 
 
 			//local events initiated by parent
 
 
 			//local events initiated by model
-			// this.ctrl.updatedModel = function(e) {
-			// 	that.updateViewAndParentAttribute(e, that, that.parent);
-			// };
+
+
 		}
 
 
-		
-
 		//View
 		//always passive
-		extendView(that) {
+		extendView(that, model) {
 			this.view.renderSelectedIndex = function(obj) {
 				Array.prototype.slice.call(that.shadowRoot.querySelector('#select')).forEach(child => {
 					child.removeAttribute('selected');
 				})
-				console.log(that.shadowRoot.querySelector('#select'));
-				console.log(obj);
 				that.shadowRoot.querySelector('#select').children[obj].setAttribute('selected', 'selected');
 			};
 
@@ -106,18 +106,12 @@
 			this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 				let oldVal;
 				that[attribute] = newVal;
-				console.log('parent again');
-				console.log(parent);
 				if (parent !== undefined) {
 					that.parent = parent;
 				}
-				
 
 				switch(attribute) {
 					case 'selectedindex':
-						console.log('HERE!!!');
-						console.log(newVal);
-						//console.log()
 						oldVal = db.selectedindex;
 						db.selectedindex = newVal;
 						eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: db.selectedindex});
@@ -126,20 +120,8 @@
 			};
 
 			this.model.get = function(attribute) {
-				console.log('db[attribute]');
-				console.log(db[attribute]);
 				return db[attribute];
 			};
-
-
-			// this.model.clearValue = function() {
-			// 	that.value = "";
-			// 	value = "";
-			// 	that.selectedindex = "0";
-			// 	eventDispatcher(that.eventTarget, 'clearedselectedindex');
-			// };
-
-
 		}
 	}
 

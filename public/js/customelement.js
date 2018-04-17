@@ -1,43 +1,43 @@
+// Event bubbling and capturing are two ways of event propagation in the HTML DOM API, when an event occurs in an element inside another element, and both elements have registered a handle for that event. The event propagation mode determines in which order the elements receive the event.
+
+// With bubbling, the event is first captured and handled by the innermost element and then propagated to outer elements.
+
+// With capturing, the event is first captured by the outermost element and propagated to the inner elements.
+
+// Almost all events bubble.
+// The key word in this phrase is “almost”.
+
+// For instance, a focus event does not bubble. There are other examples too, we’ll meet them. But still it’s an exception, rather than a rule, most events do bubble.
+
+
 class CustomElement extends HTMLElement {
 
 	constructor() {
-		super();
+		super();		
 		this.attachShadow({ mode: 'open' }); //activates shadow dom.
-		this.model = Model(); //Model() returns an object with own this and with dispatch and eval methods.
-		this.view = View(this.model); //View() returns an object with own this and with eval method.
-		this.ctrl = Ctrl(this.model, this.view); //Ctrl() returns an object with own this and with eval method.
+		this.parent = undefined;
+		this.model = Model(this); //Model() returns an object with own this and with dispatch and eval methods.
+		this.view = View(this, this.model); //View() returns an object with own this and with eval method.
+		this.ctrl = Ctrl(this, this.model, this.view); //Ctrl() returns an object with own this and with eval method.
+		this.eventTarget = this.model.eval("eventTarget"); //creates a pointer to the const eventTarget, a DOM element that is outside this model but within its scope.
 	}
 
 	//-----------
 	
 	//will be run from each custom component constructor.
 	extend() {
-
-		this.eventTarget = this.model.eval("eventTarget"); //creates a pointer to the const eventTarget, a DOM element that is outside this model but within its scope.
 		this.template = this.thisDoc.querySelector( 'template' ).content; //creates a pointer at the content of the template of the custom component.
 		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
 		this.extendModel(this); //adds new methods to this.model
-		this.extendCtrl(this); //adds new methods to this.ctrl
-		this.extendView(this); //adds new methods to this.view
+		this.extendView(this, this.model); //adds new methods to this.view
+		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+
 
 		//gets keys from this.ctrl and puts them in an array. Removes first element, the eval method.
 		//for every key it maps an eventlistener on the eventTarget which listens to the event with the same name as the key and runs its method.
 		Object.keys(this.ctrl).slice(1).map(key => { 
 			this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
 		});
-
-
-		// Event bubbling and capturing are two ways of event propagation in the HTML DOM API, when an event occurs in an element inside another element, and both elements have registered a handle for that event. The event propagation mode determines in which order the elements receive the event.
-
-		// With bubbling, the event is first captured and handled by the innermost element and then propagated to outer elements.
-		
-		// With capturing, the event is first captured by the outermost element and propagated to the inner elements.
-
-		// Almost all events bubble.
-		// The key word in this phrase is “almost”.
-
-		// For instance, a focus event does not bubble. There are other examples too, we’ll meet them. But still it’s an exception, rather than a rule, most events do bubble.
-	   
 
 		//Adds proper eventlistener to the user-input elements-----
 
@@ -48,7 +48,7 @@ class CustomElement extends HTMLElement {
 			e.preventDefault; //prevent browser specific default actions for elements.
 			let data = e.composedPath()[0].selectedIndex;
 			let attribute = 'selectedindex';
-			eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute}); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
+			eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
 			});
 
 			//button
@@ -95,75 +95,16 @@ class CustomElement extends HTMLElement {
 			this.addEventListener('click', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', e);	
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined});	
 			});
 		}	
 	}
-
-	// updateparent(parent, that, attribute) {
-	// 	if (parent !== undefined) {
-	// 		eventDispatcher(parent.eventTarget, 'updated' + attribute + 'attributefromchild', {parent: that, attribute: attribute});
-	// 	} else {
-	// 		console.log('No parent...');
-	// 	}
-	// }
-
-
-	updatedAttributeFromChild(e, that, attribute) {
-		let child = e.detail;
-		that[attribute] = child[attribute];
-		return that;
-	}
-
-
-
-
-	// updateParentAttribute(parent, that, attribute) {
-	// 	if (parent !== undefined) {
-	// 		console.log('UPDATE PARENT');
-	// 		console.log(that, attribute);
-	// 		eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
-	// 	} else {
-	// 		console.log('No parent...');
-	// 	}
-	// }
-
-	//General controller functions
-	updateViewAndParentAttribute(e, that, parent) {
-		let attribute = e.detail.name;
-		let item = that.model.get(attribute);
-		console.log(attribute);
-		console.log('item');
-		console.log(item);
-		that.view.updateView(attribute, item);
-		//that.updateParentAttribute(parent, that, attribute);
-		if (parent !== undefined) {
-			console.log('UPDATE PARENT');
-			console.log(that);
-			console.log(this.parent);
-			console.log(attribute);
-			eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
-		} else {
-			console.log('No parent...');
-		}
-	}
-
-
-	// updateAttributeAndModel(e, that) {
-	// 	let attribute = e.detail.attribute;
-	// 	let data = e.detail.data;
-	// 	that[attribute] = data;
-	// 	console.log('that[attribute]');
-	// 	console.log(that[attribute]);
-	// 	that.model.updateModelWithAttribute(attribute, that[attribute]);
-	// }
 
 
 	//each time an observed attribute changes it will run this function. Name, old value, new value of attribute will be passed.
 	//Returns an object called details
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
-
 		let details = {};
 		details.changedAttribute = {};
 		details.changedAttribute.name = name;
@@ -177,7 +118,6 @@ class CustomElement extends HTMLElement {
 	connectedCallback() {
 		//Create setters and getters for all attributes
 		for (let i = 0; i < this.attributes.length; i++) {
-			console.log(this.attributes.item(i).name);
 			let attribute = this.attributes.item(i).name;
 			Object.defineProperty(this, attribute, {
 				get: function() {
@@ -187,54 +127,176 @@ class CustomElement extends HTMLElement {
 					return this.setAttribute(attribute, newString);
 				}
 			});
-			console.log(this[attribute]);
 		}
 
 		//makes component fire local events when remote event fires. Remote event is attached in each local event.
 		setComponentListener.call(this, this.model); //this.model is an object with dispatch and eval functions
-
 		setComponentDispatcher(this.dispatch); //this.dispatch is name of remote event that get published from component
 
-
+		//TODO: Go through these two
 		setComponentObserver.call(this, this.model); //this.model is an object with dispatch and eval functions
 		setComponentObservable.call(this);
 
 		//Activates components specific run functions upon connected callback
-		this.ctrl.run();
-		
-		
-		
+		this.ctrl.run();	
 	}  
 } //Class ends here!
 
-// function updateAttributeAndModel(e, that, model) {
-// 	let attribute = e.detail.attribute;
-// 	let data = e.detail.data;
-// 	that[attribute] = data;
-// 	console.log('that[attribute]');
-// 	console.log(that[attribute]);
-// 	model.updateModelWithAttribute(attribute, that[attribute]);
-// }
 
-// function updateViewAndParentAttribute(e, that, parent, model, view) {
-// 	let attribute = e.detail.name;
-// 	let item = model.get(attribute);
-// 	console.log(attribute);
-// 	console.log('item');
-// 	console.log(item);
-// 	view.updateView(attribute, item);
-// 	//that.updateParentAttribute(parent, that, attribute);
-// 	if (parent !== undefined) {
-// 		console.log('UPDATE PARENT');
-// 		console.log(that);
-// 		console.log(parent.eventTarget);
-// 		console.log(attribute);
-// 		eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
-// 	} else {
-// 		console.log('No parent...');
-// 	}
-// }
 
+
+
+
+/**
+ * Model has responsibility for calculations etc
+ */
+function Model(that) {
+
+	const eventTarget = document.createElement('event-target');
+
+	return {
+		//dispatches custom event with eventName witch contains remoteEvent
+		dispatch: function(eventName, e) { //eventName is name of localEvent. e is remoteEvent
+			return eventTarget.dispatchEvent(new CustomEvent(eventName, {detail: e}));
+		},
+		eval: function(name) {
+			return eval(name) 
+		}
+	};
+}
+
+function View(that, model) {
+
+	return {
+		eval: function(name) {
+			return eval(name); 
+		}
+	}; 
+}
+
+
+
+function Ctrl(that, model, view, ctrl) {
+
+	return {
+		eval: function(name) {
+			return eval(name); 
+		},
+		userAction: function(e) { //local events initiated by users
+			let attribute = e.detail.attribute;
+			let data = e.detail.data;
+			if (attribute !== undefined) {
+				try {
+					that.ctrl.addedUserAction(data, attribute)
+					.then((result) => {
+						console.log('RESOLVED!');
+						data = result.data;
+						attribute = result.attribute;
+						console.log(result.data);
+						console.log(result.attribute);
+					});
+				}
+				catch (error) {
+					console.error();
+				}
+
+				model.updateModelWithAttribute(attribute, data);
+			}		
+		},
+		clearSelfFromParent: function(e) { //local events initiated by users
+			let parent = e.detail.parent;
+			let attribute = e.detail.attribute;
+			let data = e.detail.data;
+			that[attribute] = data;
+			if (attribute !== undefined) {
+				model.updateModelWithAttribute(attribute, data, parent);
+			}	
+		},
+		updatedModel: function(e) { //local events initiated by users
+			let parent = e.detail.parent;
+			let attribute = e.detail.name;
+			let child = e.detail.child;
+			let newVal = e.detail.newVal;
+			
+			if (attribute !== undefined) {
+				let item = model.get(attribute);
+				view.updateView(attribute, item);
+				
+				if (parent !== undefined) {
+					console.log('Updates parent attribute');
+					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: parent, attribute: attribute, newVal: newVal});
+				} else {
+					console.log('No parent...');
+				}
+			}
+		},
+		attributeFromParent: function(e) {
+			let parent = e.detail.parent;
+			let attribute = e.detail.attribute;
+			let data = e.detail.data;
+			if (attribute !== undefined) {
+				model.updateModelWithAttribute(attribute, data, parent);
+			}	
+		},
+		updatedAttributeFromChild: function(e) {
+			let child = e.detail.child;
+			let parent = e.detail.parent;
+			let attribute = e.detail.attribute;
+			parent[attribute] = e.detail.newVal;
+		}
+	};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Pub/sub communication station with subscribers and publishers
+var events = (function () {
+	var topics = {};
+	var hOP = topics.hasOwnProperty;
+
+	return {
+		subscribe: function (topic, listener) {
+			// Create the topic's object if not yet created
+			if (!hOP.call(topics, topic)) 
+				topics[topic] = [];
+			
+			// Add the listener to queue
+			var index = topics[topic].push(listener) - 1;
+
+			// Provide handle back for removal of topic
+			return {
+				remove: function () {
+					delete topics[topic][index];
+				}
+			};
+		},
+		publish: function (topic, info) {
+			// If the topic doesn't exist, or there's no listeners in queue, just leave
+			if (!hOP.call(topics, topic)) 
+				return;
+			
+			// Cycle through topics queue, fire!
+			topics[topic].forEach(function (item) {
+				item(
+					info != undefined
+						? info
+						: {}
+				);
+			});
+		}
+	};
+})();
 
 
 /**
@@ -293,119 +355,14 @@ function setComponentObserver(model) {
 
 function setComponentObservable() {
 	let sb = this.sb; //string from attribute listener
-	console.log('here...');
 
 	if (h.boolean.isString(sb)) {
 		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sb); //makes an array of [remote, local...] listener
 		
 		this.sbChannel = channelAndSubject[0];
 		this.sbSubject = channelAndSubject[1];
-		console.log('this.sbChannel');
-		console.log(this.sbChannel);
-		
 	}	
 }
-
-
-/**
- * Model has responsibility for calculations etc
- */
-function Model() {
-	let that = this;
-	
-	const eventTarget = document.createElement('event-target');
-
-	return {
-		//dispatches custom event with eventName witch contains remoteEvent
-		dispatch: function(eventName, e) { //eventName is name of localEvent. e is remoteEvent
-			return eventTarget.dispatchEvent(new CustomEvent(eventName, {detail: e}));
-		},
-		eval: function(name) {
-			return eval(name) 
-		}
-	};
-}
-
-function View(model) {
-	let that = this;
-
-	return {
-		eval: function(name) {
-			return eval(name); 
-		}
-	}; 
-}
-
-
-
-function Ctrl(model, view) {
-	let that = this;
-
-	return {
-		eval: function(name) {
-			return eval(name); 
-		},
-		useraction: function(e) { //local events initiated by users
-			let attribute = e.detail.attribute;
-			let data = e.detail.data;
-			console.log('THEDATA');
-			console.log(data);
-			if (attribute !== undefined) {
-				model.updateModelWithAttribute(attribute, data);
-			}		
-		},
-		clearFromParent: function(e) { //local events initiated by users
-			let parent = e.detail.parent;
-			let attribute = e.detail.attribute;
-			let data = e.detail.data;
-			that[attribute] = data;
-			if (attribute !== undefined) {
-				model.updateModelWithAttribute(attribute, data, parent);
-			}	
-		},
-		updatedModel: function(e) { //local events initiated by users
-			let parent = e.detail.parent;
-			let attribute = e.detail.name;
-			let child = e.detail.child;
-			let newVal = e.detail.newVal;
-			console.log('PARENT IN UPDATED MODEL');
-			console.log(parent);
-			
-			if (attribute !== undefined) {
-				let item = model.get(attribute);
-				view.updateView(attribute, item);
-				
-				if (parent !== undefined) {
-					console.log('UPDATE PARENT');
-					console.log(that);
-					console.log(parent.eventTarget);
-					console.log(attribute);
-					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, attribute: attribute, newVal: newVal});
-				} else {
-					console.log('No parent...');
-				}
-			}
-		},
-		attributeFromParent: function(e) {
-			let parent = e.detail.parent;
-			console.log('sent parent');
-			console.log(e.detail.parent);
-			console.log(e.detail.attribute);
-			//parent = "hopp";
-			let attribute = e.detail.attribute;
-			let data = e.detail.data;
-			if (attribute !== undefined) {
-				console.log('attribute defined');
-				console.log(attribute);
-				console.log(data);
-				console.log(parent);
-				model.updateModelWithAttribute(attribute, data, parent);
-			}	
-		}
-	};
-}
-
-
 
 
 function eventDispatcher(element, eventName, details) {
@@ -416,45 +373,6 @@ function eventDispatcher(element, eventName, details) {
 		detail: details
 	}));
 }
-
-//Pub/sub communication station with subscribers and publishers
-var events = (function () {
-	var topics = {};
-	var hOP = topics.hasOwnProperty;
-
-	return {
-		subscribe: function (topic, listener) {
-			// Create the topic's object if not yet created
-			if (!hOP.call(topics, topic)) 
-				topics[topic] = [];
-			
-			// Add the listener to queue
-			var index = topics[topic].push(listener) - 1;
-
-			// Provide handle back for removal of topic
-			return {
-				remove: function () {
-					delete topics[topic][index];
-				}
-			};
-		},
-		publish: function (topic, info) {
-			// If the topic doesn't exist, or there's no listeners in queue, just leave
-			if (!hOP.call(topics, topic)) 
-				return;
-			
-			// Cycle through topics queue, fire!
-			topics[topic].forEach(function (item) {
-				item(
-					info != undefined
-						? info
-						: {}
-				);
-			});
-		}
-	};
-})();
-
 
 
 

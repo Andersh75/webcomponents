@@ -63,7 +63,7 @@
 		}
 
 		//extends this.ctrl in CustomElement
-		extendCtrl(that) {
+		extendCtrl(that, model, view) {
 			
 			//intit
 			this.ctrl.run = function() {
@@ -77,33 +77,10 @@
 				// .subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
 			};
 
-			//initiated by child
-			// this.ctrl.updatedValueAttributeFromChild = function(e) {
-			// 	let child = e.detail.child;
-			// 	that.value = child.value;
-			// };
-			
-			// this.ctrl.updatedPlaceholderAttributeFromChild = function(e) {
-			// 	let child = e.detail.child;
-			// 	that.placeholder = child.placeholder;
-			// };
-			
-			// this.ctrl.updatedTitleAttributeFromChild = function(e) {
-			// 	let child = e.detail.child;
-			// 	that.title = child.title;
-			// };
-
-			this.ctrl.updatedAttributeFromChild = function(e) {
-				let child = e.detail.child;
-				let attribute = e.detail.attribute;
-				that[attribute] = e.detail.newVal;
-			};
+			//local events initiated by child
 
 
-
-			//local
-
-			//global - from stream
+			//local events initiated by global stream
 			this.ctrl.updateheadline$ = function(e) {
 				myRxmq.channel(e.detail[0]).observe(e.detail[1])
 				.switchMap((ev) => Rx.Observable.interval(1000))
@@ -150,52 +127,35 @@
 					}
 				);
 			}
-			
 		
-			
-			// this.ctrl.clearedinputfromchild = function(e) {
-				// 	console.log('CLEARED INPUT FROM CHILD');
-				// 	that.value = '';
-				// };
+					
 				
-				// this.ctrl.valuefromchild = function(e) {
-					// 	console.log('INPUT VALUE FROM CHILD');
-					// 	//that.value = '';
-					// };
-					
-					
-					
-					//local
-					
-					
-					//parent
-					this.ctrl.clearallfromparent = function(e) {
-						let input = that.shadowRoot.querySelector('#input');
-						eventDispatcher(input.eventTarget, 'clearfromparent', {parent: that, attribute: 'value', data: ""});
-					};
-					
-					//global
-					
-					
-				}
+			//parent
+			this.ctrl.clearallfromparent = function(e) {
+				let input = that.shadowRoot.querySelector('#input');
+				eventDispatcher(input.eventTarget, 'clearselffromparent', {parent: that, attribute: 'value', data: ""});
+			};
+			
+			
+		}
 
-				//extends this.view in CustomElement
-				extendView(that) {
-				
-				}
+		//extends this.view in CustomElement
+		extendView(that, model) {
+		
+		}
 
-				//extends this.model from CustomElement
-				extendModel(that) {
-					
-				}
-				
-				
-			}
+		//extends this.model from CustomElement
+		extendModel(that) {
 			
-			window.customElements.define('headline-input-ce', HeadlineInputCE);
-			
-		})(window, document);
-		</script>
+		}
+		
+		
+	}
+	
+	window.customElements.define('headline-input-ce', HeadlineInputCE);
+		
+	})(window, document);
+	</script>
 
 <script type="text/javascript" src="/js/curry.js"></script>
 <script type="text/javascript" src="/js/helper.js"></script>

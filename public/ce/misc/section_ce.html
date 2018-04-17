@@ -49,11 +49,9 @@
 		}
 
 		
-		extendView(that) {
 
-		}
 
-		extendCtrl(that) {
+		extendCtrl(that, model, view) {
 			//local
 			this.ctrl.run = function() {
 				console.log('Xhere');
@@ -62,6 +60,10 @@
 			//global
 
 	
+		}
+
+		extendView(that, view) {
+
 		}
 
 		extendModel(that) {

@@ -38,18 +38,17 @@
 
 
 
-		extendCtrl(that) {
-			//let parent;
+		extendCtrl(that, model, view) {
 
 			//init
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.value)) {
 					let attribute = 'value';
-					that.view.updateView(attribute, that.value);
+					view.updateView(attribute, that.value);
 				}
 				if (!h.boolean.isEmpty(that.placeholder)) {
 					let attribute = 'placeholder';
-					that.view.updateView(attribute, that.placeholder);
+					view.updateView(attribute, that.placeholder);
 				}
 			};
 
@@ -58,15 +57,11 @@
 
 
 			//local events initiated by model
-			// this.ctrl.updatedModel = function(e) {
-			// 	that.updateViewAndParentAttribute(e, that, that.parent);
-			// };
-
 
 
 		}
 
-		extendView(that) {
+		extendView(that, model) {
 			this.view.renderPlaceholder = function(obj) {
 				that.shadowRoot.querySelector('#input').placeholder = obj;
 			};
@@ -116,13 +111,6 @@
 			this.model.get = function(attribute) {
 				return db[attribute];
 			};
-
-
-			// this.model.clearValue = function(e) {
-			// 	that.value = "";
-			// 	value = "";
-			// 	eventDispatcher(that.eventTarget, 'clearedvalue', e.detail);
-			// };
 		}
 	}
 

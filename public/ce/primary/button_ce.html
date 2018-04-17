@@ -1,3 +1,4 @@
+//TODO: DECIDE ON HOW IT SHPOULD WORK AND CHANGE LOGIC BELOW
 <template>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -29,18 +30,15 @@
 			return [ 'toggle', 'value' ];
 		}
 
-		extendCtrl(that) {
-			//let parent;
+		extendCtrl(that, model, view) {
 
 			//init
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.value)) {
-					//console.log('INIT RUN');
 					let attribute = 'value';
 					that.view.updateView(attribute, that.value);
 				}
 				if (!h.boolean.isEmpty(that.toggle)) {
-					//console.log('INIT RUN');
 					let attribute = 'toggle';
 					that.view.updateView(attribute, that.toggle);
 				}
@@ -50,7 +48,7 @@
 
 			};
 
-			//initiated by parent
+			//local events initiated by parent
 			this.ctrl.toggleAttributeFromParent = function(e) {
 				parent = e.detail;
 				that.toggle = parent.toggle;
@@ -75,19 +73,9 @@
 					
 			// 	}
 			// };
-
-
-			//local events initiated by model
-			// this.ctrl.updatedModel = function(e) {
-			// 	that.updateViewAndParentAttribute(e, that, parent);
-			// };
-
-			
-
-		
 		}
 
-		extendView(that) {
+		extendView(that, model) {
 			this.view.renderValue = function(obj) {
 				that.shadowRoot.querySelector('button').textContent = obj;
 			};

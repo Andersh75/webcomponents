@@ -42,14 +42,13 @@
         };
 		
 		//Controller
-		extendCtrl(that) {
-			//let parent;
+		extendCtrl(that, model, view) {
 
 			//init
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.title)) {
 					let attribute = 'title';
-					that.view.updateView(attribute, that.title);
+					view.updateView(attribute, that.title);
 				}
 			};
 
@@ -57,15 +56,15 @@
 			//local events initiated by parent
 
 
-			//local events - from model
-			// this.ctrl.updatedModel = function(e) {
-			// 	that.updateViewAndParentAttribute(e, that, that.parent);
-			// };
+			//local events initiated by parent
+
+
 		}
+
 
 		//View
 		//always passive
-		extendView(that) {
+		extendView(that, model) {
 			this.view.renderTitle = function(obj) {
 				that.shadowRoot.querySelector('#headline').textContent = obj;
 			};
