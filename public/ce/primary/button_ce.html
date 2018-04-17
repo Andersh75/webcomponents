@@ -30,7 +30,7 @@
 		}
 
 		extendCtrl(that) {
-			let parent;
+			//let parent;
 
 			//init
 			this.ctrl.run = function() {
@@ -55,37 +55,35 @@
 				parent = e.detail;
 				that.toggle = parent.toggle;
 				let attribute = 'toggle';
-				that.model.updateModelWithAttribute(attribute, that.toggle);
-			};
-
-			this.ctrl.attributeFromParent = function(e) {
-				parent = e.detail.parent;
-				that.updateModelWithAttribute(e, that, parent)
+				that.model.updateAttributeAndModel(attribute, that.toggle);
 			};
 
 
-			//local events - from model
+			//local events initiated by user
+			// this.ctrl.useraction = function(e) {
+			// 	let attribute = e.detail.attribute
+			// 	// let data = e.detail.data;
+			// 	// that[attribute] = data;
+			// 	console.log('TOGGLE');
+			// 	console.log(e.detail);
+			// 	if(that[attribute] === "on") {
+			// 		that[attribute] = "off";
+			// 		that.model.updateModelWithAttribute(attribute, that[attribute]);
+			// 	} else {
+			// 		that[attribute] = "on";
+			// 		that.model.updateModelWithAttribute(attribute, that[attribute]);
+					
+			// 	}
+			// };
+
+
+			//local events initiated by model
 			this.ctrl.updatedModel = function(e) {
 				that.updateViewAndParentAttribute(e, that, parent);
 			};
 
 			
-			//local events - from user
-			this.ctrl.useraction = function(e) {
-				let attribute = e.detail.attribute
-				// let data = e.detail.data;
-				// that[attribute] = data;
-				console.log('TOGGLE');
-				console.log(e.detail);
-				if(that[attribute] === "on") {
-					that[attribute] = "off";
-					that.model.updateModelWithAttribute(attribute, that[attribute]);
-				} else {
-					that[attribute] = "on";
-					that.model.updateModelWithAttribute(attribute, that[attribute]);
-					
-				}
-			};
+
 		
 		}
 
@@ -108,8 +106,12 @@
 			db.toggle;
 			db.value;
 
-			this.model.updateModelWithAttribute = function(attribute, newVal) {
+			this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 				let oldVal;
+				that[attribute] = newVal;
+				if (parent !== undefined) {
+					that.parent = parent;
+				}
 
 				switch(attribute) {
 					case 'toggle':

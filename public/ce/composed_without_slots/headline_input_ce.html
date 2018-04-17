@@ -69,9 +69,9 @@
 			this.ctrl.run = function() {
 				let headline = that.shadowRoot.querySelector('#headline');
 				let input = that.shadowRoot.querySelector('#input');
-				eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title'}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder'}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value'}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder', data: that.placeholder}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				
 				// Rx.Observable.fromEvent(that.shadowRoot.querySelector('#input'), 'keyup')
 				// .subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
@@ -171,7 +171,7 @@
 					//parent
 					this.ctrl.clearallfromparent = function(e) {
 						let input = that.shadowRoot.querySelector('#input');
-						eventDispatcher(input.eventTarget, 'clearfromparent', {parent: that});
+						eventDispatcher(input.eventTarget, 'clearfromparent', {parent: that, attribute: 'value', data: ""});
 					};
 					
 					//global

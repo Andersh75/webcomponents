@@ -25,6 +25,7 @@
 	class InputCE extends CustomElement {
 		constructor() {
 			super();
+			this.parent;
 			this.thatDoc = thatDoc;
 			this.thisDoc = thisDoc;
 			this.extend();
@@ -38,46 +39,35 @@
 
 
 		extendCtrl(that) {
-			let parent;
+			//let parent;
 
 			//init
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.value)) {
-					console.log('INIT RUN');
 					let attribute = 'value';
 					that.view.updateView(attribute, that.value);
 				}
 				if (!h.boolean.isEmpty(that.placeholder)) {
-					console.log('INIT RUN');
 					let attribute = 'placeholder';
 					that.view.updateView(attribute, that.placeholder);
 				}
 			};
 
-			//local events - from user
-			this.ctrl.useraction = function(e) {
+
+			//local events initiated by parent
+			this.ctrl.clearFromParent = function(e) {
+				that.parent = e.detail.parent;
 				that.updateAttributeAndModel(e, that)
 			};
 
 
-			//local events - from model
+			//local events initiated by model
 			this.ctrl.updatedModel = function(e) {
-				that.updateViewAndParentAttribute(e, that, parent);
+				that.updateViewAndParentAttribute(e, that, that.parent);
 			};
 
 
-			//initiated by parent
-			this.ctrl.attributeFromParent = function(e) {
-				parent = e.detail.parent;
-				that.updateModelWithAttribute(e, that, parent)
-			};
 
-			this.ctrl.clearFromParent = function(e) {
-				that.value = "";
-				parent = e.detail.parent;
-				let attribute = 'value';
-				that.model.updateModelWithAttribute(attribute, that.value);
-			};
 		}
 
 		extendView(that) {
@@ -106,8 +96,12 @@
 			db.placeholder = "";
 			db.value = "";
 
-			this.model.updateModelWithAttribute = function(attribute, newVal) {
+			this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 				let oldVal;
+				that[attribute] = newVal;
+				if (parent !== undefined) {
+					that.parent = parent;
+				}
 
 				switch(attribute) {
 					case 'value':

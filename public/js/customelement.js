@@ -108,15 +108,6 @@ class CustomElement extends HTMLElement {
 	// 	}
 	// }
 
-	updateParent(parent, that, attribute) {
-		if (parent !== undefined) {
-			console.log('UPDATE PARENT');
-			console.log(that, attribute);
-			eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
-		} else {
-			console.log('No parent...');
-		}
-	}
 
 	updatedAttributeFromChild(e, that, attribute) {
 		let child = e.detail;
@@ -124,26 +115,48 @@ class CustomElement extends HTMLElement {
 		return that;
 	}
 
+
+
+
+	// updateParentAttribute(parent, that, attribute) {
+	// 	if (parent !== undefined) {
+	// 		console.log('UPDATE PARENT');
+	// 		console.log(that, attribute);
+	// 		eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
+	// 	} else {
+	// 		console.log('No parent...');
+	// 	}
+	// }
+
 	//General controller functions
 	updateViewAndParentAttribute(e, that, parent) {
 		let attribute = e.detail.name;
 		let item = that.model.get(attribute);
+		console.log(attribute);
+		console.log('item');
+		console.log(item);
 		that.view.updateView(attribute, item);
-		that.updateParent(parent, that, attribute);
+		//that.updateParentAttribute(parent, that, attribute);
+		if (parent !== undefined) {
+			console.log('UPDATE PARENT');
+			console.log(that);
+			console.log(this.parent);
+			console.log(attribute);
+			eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
+		} else {
+			console.log('No parent...');
+		}
 	}
 
-	updateModelWithAttribute(e, that, parent) {
-		let attribute = e.detail.attribute;
-		that[attribute] = parent[attribute];
-		that.model.updateModelWithAttribute(attribute, that[attribute]);
-	}
 
-	updateAttributeAndModel(e, that) {
-		let attribute = e.detail.attribute
-		let data = e.detail.data;
-		that[attribute] = data;
-		that.model.updateModelWithAttribute(attribute, that[attribute]);
-	}
+	// updateAttributeAndModel(e, that) {
+	// 	let attribute = e.detail.attribute;
+	// 	let data = e.detail.data;
+	// 	that[attribute] = data;
+	// 	console.log('that[attribute]');
+	// 	console.log(that[attribute]);
+	// 	that.model.updateModelWithAttribute(attribute, that[attribute]);
+	// }
 
 
 	//each time an observed attribute changes it will run this function. Name, old value, new value of attribute will be passed.
@@ -194,6 +207,35 @@ class CustomElement extends HTMLElement {
 	}  
 } //Class ends here!
 
+function updateAttributeAndModel(e, that, model) {
+	let attribute = e.detail.attribute;
+	let data = e.detail.data;
+	that[attribute] = data;
+	console.log('that[attribute]');
+	console.log(that[attribute]);
+	model.updateModelWithAttribute(attribute, that[attribute]);
+}
+
+// function updateViewAndParentAttribute(e, that, parent, model, view) {
+// 	let attribute = e.detail.name;
+// 	let item = model.get(attribute);
+// 	console.log(attribute);
+// 	console.log('item');
+// 	console.log(item);
+// 	view.updateView(attribute, item);
+// 	//that.updateParentAttribute(parent, that, attribute);
+// 	if (parent !== undefined) {
+// 		console.log('UPDATE PARENT');
+// 		console.log(that);
+// 		console.log(parent.eventTarget);
+// 		console.log(attribute);
+// 		eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
+// 	} else {
+// 		console.log('No parent...');
+// 	}
+// }
+
+
 
 /**
  * setComponentListener set subscribers to Pub/sub
@@ -217,6 +259,8 @@ function setComponentListener(model) {
 		});
 	}	
 }
+
+
 /**
  * setComponentDispatcher sets eventlistener in document with eventName (makes listender global)
  * @param {string} eventName event name to communicate with other components
@@ -292,15 +336,43 @@ function View(model) {
 	}; 
 }
 
+
+
 function Ctrl(model, view) {
 	let that = this;
 
 	return {
 		eval: function(name) {
 			return eval(name); 
+		},
+		useraction: function(e) { //local events initiated by users
+			let attribute = e.detail.attribute;
+			let data = e.detail.data;
+			if (attribute !== undefined) {
+				model.updateModelWithAttribute(attribute, data);
+			}		
+		},
+		attributeFromParent: function(e) {
+			let parent = e.detail.parent;
+			console.log('sent parent');
+			console.log(e.detail.parent);
+			console.log(e.detail.attribute);
+			//parent = "hopp";
+			let attribute = e.detail.attribute;
+			let data = e.detail.data;
+			if (attribute !== undefined) {
+				console.log('attribute defined');
+				console.log(attribute);
+				console.log(data);
+				console.log(parent);
+				model.updateModelWithAttribute(attribute, data, parent);
+			}	
 		}
 	};
 }
+
+
+
 
 function eventDispatcher(element, eventName, details) {
 	element.dispatchEvent(new CustomEvent(eventName, {

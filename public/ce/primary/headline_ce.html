@@ -30,10 +30,11 @@
 
 	class HeadlineCE extends CustomElement {
 		constructor() {
-		super();
-		this.thatDoc = thatDoc;
-		this.thisDoc = thisDoc;
-		this.extend();
+			super();
+			this.parent;
+			this.thatDoc = thatDoc;
+			this.thisDoc = thisDoc;
+			this.extend();
 		}
 
 		static get observedAttributes() {
@@ -42,7 +43,7 @@
 		
 		//Controller
 		extendCtrl(that) {
-			let parent;
+			//let parent;
 
 			//init
 			this.ctrl.run = function() {
@@ -50,27 +51,16 @@
 					let attribute = 'title';
 					that.view.updateView(attribute, that.title);
 				}
-			};	
+			};
+
+
+			//local events initiated by parent
+
 
 			//local events - from model
 			this.ctrl.updatedModel = function(e) {
-				that.updateViewAndParentAttribute(e, that, parent);
+				that.updateViewAndParentAttribute(e, that, that.parent);
 			};
-
-
-			//initiated by parent
-			this.ctrl.attributeFromParent = function(e) {
-				parent = e.detail.parent;
-				that.updateModelWithAttribute(e, that, parent)
-			};
-
-			//global
-			// this.ctrl.changeHeadline = function(e) {
-			// 	that.title = e.detail.detail.changedAttribute.newVal;
-			// 	return that.model.updateHeadline(that.title);
-			// };
-
-
 		}
 
 		//View
@@ -94,8 +84,12 @@
 			let db = {};
 			db.title = "";
 
-			this.model.updateModelWithAttribute = function(attribute, newVal) {
+			this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 				let oldVal;
+				that[attribute] = newVal;
+				if (parent !== undefined) {
+					that.parent = parent;
+				}
 
 				switch(attribute) {
 					case 'title':

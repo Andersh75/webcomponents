@@ -40,6 +40,7 @@
 
 		constructor() {
 			super();
+			this.parent;
 			this.thatDoc = thatDoc;
 			this.thisDoc = thisDoc;
 			this.extend();
@@ -52,7 +53,7 @@
 		
 		//Controller
 		extendCtrl(that) {
-			let parent;
+			//let parent;
 			
 			//intit
 			this.ctrl.run = function() {
@@ -63,33 +64,20 @@
 			};
 
 
-			//local events initiated by user
-			this.ctrl.useraction = function(e) {
-				that.updateAttributeAndModel(e, that)
-			};
-
-
 			//local events initiated by parent
-			this.ctrl.attributeFromParent = function(e) {
-				parent = e.detail.parent;
-				that.updateModelWithAttribute(e, that, parent)
-			};
-
 			this.ctrl.clearFromParent = function(e) {
-				that.selectedindex = "0"
-				parent = e.detail.parent;
-				let attribute = 'selectedindex';
-				that.model.updateModelWithAttribute(attribute, that.selectedindex);
+				that.parent = e.detail.parent;
+				that.updateAttributeAndModel(e, that)
 			};
 
 
 			//local events initiated by model
 			this.ctrl.updatedModel = function(e) {
-				that.updateViewAndParentAttribute(e, that, parent);
+				that.updateViewAndParentAttribute(e, that, that.parent);
 			};
 		}
 
-		
+
 		
 
 		//View
@@ -119,13 +107,21 @@
 			let db ={};
 			db.selectedindex = "0";
 
-			this.model.updateModelWithAttribute = function(attribute, newVal) {
+			this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 				let oldVal;
+				that[attribute] = newVal;
+				console.log('parent again');
+				console.log(parent);
+				if (parent !== undefined) {
+					that.parent = parent;
+				}
+				
 
 				switch(attribute) {
 					case 'selectedindex':
 						console.log('HERE!!!');
 						console.log(newVal);
+						//console.log()
 						oldVal = db.selectedindex;
 						db.selectedindex = newVal;
 						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'selectedindex', oldVal: oldVal, newVal: db.selectedindex});
@@ -134,6 +130,8 @@
 			};
 
 			this.model.get = function(attribute) {
+				console.log('db[attribute]');
+				console.log(db[attribute]);
 				return db[attribute];
 			};
 
