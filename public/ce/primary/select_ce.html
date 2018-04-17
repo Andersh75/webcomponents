@@ -62,18 +62,18 @@
 				}
 			};
 
-			//local events - from user
+
+			//local events initiated by user
 			this.ctrl.useraction = function(e) {
 				that.updateAttributeAndModel(e, that)
 			};
 
 
-			//initiated by parent
+			//local events initiated by parent
 			this.ctrl.attributeFromParent = function(e) {
 				parent = e.detail.parent;
 				that.updateModelWithAttribute(e, that, parent)
 			};
-
 
 			this.ctrl.clearFromParent = function(e) {
 				that.selectedindex = "0"
@@ -82,11 +82,14 @@
 				that.model.updateModelWithAttribute(attribute, that.selectedindex);
 			};
 
-			//local events - from model
+
+			//local events initiated by model
 			this.ctrl.updatedModel = function(e) {
 				that.updateViewAndParentAttribute(e, that, parent);
 			};
 		}
+
+		
 		
 
 		//View
