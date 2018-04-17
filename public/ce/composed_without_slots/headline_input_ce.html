@@ -69,30 +69,34 @@
 			this.ctrl.run = function() {
 				let headline = that.shadowRoot.querySelector('#headline');
 				let input = that.shadowRoot.querySelector('#input');
-				eventDispatcher(headline.eventTarget, 'titleattributefromparent', that); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-				eventDispatcher(input.eventTarget, 'placeholderattributefromparent', that); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-				eventDispatcher(input.eventTarget, 'valueattributefromparent', that); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title'}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder'}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value'}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				
 				// Rx.Observable.fromEvent(that.shadowRoot.querySelector('#input'), 'keyup')
 				// .subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
 			};
 
 			//initiated by child
-			this.ctrl.updatedValueAttributeFromChild = function(e) {
-				let child = e.detail;
-				that.value = child.value;
-			};
+			// this.ctrl.updatedValueAttributeFromChild = function(e) {
+			// 	let child = e.detail.child;
+			// 	that.value = child.value;
+			// };
 			
-			this.ctrl.updatedPlaceholderAttributeFromChild = function(e) {
-				let child = e.detail;
-				console.log('parent.placeholder');
-				console.log(child.placeholder);
-				that.placeholder = child.placeholder;
-			};
+			// this.ctrl.updatedPlaceholderAttributeFromChild = function(e) {
+			// 	let child = e.detail.child;
+			// 	that.placeholder = child.placeholder;
+			// };
 			
-			this.ctrl.updatedTitleFromChild = function(e) {
-				let child = e.detail;
-				that.title = child.title;
+			// this.ctrl.updatedTitleAttributeFromChild = function(e) {
+			// 	let child = e.detail.child;
+			// 	that.title = child.title;
+			// };
+
+			this.ctrl.updatedAttributeFromChild = function(e) {
+				let child = e.detail.child;
+				let attribute = e.detail.attribute;
+				that[attribute] = child[attribute];
 			};
 
 
@@ -167,7 +171,7 @@
 					//parent
 					this.ctrl.clearallfromparent = function(e) {
 						let input = that.shadowRoot.querySelector('#input');
-						eventDispatcher(input.eventTarget, 'clearfromparent', that);
+						eventDispatcher(input.eventTarget, 'clearfromparent', {parent: that});
 					};
 					
 					//global

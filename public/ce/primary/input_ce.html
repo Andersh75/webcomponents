@@ -44,101 +44,44 @@
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.value)) {
 					console.log('INIT RUN');
-					that.view.updatedValue(that.value);
+					let attribute = 'value';
+					that.view.updateView(attribute, that.value);
 				}
 				if (!h.boolean.isEmpty(that.placeholder)) {
 					console.log('INIT RUN');
-					that.view.updatedPlaceholder(that.placeholder);
+					let attribute = 'placeholder';
+					that.view.updateView(attribute, that.placeholder);
 				}
 			};
 
 			//local events - from user
 			this.ctrl.useraction = function(e) {
-				that.value = e.detail.composedPath()[0].value;
-				that.model.updateModelWithValueAttribute(that.value);
+				that.updateAttributeAndModel(e, that)
 			};
+
 
 			//local events - from model
-			this.ctrl.updatedValue = function() {
-				let value = that.model.getValue();
-				that.view.updatedValue(value);
-
-				//that.updateparent();
-
-				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedvalueattributefromchild', that);
-				} else {
-					console.log('No parent...');
-				}
-								
+			this.ctrl.updatedModel = function(e) {
+				that.updateViewAndParentAttribute(e, that, parent);
 			};
-
-			this.ctrl.updatedPlaceholder = function() {
-				let placeholder = that.model.getPlaceholder();
-				that.view.updatedPlaceholder(placeholder);
-
-				
-				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedplaceholderattributefromchild', that);
-				} else {
-					console.log('No parent...');
-				}
-				
-			};
-
-
-
-
-			// this.ctrl.clearedValue = function(e) {
-			// 	that.view.updatedValue();
-			// 	eventDispatcher(parent.eventTarget, 'clearedinputfromchild');
-			// 	//console.log("clearedValue");
-			// };
-
-
-
-
-
 
 
 			//initiated by parent
-			this.ctrl.placeholderAttributeFromParent = function(e) {
-				parent = e.detail;
-				that.placeholder = parent.placeholder;
-				
-				that.model.updateModelWithPlaceholderAttribute(that.placeholder);
+			this.ctrl.attributeFromParent = function(e) {
+				parent = e.detail.parent;
+				that.updateModelWithAttribute(e, that, parent)
 			};
-
-			this.ctrl.valueAttributeFromParent = function(e) {
-				parent = e.detail;
-				that.value = parent.value;
-				
-				that.model.updateModelWithValueAttribute(that.value);
-			};
-
-
-
 
 			this.ctrl.clearFromParent = function(e) {
-				that.value = "0"
-				that.model.updateModelWithValueAttribute(that.value);
+				that.value = "";
+				parent = e.detail.parent;
+				let attribute = 'value';
+				that.model.updateModelWithAttribute(attribute, that.value);
 			};
-
-			//global
-			// this.ctrl.clearfield = function(e) {
-			// 	return that.model.clearValue();
-			// 	// console.log("clearfield");
-			// 	// console.log(e);
-			// 	// that.value = e.detail.detail.changedAttribute.newVal;
-			// 	// return that.model.changeHeadline(e);
-			// };
-
 		}
 
 		extendView(that) {
 			this.view.renderPlaceholder = function(obj) {
-				console.log('parent.placeholder');
-				console.log(obj);
 				that.shadowRoot.querySelector('#input').placeholder = obj;
 			};
 
@@ -146,12 +89,15 @@
 				that.shadowRoot.querySelector('#input').value = obj;
 			};
 
-			this.view.updatedValue = function(value) {
-				that.view.renderValue.call(that, value);
-			};
-
-			this.view.updatedPlaceholder = function(placeholder) {
-				that.view.renderPlaceholder.call(that, placeholder);
+			this.view.updateView = function(attribute, data) {
+				switch(attribute) {
+					case 'value':
+					that.view.renderValue.call(that, data);
+					break;
+					case 'placeholder':
+					that.view.renderPlaceholder.call(that, data);
+					break;
+				}	
 			};
 		}
 
@@ -160,27 +106,26 @@
 			db.placeholder = "";
 			db.value = "";
 
-			this.model.updateModelWithValueAttribute = function(newVal) {
-				db.value = newVal;
-				eventDispatcher(that.eventTarget, 'updatedvalue');
+			this.model.updateModelWithAttribute = function(attribute, newVal) {
+				let oldVal;
+
+				switch(attribute) {
+					case 'value':
+						oldVal = db.value;
+						db.value = newVal;
+						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'value', oldVal: oldVal, newVal: db.value});
+						break;
+					case 'placeholder':
+						oldVal = db.placeholder;
+						db.placeholder = newVal;
+						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'placeholder', oldVal: oldVal, newVal: db.placeholder});
+						break;
+				} 	
 			};
 
-			this.model.getValue = function() {
-				return db.value;
+			this.model.get = function(attribute) {
+				return db[attribute];
 			};
-
-			this.model.updateModelWithPlaceholderAttribute = function(newVal) {
-				db.placeholder = newVal;
-
-				eventDispatcher(that.eventTarget, 'updatedplaceholder');
-			};
-
-			this.model.getPlaceholder = function() {
-				return db.placeholder;
-			};
-
-
-
 
 
 			// this.model.clearValue = function(e) {

@@ -47,28 +47,21 @@
 			//init
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.title)) {
-					that.view.render(that.title);
+					let attribute = 'title';
+					that.view.updateView(attribute, that.title);
 				}
 			};	
 
 			//local events - from model
-			this.ctrl.updatedHeadline = function() {
-				let headline = that.model.getHeadline();
-				that.view.updatedHeadline(headline);
-				
-				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedtitleattributefromchild', that);
-				} else {
-					console.log('No parent...');
-				}
+			this.ctrl.updatedModel = function(e) {
+				that.updateViewAndParentAttribute(e, that, parent);
 			};
 
 
 			//initiated by parent
-			this.ctrl.titleAttributeFromParent = function(e) {
-				parent = e.detail;
-				that.title = parent.title;
-				that.model.updateModelWithTitleAttribute(that.title);
+			this.ctrl.attributeFromParent = function(e) {
+				parent = e.detail.parent;
+				that.updateModelWithAttribute(e, that, parent)
 			};
 
 			//global
@@ -83,27 +76,38 @@
 		//View
 		//always passive
 		extendView(that) {
-			this.view.render = function(obj) {
+			this.view.renderTitle = function(obj) {
 				that.shadowRoot.querySelector('#headline').textContent = obj;
 			};
 
-			this.view.updatedHeadline = function(headline) {
-				that.view.render.call(that, headline);
+			this.view.updateView = function(attribute, item) {
+				switch(attribute) {
+					case 'title':
+					that.view.renderTitle.call(that, item);
+					break;
+				}	
 			};
 		}
 		
 		//Model
 		extendModel(that) {
 			let db = {};
-			db.headline = "";
+			db.title = "";
 
-			this.model.updateModelWithTitleAttribute = function(newVal) {
-				db.headline = newVal;
-				eventDispatcher(that.eventTarget, 'updatedheadline'); 
+			this.model.updateModelWithAttribute = function(attribute, newVal) {
+				let oldVal;
+
+				switch(attribute) {
+					case 'title':
+						oldVal = db.title;
+						db.title = newVal;
+						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'title', oldVal: oldVal, newVal: db.title});
+						break;
+				} 
 			};
 
-			this.model.getHeadline = function() {
-				return db.headline;
+			this.model.get = function(attribute) {
+				return db[attribute];
 			};
 		}
 	}

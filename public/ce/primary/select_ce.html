@@ -57,69 +57,42 @@
 			//intit
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.selectedindex)) {
-					that.view.updatedSelectedIndex(that.selectedindex);
+					let attribute = 'selectedindex';
+					that.view.updateView(attribute, that[attribute]);
 				}
 			};
 
 			//local events - from user
 			this.ctrl.useraction = function(e) {
-				that.selectedindex = e.detail.composedPath()[0].selectedIndex;
-				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
+				that.updateAttributeAndModel(e, that)
 			};
-
-			//local events - from model
-			this.ctrl.updatedSelectedIndex = function() {
-				let selectedIndex = that.model.getSelectedIndex();
-				
-				that.view.updatedSelectedIndex(selectedIndex);
-		
-				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedselectedindexattributefromchild', that); 
-				} else {
-					console.log('No parent...');
-				}
-				
-			};
-
-
-			// this.ctrl.clearedSelectedIndex = function() {
-			// 	that.view.updatedSelectedIndex();
-			// 	eventDispatcher(e.detail.eventTarget, 'clearedselectfromchild');
-			// 	//console.log("clearedValue");
-			// };
-
 
 
 			//initiated by parent
-			this.ctrl.selectedIndexAttributeFromParent = function(e) {
-				parent = e.detail;
-				that.selectedindex = parent.selectedindex;
-				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
+			this.ctrl.attributeFromParent = function(e) {
+				parent = e.detail.parent;
+				that.updateModelWithAttribute(e, that, parent)
 			};
+
 
 			this.ctrl.clearFromParent = function(e) {
 				that.selectedindex = "0"
-				that.model.updateModelWithSelectedIndexAttribute(that.selectedindex);
+				parent = e.detail.parent;
+				let attribute = 'selectedindex';
+				that.model.updateModelWithAttribute(attribute, that.selectedindex);
 			};
 
-			//global
-			// this.ctrl.clearfield = function(e) {
-			// 	that.selectedindex = "0"
-			// 	that.value = "0"
-			// 	that.model.updateSelectedIndex(that.selectedindex);
-			// 	console.log("clearfield");
-			// 	// console.log(e);
-			// 	// that.value = e.detail.detail.changedAttribute.newVal;
-			// 	// return that.model.changeHeadline(e);
-			// };
-
+			//local events - from model
+			this.ctrl.updatedModel = function(e) {
+				that.updateViewAndParentAttribute(e, that, parent);
+			};
 		}
 		
 
 		//View
 		//always passive
 		extendView(that) {
-			this.view.render = function(obj) {
+			this.view.renderSelectedIndex = function(obj) {
 				Array.prototype.slice.call(that.shadowRoot.querySelector('#select')).forEach(child => {
 					child.removeAttribute('selected');
 				})
@@ -128,24 +101,37 @@
 				that.shadowRoot.querySelector('#select').children[obj].setAttribute('selected', 'selected');
 			};
 
-			this.view.updatedSelectedIndex = function(selectedIndex) {
-				
-				that.view.render.call(that, selectedIndex);
+			this.view.updateView = function(attribute, item) {
+				switch(attribute) {
+					case 'selectedindex':
+					that.view.renderSelectedIndex.call(that, item);
+					break;
+				}	
 			};
+
 		}
 		
 		//Model
 		extendModel(that) {
 			let db ={};
-			db.selectedIndex = "0";
+			db.selectedindex = "0";
 
-			this.model.updateModelWithSelectedIndexAttribute = function(newVal) {
-				db.selectedIndex = newVal;
-				eventDispatcher(that.eventTarget, 'updatedselectedindex');
+			this.model.updateModelWithAttribute = function(attribute, newVal) {
+				let oldVal;
+
+				switch(attribute) {
+					case 'selectedindex':
+						console.log('HERE!!!');
+						console.log(newVal);
+						oldVal = db.selectedindex;
+						db.selectedindex = newVal;
+						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'selectedindex', oldVal: oldVal, newVal: db.selectedindex});
+						break;
+				} 
 			};
 
-			this.model.getSelectedIndex = function() {
-				return db.selectedIndex;
+			this.model.get = function(attribute) {
+				return db[attribute];
 			};
 
 

@@ -46,7 +46,9 @@ class CustomElement extends HTMLElement {
 			this.shadowRoot.querySelector('select').addEventListener('change', e => {
 			e.stopPropagation; //prevents from bubbling and capturing
 			e.preventDefault; //prevent browser specific default actions for elements.
-			eventDispatcher(this.eventTarget, 'useraction', e); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
+			let data = e.composedPath()[0].selectedIndex;
+			let attribute = 'selectedindex';
+			eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute}); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
 			});
 
 			//button
@@ -54,7 +56,9 @@ class CustomElement extends HTMLElement {
 			this.shadowRoot.querySelector('button').addEventListener('click', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', e); 
+				let data = false;
+				let attribute = 'toggle';
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute}); 
 			});
 
 			//input
@@ -63,13 +67,17 @@ class CustomElement extends HTMLElement {
 				e.stopPropagation;
 				e.preventDefault;
 				if (e.keyCode === 32 || e.keyCode === 13) {
-					eventDispatcher(this.eventTarget, 'useraction', e);
+					let data = e.composedPath()[0].value;
+					let attribute = 'value';
+					eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute});
 				}
 			});
 			this.shadowRoot.querySelector('input').addEventListener('blur', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', e);
+				let data = e.composedPath()[0].value;
+				let attribute = 'value';
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute});
 			});
 		} else {
 			
@@ -80,7 +88,6 @@ class CustomElement extends HTMLElement {
 				let el = e.composedPath()[0];
 				
 				if (e.keyCode === 32 || e.keyCode === 13) {
-					
 					el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
 				}
 			});
@@ -88,19 +95,56 @@ class CustomElement extends HTMLElement {
 			this.addEventListener('click', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', e);
-				
+				eventDispatcher(this.eventTarget, 'useraction', e);	
 			});
+		}	
+	}
 
+	// updateparent(parent, that, attribute) {
+	// 	if (parent !== undefined) {
+	// 		eventDispatcher(parent.eventTarget, 'updated' + attribute + 'attributefromchild', {parent: that, attribute: attribute});
+	// 	} else {
+	// 		console.log('No parent...');
+	// 	}
+	// }
 
+	updateParent(parent, that, attribute) {
+		if (parent !== undefined) {
+			console.log('UPDATE PARENT');
+			console.log(that, attribute);
+			eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: that, attribute: attribute});
+		} else {
+			console.log('No parent...');
 		}
-
-		
 	}
 
-	updateparent() {
-		//alert('hej');
+	updatedAttributeFromChild(e, that, attribute) {
+		let child = e.detail;
+		that[attribute] = child[attribute];
+		return that;
 	}
+
+	//General controller functions
+	updateViewAndParentAttribute(e, that, parent) {
+		let attribute = e.detail.name;
+		let item = that.model.get(attribute);
+		that.view.updateView(attribute, item);
+		that.updateParent(parent, that, attribute);
+	}
+
+	updateModelWithAttribute(e, that, parent) {
+		let attribute = e.detail.attribute;
+		that[attribute] = parent[attribute];
+		that.model.updateModelWithAttribute(attribute, that[attribute]);
+	}
+
+	updateAttributeAndModel(e, that) {
+		let attribute = e.detail.attribute
+		let data = e.detail.data;
+		that[attribute] = data;
+		that.model.updateModelWithAttribute(attribute, that[attribute]);
+	}
+
 
 	//each time an observed attribute changes it will run this function. Name, old value, new value of attribute will be passed.
 	//Returns an object called details

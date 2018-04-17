@@ -66,20 +66,26 @@
 			this.ctrl.run = function() {
 				let headline = that.shadowRoot.querySelector('#headline');
 				let select = that.shadowRoot.querySelector('#select');
-				eventDispatcher(headline.eventTarget, 'titleattributefromparent', that);
-				eventDispatcher(select.eventTarget, 'selectedindexattributefromparent', that);
+				eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title'});
+				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex'});
 
 			};
 
 			//initiated by child
-			this.ctrl.updatedSelectedIndexAttributeFromChild = function(e) {
-				let child = e.detail;
-				that.selectedindex = child.selectedindex;
-			};
+			// this.ctrl.updatedSelectedIndexAttributeFromChild = function(e) {
+			// 	let child = e.detail.child;
+			// 	that.selectedindex = child.selectedindex;
+			// };
 
-			this.ctrl.updatedTitleAttributeFromChild = function(e) {
-				let child = e.detail;
-				that.title = child.title;
+			// this.ctrl.updatedTitleAttributeFromChild = function(e) {
+			// 	let child = e.detail.child;
+			// 	that.title = child.title;
+			// };
+
+			this.ctrl.updatedAttributeFromChild = function(e) {
+				let child = e.detail.child;
+				let attribute = e.detail.attribute;
+				that[attribute] = child[attribute];
 			};
 
 			// this.ctrl.clearedselectfromchild = function(e) {
@@ -94,7 +100,7 @@
 			//parent
 			this.ctrl.clearallfromparent = function(e) {
 				let select = that.shadowRoot.querySelector('#select');
-				eventDispatcher(select.eventTarget, 'clearfromparent', that);
+				eventDispatcher(select.eventTarget, 'clearfromparent', {parent: that});
 			};
 
 			//global

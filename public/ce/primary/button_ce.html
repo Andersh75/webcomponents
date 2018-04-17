@@ -35,12 +35,14 @@
 			//init
 			this.ctrl.run = function() {
 				if (!h.boolean.isEmpty(that.value)) {
-					console.log('INIT RUN');
-					that.view.updatedValue(that.value);
+					//console.log('INIT RUN');
+					let attribute = 'value';
+					that.view.updateView(attribute, that.value);
 				}
-				if (!h.boolean.isEmpty(that.placeholder)) {
-					console.log('INIT RUN');
-					that.view.updatedToggle(that.toggle);
+				if (!h.boolean.isEmpty(that.toggle)) {
+					//console.log('INIT RUN');
+					let attribute = 'toggle';
+					that.view.updateView(attribute, that.toggle);
 				}
 
 				// Rx.Observable.fromEvent(that.shadowRoot.querySelector('button'), 'click')
@@ -52,50 +54,35 @@
 			this.ctrl.toggleAttributeFromParent = function(e) {
 				parent = e.detail;
 				that.toggle = parent.toggle;
-				that.model.updateModelWithToggleAttribute(that.toggle);
+				let attribute = 'toggle';
+				that.model.updateModelWithAttribute(attribute, that.toggle);
 			};
 
-			this.ctrl.valueAttributeFromParent = function(e) {
-				parent = e.detail;
-				that.value = parent.value;
-				that.model.updateModelWithValueAttribute(that.value);
+			this.ctrl.attributeFromParent = function(e) {
+				parent = e.detail.parent;
+				that.updateModelWithAttribute(e, that, parent)
 			};
 
 
 			//local events - from model
-			this.ctrl.updatedToggle = function() {
-				let toggle = that.model.getToggle();
-				
-				that.view.updatedToggle(toggle);
-		
-				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedtoggleattributefromchild', that); 
-				} else {
-					console.log('No parent...');
-				}	
+			this.ctrl.updatedModel = function(e) {
+				that.updateViewAndParentAttribute(e, that, parent);
 			};
 
-			this.ctrl.updatedValue = function() {
-				let value = that.model.getValue();
-				
-				that.view.updatedValue(value);
-		
-				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedvalueattributefromchild', that); 
-				} else {
-					console.log('No parent...');
-				}
-				
-			};
 			
 			//local events - from user
 			this.ctrl.useraction = function(e) {
-				if(that.toggle === "on") {
-					that.toggle = "off";
-					that.model.updateModelWithToggleAttribute(that.toggle);
+				let attribute = e.detail.attribute
+				// let data = e.detail.data;
+				// that[attribute] = data;
+				console.log('TOGGLE');
+				console.log(e.detail);
+				if(that[attribute] === "on") {
+					that[attribute] = "off";
+					that.model.updateModelWithAttribute(attribute, that[attribute]);
 				} else {
-					that.toggle = "on";
-					that.model.updateModelWithToggleAttribute(that.toggle);
+					that[attribute] = "on";
+					that.model.updateModelWithAttribute(attribute, that[attribute]);
 					
 				}
 			};
@@ -107,12 +94,12 @@
 				that.shadowRoot.querySelector('button').textContent = obj;
 			};
 
-			this.view.updatedToggle = function(toggle) {
-				//that.view.render.call(that, toggle);
-			};
-
-			this.view.updatedValue = function(value) {
-				that.view.renderValue.call(that, value);
+			this.view.updateView = function(attribute, value) {
+				switch(attribute) {
+					case 'value':
+					that.view.renderValue.call(that, value);
+					break;
+				}
 			};
 		}
 
@@ -121,22 +108,26 @@
 			db.toggle;
 			db.value;
 
-			this.model.updateModelWithToggleAttribute = function(newVal) {
-				db.toggle = newVal;
-				eventDispatcher(that.eventTarget, 'updatedtoggle');
+			this.model.updateModelWithAttribute = function(attribute, newVal) {
+				let oldVal;
+
+				switch(attribute) {
+					case 'toggle':
+						oldVal = db.toggle;
+						db.toggle = newVal;
+						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'toggle', oldVal: oldVal, newVal: db.toggle});
+						break;
+					case 'value':
+						oldVal = db.value;
+						db.value = newVal;
+						eventDispatcher(that.eventTarget, 'updatedmodel', {name: 'value', oldVal: oldVal, newVal: db.value});
+						break;
+				} 
+				
 			};
 
-			this.model.getToggle = function() {
-				return db.toggle;
-			};
-
-			this.model.updateModelWithValueAttribute = function(newVal) {
-				db.value = newVal;
-				eventDispatcher(that.eventTarget, 'updatedvalue');
-			};
-
-			this.model.getValue = function() {
-				return db.value;
+			this.model.get = function(attribute) {
+				return db[attribute];
 			};
 		}
 	}
