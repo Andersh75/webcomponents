@@ -72,117 +72,163 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-var db = "hej";
 
-console.log('tja');
+let button = document.querySelector("#knappen");
 
+let buttonbox = document.querySelector("#buttonbox");
+
+const click$ = Rx.Observable.fromEvent(buttonbox, 'click');
+
+const doubleClick$ = click$
+						.bufferWhen(() => click$.debounceTime(250))
+						.filter((x) => x.length >= 2)
+						.map(([e1, e2]) => e1.target.id === e2.target.id);
+
+
+doubleClick$
+.subscribe(totalClicks => {
+	console.log(totalClicks);
+});
+
+let receiver = document.querySelector('#receiver');
+let sender1 = document.querySelector('#sender1');
+let sender2 = document.querySelector('#sender2');
+
+const ticker$ = Rx.Observable.interval(1000);
+//ticker$.subscribe(e => receiver.value = e);
+
+const senderStream1 = Rx.Observable.fromEvent(sender1, 'blur');
+//senderStream1.subscribe(e => receiver.value = e.target.value);
+
+
+const senderStream2 = Rx.Observable.fromEvent(sender2, 'blur');
+//senderStream2.subscribe(e => receiver.value = e.target.value);
+
+const combinedSenderStream = Rx.Observable.combineLatest(senderStream1, senderStream2);
+
+combinedSenderStream.subscribe(([s1, s2]) => receiver.value = Number(s1.target.value) + Number(s2.target.value));
+
+
+
+
+
+
+
+
+
+
+
+
+// var db = "hej";
+
+// console.log('tja');
 // Rx.Observable.fromEvent(document, 'click')
 // .map((ev) => Rx.Observable.interval(1000))
 // //.map((ev) => 'hej')
 // .mergeAll()
 // .subscribe(x => console.log(x));
 
-const Money = function (currency, val) {
-	return {
-		value: function() {
-			return val;
-		},
-		currency: function() {
-			return currency;
-		},
-		toString: function() {
-			return this.currency() + ' ' + this.value();
-		}
-	}
-}
-
-const newRandomNumber = () => Math.floor(Math.random() * 100);
-
-// Rx.Observable.interval(1000)
-// 	.skip(1)
-// 	.take(5)
-// 	.map(num => new Money('USD', newRandomNumber()))
-// 	.subscribe(price => {
-// 		console.log(price.value());
-// 	});
-
-// Rx.Observable.interval(1000)
-// 	.timeInterval()
-// 	.subscribe(console.log);
-
-
-let api1 = 'https://api.openweathermap.org/data/2.5/forecast?q=Stockholm,se&units=metric&APPID=d4bf7922db1fa7f4d48e3fc22ecbf0a6';
-let api2 = 'https://api.openweathermap.org/data/2.5/forecast?q=Oslo,no&units=metric&APPID=d4bf7922db1fa7f4d48e3fc22ecbf0a6';
-
-function fetchData(api) {
-	return fetch(api)
-	.then(data => data.json());
-	// .then(data => console.log(data));
-}
-
-function fetchDataInterval(api) {
-	return Rx.Observable.interval(2000)
-		.mergeMap(() => Rx.Observable.fromPromise(fetchData(api)));
-}
-
-// function fetchDataInterval(api) {
-// 	return Rx.Observable.of('one', 'two').mergeMap(() => Rx.Observable.interval(2000)
-// 		.mergeMap(() => Rx.Observable.fromPromise(fetchData(api))));
+// const Money = function (currency, val) {
+// 	return {
+// 		value: function() {
+// 			return val;
+// 		},
+// 		currency: function() {
+// 			return currency;
+// 		},
+// 		toString: function() {
+// 			return this.currency() + ' ' + this.value();
+// 		}
+// 	}
 // }
 
-//fetchDataInterval(api1).subscribe(console.log);
+// const newRandomNumber = () => Math.floor(Math.random() * 100);
 
-var oslo = Rx.Observable.of({city: 'oslo', url: api2})
-	.mergeMap(x => Rx.Observable.interval(1000)
-						.mergeMap(i => Rx.Observable.fromPromise(fetchData(x.url))
-											.map(result => {
-												return {city: x.city, temp: result.list[0].main.temp};
-											})
-						)
-	);
+// // Rx.Observable.interval(1000)
+// // 	.skip(1)
+// // 	.take(5)
+// // 	.map(num => new Money('USD', newRandomNumber()))
+// // 	.subscribe(price => {
+// // 		console.log(price.value());
+// // 	});
 
-var stockholm = Rx.Observable.of({city: 'stockholm', url: api1})
-	.mergeMap(x => Rx.Observable.interval(1000)
-						.mergeMap(i => Rx.Observable.fromPromise(fetchData(x.url))
-											.map(result => {
-												return {city: x.city, temp: result.list[0].main.humidity};
-											})
-						)
-	);
+// // Rx.Observable.interval(1000)
+// // 	.timeInterval()
+// // 	.subscribe(console.log);
 
 
-Rx.Observable.merge(stockholm, oslo)
-	//.subscribe(x => console.log(x.city + ' har ' + x.temp + ' grader'));
-	.subscribe(x => document.querySelector('#' + x.city).textContent = x.city + ' har ' + x.temp + ' grader');
+// let api1 = 'https://api.openweathermap.org/data/2.5/forecast?q=Stockholm,se&units=metric&APPID=d4bf7922db1fa7f4d48e3fc22ecbf0a6';
+// let api2 = 'https://api.openweathermap.org/data/2.5/forecast?q=Oslo,no&units=metric&APPID=d4bf7922db1fa7f4d48e3fc22ecbf0a6';
 
-const panel = document.querySelector("#dragtarget");
+// function fetchData(api) {
+// 	return fetch(api)
+// 	.then(data => data.json());
+// 	// .then(data => console.log(data));
+// }
 
-Rx.Observable.fromEvent(panel, 'mousedown')
-.concatMap(() => Rx.Observable.fromEvent(document, 'mousemove').takeUntil(Rx.Observable.fromEvent(document, 'mouseup')))
-.subscribe(event => {
-	console.log(event.clientX);
-	// panel.style.left = event.clientX + 'px';
-	// panel.style.top = event.clientY + 'px';
-});
+// function fetchDataInterval(api) {
+// 	return Rx.Observable.interval(2000)
+// 		.mergeMap(() => Rx.Observable.fromPromise(fetchData(api)));
+// }
+
+// // function fetchDataInterval(api) {
+// // 	return Rx.Observable.of('one', 'two').mergeMap(() => Rx.Observable.interval(2000)
+// // 		.mergeMap(() => Rx.Observable.fromPromise(fetchData(api))));
+// // }
+
+// //fetchDataInterval(api1).subscribe(console.log);
+
+// var oslo = Rx.Observable.of({city: 'oslo', url: api2})
+// 	.mergeMap(x => Rx.Observable.interval(1000)
+// 						.mergeMap(i => Rx.Observable.fromPromise(fetchData(x.url))
+// 											.map(result => {
+// 												return {city: x.city, temp: result.list[0].main.temp};
+// 											})
+// 						)
+// 	);
+
+// var stockholm = Rx.Observable.of({city: 'stockholm', url: api1})
+// 	.mergeMap(x => Rx.Observable.interval(1000)
+// 						.mergeMap(i => Rx.Observable.fromPromise(fetchData(x.url))
+// 											.map(result => {
+// 												return {city: x.city, temp: result.list[0].main.humidity};
+// 											})
+// 						)
+// 	);
+
+
+// Rx.Observable.merge(stockholm, oslo)
+// 	//.subscribe(x => console.log(x.city + ' har ' + x.temp + ' grader'));
+// 	.subscribe(x => document.querySelector('#' + x.city).textContent = x.city + ' har ' + x.temp + ' grader');
+
+// const panel = document.querySelector("#dragtarget");
+
+// Rx.Observable.fromEvent(panel, 'mousedown')
+// .concatMap(() => Rx.Observable.fromEvent(document, 'mousemove').takeUntil(Rx.Observable.fromEvent(document, 'mouseup')))
+// .subscribe(event => {
+// 	console.log(event.clientX);
+// 	// panel.style.left = event.clientX + 'px';
+// 	// panel.style.top = event.clientY + 'px';
+// });
 
 
 
 
-let msft = Rx.Observable.interval(3000)
-	.switchMap(i => Rx.Observable.fromPromise(fetchData('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=compact&apikey=WZVV3KUCJVSFO1KR')))
-	.map(x => x[Object.keys(x)[1]])
-	.map(x => x[Object.keys(x)[0]])
-	.map(x => x[Object.keys(x)[0]]);
+// let msft = Rx.Observable.interval(3000)
+// 	.switchMap(i => Rx.Observable.fromPromise(fetchData('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=compact&apikey=WZVV3KUCJVSFO1KR')))
+// 	.map(x => x[Object.keys(x)[1]])
+// 	.map(x => x[Object.keys(x)[0]])
+// 	.map(x => x[Object.keys(x)[0]]);
 
-let aapl = Rx.Observable.interval(3000)
-	.switchMap(i => Rx.Observable.fromPromise(fetchData('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=compact&apikey=WZVV3KUCJVSFO1KR')))
-	.map(x => x[Object.keys(x)[1]])
-	.map(x => x[Object.keys(x)[0]])
-	.map(x => x[Object.keys(x)[0]]);
+// let aapl = Rx.Observable.interval(3000)
+// 	.switchMap(i => Rx.Observable.fromPromise(fetchData('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=compact&apikey=WZVV3KUCJVSFO1KR')))
+// 	.map(x => x[Object.keys(x)[1]])
+// 	.map(x => x[Object.keys(x)[0]])
+// 	.map(x => x[Object.keys(x)[0]]);
 
-Rx.Observable.fromEvent(document, 'click')
-.switchMap(x => Rx.Observable.merge(msft, aapl))
-.subscribe(console.log);
+// Rx.Observable.fromEvent(document, 'click')
+// .switchMap(x => Rx.Observable.merge(msft, aapl))
+// .subscribe(console.log);
 
 
 
