@@ -90,6 +90,9 @@ doubleClick$
 	console.log(totalClicks);
 });
 
+
+
+
 let receiver = document.querySelector('#receiver');
 let sender1 = document.querySelector('#sender1');
 let sender2 = document.querySelector('#sender2');
@@ -97,16 +100,51 @@ let sender2 = document.querySelector('#sender2');
 const ticker$ = Rx.Observable.interval(1000);
 //ticker$.subscribe(e => receiver.value = e);
 
-const senderStream1 = Rx.Observable.fromEvent(sender1, 'blur');
-//senderStream1.subscribe(e => receiver.value = e.target.value);
+// sender1Subject.subscribe(e => console.log(e));
 
 
-const senderStream2 = Rx.Observable.fromEvent(sender2, 'blur');
-//senderStream2.subscribe(e => receiver.value = e.target.value);
 
-const combinedSenderStream = Rx.Observable.combineLatest(senderStream1, senderStream2);
+// 	.subscribe(sender1Subject);
 
-combinedSenderStream.subscribe(([s1, s2]) => receiver.value = Number(s1.target.value) + Number(s2.target.value));
+
+let sender1Subject = new Rx.BehaviorSubject();
+Rx.Observable.of(sender1.value);
+Rx.Observable.fromEvent(sender1, 'blur');
+const merged$ = Rx.Observable.merge(Rx.Observable.of(sender1.value), Rx.Observable.fromEvent(sender1, 'blur').map(x => x.target.value));
+
+merged$.subscribe(sender1Subject);
+// sender1Subject.subscribe(console.log);
+// sender1Subject.subscribe(x => receiver.value = x);
+
+
+
+let sender2Subject = new Rx.BehaviorSubject();
+Rx.Observable.of(sender1.value);
+Rx.Observable.fromEvent(sender1, 'blur');
+const merged2$ = Rx.Observable.merge(Rx.Observable.of(sender2.value), Rx.Observable.fromEvent(sender2, 'blur').map(x => x.target.value));
+
+merged2$.subscribe(sender2Subject);
+// sender2Subject.subscribe(console.log);
+// sender2Subject.subscribe(x => receiver.value = x);
+
+const combinedSenderStream = Rx.Observable.combineLatest(sender1Subject, sender2Subject);
+
+combinedSenderStream
+.subscribe(console.log);
+
+// combinedSenderStream.subscribe(([s1, s2]) => receiver.value = Number(s1) + Number(s2));
+
+
+// const senderStream1 = 
+// .map(e => e.target.value);
+// senderStream1.subscribe(sender1Subject);
+
+// const sender2Subject = new Rx.Subject();
+// const senderStream2 = Rx.Observable.fromEvent(sender2, 'blur');
+// //senderStream2.subscribe(e => receiver.value = e.target.value);
+
+// const combinedSenderStream = Rx.Observable.combineLatest(senderStream1, senderStream2);
+
 
 
 
