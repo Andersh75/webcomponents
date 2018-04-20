@@ -93,9 +93,7 @@ doubleClick$
 
 
 
-let receiver = document.querySelector('#receiver');
-let sender1 = document.querySelector('#sender1');
-let sender2 = document.querySelector('#sender2');
+
 
 const ticker$ = Rx.Observable.interval(1000);
 //ticker$.subscribe(e => receiver.value = e);
@@ -107,30 +105,147 @@ const ticker$ = Rx.Observable.interval(1000);
 // 	.subscribe(sender1Subject);
 
 
-let sender1Subject = new Rx.BehaviorSubject();
-Rx.Observable.of(sender1.value);
-Rx.Observable.fromEvent(sender1, 'blur');
-const merged$ = Rx.Observable.merge(Rx.Observable.of(sender1.value), Rx.Observable.fromEvent(sender1, 'blur').map(x => x.target.value));
+// let sender1Subject = new Rx.BehaviorSubject();
+// Rx.Observable.of(sender1.value);
+// Rx.Observable.fromEvent(sender1, 'blur');
+// const merged$ = Rx.Observable.merge(Rx.Observable.of(sender1.value), Rx.Observable.fromEvent(sender1, 'blur').map(x => x.target.value));
 
-merged$.subscribe(sender1Subject);
-// sender1Subject.subscribe(console.log);
-// sender1Subject.subscribe(x => receiver.value = x);
+// merged$.subscribe(sender1Subject);
+// // sender1Subject.subscribe(console.log);
+// // sender1Subject.subscribe(x => receiver.value = x);
+
+
+let receiver = document.querySelector('#receiver');
+let sender1 = document.querySelector('#sender1');
+let sender2 = document.querySelector('#sender2');
+let sender3 = document.querySelector('#sender3');
+let sender4 = document.querySelector('#sender4');
+let sender5 = document.querySelector('#sender5');
+let sender6 = document.querySelector('#sender6');
+
+
+//Functions
+const valueFromElement$ = function(element) {
+	return Rx.Observable.merge(Rx.Observable.of(element.value), Rx.Observable.fromEvent(element, 'blur').map(x => x.target.value), Rx.Observable.fromEvent(element, 'click').map(x => x.target.value), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target.value));
+};
 
 
 
-let sender2Subject = new Rx.BehaviorSubject();
-Rx.Observable.of(sender1.value);
-Rx.Observable.fromEvent(sender1, 'blur');
-const merged2$ = Rx.Observable.merge(Rx.Observable.of(sender2.value), Rx.Observable.fromEvent(sender2, 'blur').map(x => x.target.value));
 
-merged2$.subscribe(sender2Subject);
-// sender2Subject.subscribe(console.log);
-// sender2Subject.subscribe(x => receiver.value = x);
 
-const combinedSenderStream = Rx.Observable.combineLatest(sender1Subject, sender2Subject);
 
-combinedSenderStream
-.subscribe(console.log);
+const combineLatest$ = function(...streams) {
+	return Rx.Observable.combineLatest(streams);
+};
+
+const element$ = function(element) {
+	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
+};
+
+let elementsToElements$ = function(...elements) {
+	return elements.map(element => element$(element));
+};
+
+let elements$ = elementsToElements$.apply(null, [sender1, sender2, sender3, sender4, sender5, sender6]);
+
+Rx.Observable.combineLatest(elements$)
+.map(x => x.map(y => {
+	return {year: Number(y.getAttribute('year')), value: Number(y.value)};
+}))
+.map(x => x.map(y => y.year * y.value))
+.map(x => x.reduce((acc, num) => acc + num))
+//.subscribe(console.log);
+.subscribe(result => receiver.value = result);
+
+
+
+
+
+
+// valueFromElement$(sender1);
+
+// valueFromElement$(sender2);
+
+// let valueFromSenders$ = function(...elements) {
+// 	return elements.map(element => valueFromElement$(element));
+// };
+
+// Rx.Observable.combineLatest([valueFromElement$(sender1), valueFromElement$(sender2), valueFromElement$(sender3)])
+// .subscribe(console.log);
+
+// Rx.Observable.combineLatest([sender1, sender2].map(element => valueFromElement$(element)))
+// .subscribe(console.log);
+
+// Rx.Observable.combineLatest(valueFromSenders$.apply(null, [sender1, sender2, sender3, sender4, sender5, sender6]))
+// .map(x => x.map(y => Number(y)))
+// .map(x => x.filter(y => !isNaN(y)))
+// .map(x => x.reduce((acc, num) => acc + num))
+// .subscribe(result => receiver.value = result);
+
+
+
+
+
+
+// .map(x => x.filter(y => !isNaN(y)))
+
+
+
+
+// let values = valueFromSenders$([sender1, sender2, sender3]);
+
+// Rx.Observable.combineLatest(values)
+// .subscribe(console.log);
+
+
+// Rx.Observable.combineLatest(Rx.Observable.of(sender1)
+// .map(element => valueFromElement$(element)), 
+// Rx.Observable.of(sender2)
+// .map(element => valueFromElement$(element)))
+// .subscribe(console.log);
+
+
+
+// const valueFromSender1$ = valueFromElement$(sender1);
+// const valueFromSender2$ = valueFromElement$(sender2);
+
+
+// const combinedValuesFromSenders$ = combineLatest$(valueFromSenders$([sender1, sender2, sender3, sender4, sender5, sender6]));
+
+
+// Rx.Observable.mergeMap(valueFromSenders$([sender1, sender2, sender3, sender4, sender5, sender6]))
+// .subscribe(console.log);
+
+
+// const combinedNumbersFromSenders$ = combinedValuesFromSenders$
+// 	.map(([...values]) => {
+// 		return values.reduce((acc, item) => {
+// 			return acc + Number(item)
+// 		}, 0);
+// 	});
+
+
+
+// combinedNumbersFromSenders$
+// .subscribe(result => receiver.value = result);
+
+
+
+// let sender2Subject = new Rx.BehaviorSubject();
+// Rx.Observable.of(sender1.value);
+// Rx.Observable.fromEvent(sender1, 'blur');
+// const merged2$ = Rx.Observable.merge(Rx.Observable.of(sender2.value), Rx.Observable.fromEvent(sender2, 'blur').map(x => x.target.value));
+
+// merged2$.subscribe(sender2Subject);
+// // sender2Subject.subscribe(console.log);
+// // sender2Subject.subscribe(x => receiver.value = x);
+
+
+
+
+// combineLatest$(sender1Subject, sender2Subject)
+// .map(([s1, s2]) => Number(s1) + Number(s2))
+// .subscribe(console.log);
 
 // combinedSenderStream.subscribe(([s1, s2]) => receiver.value = Number(s1) + Number(s2));
 
