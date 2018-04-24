@@ -230,8 +230,18 @@ combinedSender$
 
 
 
-myRxmq.channel('water').subject('cost')
-.subscribe(x => console.log(x + 'hej'));
+// myRxmq.channel('water').behaviorobserve('cost')
+// .subscribe(x => console.log(x));
+
+// myRxmq.channel('water').behaviorobserve('increase')
+// .subscribe(x => console.log(x));
+
+
+// combineLatest$(myRxmq.channel('water').behaviorobserve('cost'), myRxmq.channel('water').behaviorobserve('increase'))
+// .subscribe(x => console.log(x));
+
+// combineLatest$(myRxmq.channel('water').behaviorobserve('cost'), myRxmq.channel('water').behaviorobserve('increase'))
+// .subscribe(x => console.log(x));
 
 // Rx.Observable.of(row3Sender)
 // .subscribe(x => console.log(x));

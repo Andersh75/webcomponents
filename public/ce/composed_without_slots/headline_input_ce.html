@@ -81,52 +81,71 @@
 
 
 			//local events initiated by global stream
-			this.ctrl.updateheadline$ = function(e) {
-				myRxmq.channel(e.detail[0]).observe(e.detail[1])
-				.switchMap((ev) => Rx.Observable.interval(1000))
-				.subscribe(
-					(data) => {
-						that.title = data;
-						let headline = that.shadowRoot.querySelector('#headline');
-						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
-					},
-					(error) => {
-						// handle error ...
-					}
-				);
+
+			this.ctrl.capitalize$ = function(e) {
+				const combineLatest$ = function(...streams) {
+					return Rx.Observable.combineLatest(streams);
+				};
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('amount'), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.subscribe((x) => {
+					let year = that.year;
+					let numYear = Number(year);
+					let result = x[0] * Math.pow((x[1] + 1), numYear);
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					that.value = roundedResult;
+					let input = that.shadowRoot.querySelector('#input');
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				})
 			}
+
+
+			// this.ctrl.updateheadline$ = function(e) {
+			// 	myRxmq.channel(e.detail[0]).observe(e.detail[1])
+			// 	.switchMap((ev) => Rx.Observable.interval(1000))
+			// 	.subscribe(
+			// 		(data) => {
+			// 			that.title = data;
+			// 			let headline = that.shadowRoot.querySelector('#headline');
+			// 			eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+			// 		},
+			// 		(error) => {
+						
+			// 		}
+			// 	);
+			// }
 			
-			this.ctrl.updateheadline2$ = function(e) {
-				myRxmq.channel(e.detail[0]).observe(e.detail[1])
-				.switchMap((ev) => Rx.Observable.interval(1000))
-				.map(x => x*2)
-				.subscribe(
-					(data) => {
-						that.title = data;
-						let headline = that.shadowRoot.querySelector('#headline');
-						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
-					},
-					(error) => {
-						// handle error ...
-					}
-				);
-			}
+			// this.ctrl.updateheadline2$ = function(e) {
+			// 	myRxmq.channel(e.detail[0]).observe(e.detail[1])
+			// 	.switchMap((ev) => Rx.Observable.interval(1000))
+			// 	.map(x => x*2)
+			// 	.subscribe(
+			// 		(data) => {
+			// 			that.title = data;
+			// 			let headline = that.shadowRoot.querySelector('#headline');
+			// 			eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+			// 		},
+			// 		(error) => {
+						
+			// 		}
+			// 	);
+			// }
 			
-			this.ctrl.updateheadline3$ = function(e) {
-				myRxmq.channel(e.detail[0]).observe(e.detail[1])
-				// .do(x => console.log(x))
-				.map(ev => ev.path[0].value)
-				.subscribe(
-					(data) => {
-						that.title = data;
-						let headline = that.shadowRoot.querySelector('#headline');
-						eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
-					},
-					(error) => {
-						// handle error ...
-					}
-				);
-			}
+			// this.ctrl.updateheadline3$ = function(e) {
+			// 	myRxmq.channel(e.detail[0]).observe(e.detail[1])
+				
+			// 	.map(ev => ev.path[0].value)
+			// 	.subscribe(
+			// 		(data) => {
+			// 			that.title = data;
+			// 			let headline = that.shadowRoot.querySelector('#headline');
+			// 			eventDispatcher(headline.eventTarget, 'headlinefromparent', that);
+			// 		},
+			// 		(error) => {
+						
+			// 		}
+			// 	);
+			// }
 		
 					
 				

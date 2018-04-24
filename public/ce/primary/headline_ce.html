@@ -59,6 +59,25 @@
 			//local events initiated by parent
 
 
+			//local events initiated by global stream
+			this.ctrl.capitalize$ = function(e) {
+				const combineLatest$ = function(...streams) {
+					return Rx.Observable.combineLatest(streams);
+				};
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('amount'), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.subscribe((x) => {
+					let year = that.year;
+					let numYear = Number(year);
+					let result = x[0] * Math.pow((x[1] + 1), numYear);
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					that.title = roundedResult;
+					let attribute = 'title';
+					view.updateView(attribute, that.title);
+				})
+			}
+
+
 		}
 
 

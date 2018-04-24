@@ -59,8 +59,7 @@
 
 				element$(that)
 				.map(element => element.value)
-				//.subscribe(console.log);
-				.subscribe(myRxmq.channel('water').subject('cost'));
+				.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
 			};
 
 
@@ -70,6 +69,23 @@
 			//local events initiated by model
 
 
+			//local events initiated by global stream
+			this.ctrl.capitalize$ = function(e) {
+				const combineLatest$ = function(...streams) {
+					return Rx.Observable.combineLatest(streams);
+				};
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('amount'), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.subscribe((x) => {
+					let year = that.year;
+					let numYear = Number(year);
+					let result = x[0] * Math.pow((x[1] + 1), numYear);
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					that.value = roundedResult;
+					let attribute = 'value';
+					view.updateView(attribute, that.value);
+				})
+			}
 		}
 
 		extendView(that, model) {
