@@ -8,6 +8,17 @@ class EndlessSubject extends Rx.Subject {
 		});
 	}
 }
+
+class EndlessBehaviorSubject extends Rx.BehaviorSubject {
+  
+	complete() {}
+	error(error) {
+		this.thrownError = error;
+		this.observers.forEach(os => {
+		os.destination._error.call(os.destination._context, error);
+		});
+	}
+}
   
   class Channel {
   
@@ -15,7 +26,7 @@ class EndlessSubject extends Rx.Subject {
 	  this.subjects = [];
 	}
   
-	subject(name, {Subject = EndlessSubject} = {}) {
+	subject(name, {Subject = EndlessBehaviorSubject} = {}) {
 	  let s = this.findSubjectByName(this.subjects, name);
 	  if (!s) {
 		s = new Subject();

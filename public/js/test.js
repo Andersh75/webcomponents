@@ -200,8 +200,9 @@ const row3ReceiverFn = function(el) {
 	return function(x) {
 		let year = el.getAttribute("year");
 		let numYear = Number(year);
-	
-		return el.value = x[0] * Math.pow((x[1] + 1), numYear);
+		let result = x[0] * Math.pow((x[1] + 1), numYear);
+		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+		return el.value = roundedResult;
 	};
 };
 
@@ -228,6 +229,9 @@ combinedSender$
 .subscribe(subject);
 
 
+
+myRxmq.channel('water').subject('cost')
+.subscribe(x => console.log(x + 'hej'));
 
 // Rx.Observable.of(row3Sender)
 // .subscribe(x => console.log(x));
