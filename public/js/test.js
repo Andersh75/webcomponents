@@ -73,22 +73,22 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-let button = document.querySelector("#knappen");
+// let button = document.querySelector("#knappen");
 
-let buttonbox = document.querySelector("#buttonbox");
+// let buttonbox = document.querySelector("#buttonbox");
 
-const click$ = Rx.Observable.fromEvent(buttonbox, 'click');
+// const click$ = Rx.Observable.fromEvent(buttonbox, 'click');
 
-const doubleClick$ = click$
-						.bufferWhen(() => click$.debounceTime(250))
-						.filter((x) => x.length >= 2)
-						.map(([e1, e2]) => e1.target.id === e2.target.id);
+// const doubleClick$ = click$
+// 						.bufferWhen(() => click$.debounceTime(250))
+// 						.filter((x) => x.length >= 2)
+// 						.map(([e1, e2]) => e1.target.id === e2.target.id);
 
 
-doubleClick$
-.subscribe(totalClicks => {
-	console.log(totalClicks);
-});
+// doubleClick$
+// .subscribe(totalClicks => {
+// 	console.log(totalClicks);
+// });
 
 
 
@@ -115,24 +115,43 @@ const ticker$ = Rx.Observable.interval(1000);
 // // sender1Subject.subscribe(x => receiver.value = x);
 
 
-let receiver = document.querySelector('#receiver');
-let sender1 = document.querySelector('#sender1');
-let sender2 = document.querySelector('#sender2');
-let sender3 = document.querySelector('#sender3');
-let sender4 = document.querySelector('#sender4');
-let sender5 = document.querySelector('#sender5');
-let sender6 = document.querySelector('#sender6');
+// let receiver = document.querySelector('#receiver');
+// let sender1 = document.querySelector('#sender1');
+// let sender2 = document.querySelector('#sender2');
+// let sender3 = document.querySelector('#sender3');
+// let sender4 = document.querySelector('#sender4');
+// let sender5 = document.querySelector('#sender5');
+// let sender6 = document.querySelector('#sender6');
 
 
 //Functions
-const valueFromElement$ = function(element) {
-	return Rx.Observable.merge(Rx.Observable.of(element.value), Rx.Observable.fromEvent(element, 'blur').map(x => x.target.value), Rx.Observable.fromEvent(element, 'click').map(x => x.target.value), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target.value));
-};
+// const valueFromElement$ = function(element) {
+// 	return Rx.Observable.merge(Rx.Observable.of(element.value), Rx.Observable.fromEvent(element, 'blur').map(x => x.target.value), Rx.Observable.fromEvent(element, 'click').map(x => x.target.value), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target.value));
+// };
 
 
 
+let row1 = document.querySelector('#row1');
+let row2 = document.querySelector('#row2');
+let row3 = document.querySelector('#row3');
+
+let row1Senders = row1.querySelectorAll('.sender');
+let row2Senders = row2.querySelectorAll('.sender');
+let row3Sender1 = row3.querySelector('.sender1');
+let row3Sender2 = row3.querySelector('.sender2');
+
+let row1Receiver = row1.querySelector('.receiver');
+let row2Receiver = row2.querySelector('.receiver');
+
+let row3Receiver1 = row3.querySelector('[year="1"]');
+let row3Receiver2 = row3.querySelector('[year="2"]');
+let row3Receiver3 = row3.querySelector('[year="3"]');
+let row3Receiver4 = row3.querySelector('[year="4"]');
 
 
+let sendersAndReceivers = [{senders: row1Senders, receiver: row1Receiver}, {senders: row2Senders, receiver: row2Receiver}];
+
+console.log(row1Senders);
 
 const combineLatest$ = function(...streams) {
 	return Rx.Observable.combineLatest(streams);
@@ -146,19 +165,81 @@ let elementsToElements$ = function(...elements) {
 	return elements.map(element => element$(element));
 };
 
-let elements$ = elementsToElements$.apply(null, [sender1, sender2, sender3, sender4, sender5, sender6]);
 
-Rx.Observable.combineLatest(elements$)
-.map(x => x.map(y => {
-	return {year: Number(y.getAttribute('year')), value: Number(y.value)};
-}))
-.map(x => x.map(y => y.year * y.value))
-.map(x => x.reduce((acc, num) => acc + num))
-//.subscribe(console.log);
-.subscribe(result => receiver.value = result);
+sendersAndReceivers.forEach(obj => {
+	excel(obj.senders, obj.receiver, sum);
+});
 
 
+function sum(acc, num) {
+	return acc + num;
+}
 
+
+
+function excel(senders, receiver, method) {
+	let elements$ = elementsToElements$.apply(null, senders);
+
+	Rx.Observable.combineLatest(elements$)
+	.map(x => x.map(y => {
+		return {year: Number(y.getAttribute('year')), value: Number(y.value)};
+	}))
+	.map(x => x.map(y => y.year * y.value))
+	.map(x => x.reduce((acc, num) => method(acc, num)))
+	//.subscribe(console.log);
+	.subscribe(result => receiver.value = result);
+}
+
+const sender1$ = element$(row3Sender1);
+const sender2$ = element$(row3Sender2);
+const combinedSender$ = Rx.Observable.combineLatest(sender1$, sender2$);
+const subject = new Rx.Subject();
+
+
+const row3ReceiverFn = function(el) {
+	return function(x) {
+		let year = el.getAttribute("year");
+		let numYear = Number(year);
+	
+		return el.value = x[0] * Math.pow((x[1] + 1), numYear);
+	};
+};
+
+const observer1 = row3ReceiverFn(row3Receiver1);
+
+const observer2 = row3ReceiverFn(row3Receiver2);
+
+const observer3 = row3ReceiverFn(row3Receiver3);
+
+const observer4 = row3ReceiverFn(row3Receiver4);
+
+
+
+subject
+.subscribe(observer1);
+
+subject.subscribe(observer2);
+subject.subscribe(observer3);
+subject.subscribe(observer4);
+
+combinedSender$
+.map(([e1, e2]) => [e1.value, e2.value])
+.map(([e1, e2]) => [Number(e1), Number(e2)])
+.subscribe(subject);
+
+
+
+// Rx.Observable.of(row3Sender)
+// .subscribe(x => console.log(x));
+
+// Rx.Observable.of(row3Sender)
+// .subscribe(function testfunction(x) {
+// 	return console.log(x);
+// });
+
+
+// Rx.Observable.of(row3Sender)
+// .subscribe(testfunction);
 
 
 
