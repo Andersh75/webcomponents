@@ -35,7 +35,7 @@
 
 
 		static get observedAttributes() {
-            return ['value', 'placeholder', 'year'];
+            return ['value', 'placeholder', 'year', 'sb'];
         };
 
 
@@ -52,7 +52,14 @@
 					let attribute = 'placeholder';
 					view.updateView(attribute, that.placeholder);
 				}
+				if (!h.boolean.isEmpty(that.sb)) {
+					that.ctrl.stream();
+				}	
+			};
 
+
+			//stream from element
+			this.ctrl.stream = function() {
 				const element$ = function(element) {
 					return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
 				};
@@ -60,6 +67,12 @@
 				element$(that)
 				.map(element => element.value)
 				.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+			};
+
+			this.ctrl.changedAttribute = function(details) {
+				console.log('DETAILS!');
+				console.log(details.changedAttribute.newVal);
+				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
 			};
 
 
@@ -74,7 +87,7 @@
 				const combineLatest$ = function(...streams) {
 					return Rx.Observable.combineLatest(streams);
 				};
-				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('amount'), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
 				.map(([e1, e2]) => [Number(e1), Number(e2)])
 				.subscribe((x) => {
 					let year = that.year;
@@ -113,6 +126,7 @@
 			let db = {};
 			db.placeholder = "";
 			db.value = "";
+			db.sb = "";
 
 			this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 				let oldVal;

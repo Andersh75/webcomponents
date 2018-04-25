@@ -105,12 +105,21 @@ class CustomElement extends HTMLElement {
 	//Returns an object called details
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
-		let details = {};
-		details.changedAttribute = {};
-		details.changedAttribute.name = name;
-		details.changedAttribute.oldVal = oldVal;
-		details.changedAttribute.newVal = newVal;
-		eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
+
+		if (name === 'sb') {
+			setComponentObservable.call(this);
+			this.ctrl.stream();
+		} else {
+			let details = {};
+			details.changedAttribute = {};
+			details.changedAttribute.name = name;
+			details.changedAttribute.oldVal = oldVal;
+			details.changedAttribute.newVal = newVal;
+			this.ctrl.changedAttribute(details);
+			eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
+			
+		}
+		
 	}
 
 	//
@@ -360,8 +369,8 @@ function setComponentObservable() {
 		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sb); //makes an array of [remote, local...] listener
 		
 		this.sbChannel = channelAndSubject[0];
-		this.sbSubject = channelAndSubject[1];
-	}	
+		this.sbSubject = channelAndSubject[1];	
+	}
 }
 
 

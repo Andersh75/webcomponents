@@ -38,7 +38,7 @@
 			</style>
 
 			<headline-ce id="headline" title class="h5"></headline-ce>
-			<input-ce id="input" placeholder value></input-ce>
+			<input-ce id="input" sb="" placeholder value></input-ce>
 </template>
 
 
@@ -72,9 +72,7 @@
 				eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder', data: that.placeholder}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-				
-				// Rx.Observable.fromEvent(that.shadowRoot.querySelector('#input'), 'keyup')
-				// .subscribe(myRxmq.channel(that.sbChannel).subject(that.sbSubject));
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
 			};
 
 			//local events initiated by child
@@ -86,7 +84,8 @@
 				const combineLatest$ = function(...streams) {
 					return Rx.Observable.combineLatest(streams);
 				};
-				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('amount'), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
 				.map(([e1, e2]) => [Number(e1), Number(e2)])
 				.subscribe((x) => {
 					let year = that.year;
@@ -98,6 +97,64 @@
 					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
 				})
 			}
+
+			this.ctrl.discount$ = function(e) { 
+				const combineLatest$ = function(...streams) {
+					return Rx.Observable.combineLatest(streams);
+				};
+
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('discount'))					
+				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.subscribe((x) => {
+					let year = that.year;
+					let numYear = Number(year);
+					let result = x[0] / Math.pow((x[1] + 1), numYear);
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					that.value = roundedResult;
+					let input = that.shadowRoot.querySelector('#input');
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				})
+			}
+
+			this.ctrl.discountSum$ = function(e) { 
+				const combineLatest$ = function(...streams) {
+					return Rx.Observable.combineLatest(streams);
+				};
+
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('discount-1'), myRxmq.channel(e.detail[0]).behaviorobserve('discount-2'), myRxmq.channel(e.detail[0]).behaviorobserve('discount-3'), myRxmq.channel(e.detail[0]).behaviorobserve('discount-4'))					
+				.map(([e1, e2, e3, e4]) => [Number(e1), Number(e2), Number(e3), Number(e4)])
+				.subscribe((x) => {
+					let result = x.reduce((acc, el) => {
+						return acc = acc + el;
+					}, 0);
+					console.log('result!!');
+					console.log(result);
+
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					that.value = roundedResult;
+					let input = that.shadowRoot.querySelector('#input');
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				})
+			}
+
+			this.ctrl.plain$ = function(e) {
+				const combineLatest$ = function(...streams) {
+					return Rx.Observable.combineLatest(streams);
+				};
+
+				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.subscribe((x) => {
+					let year = that.year;
+					let numYear = Number(year);
+					let result = x[0];
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					that.value = roundedResult;
+					let input = that.shadowRoot.querySelector('#input');
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				})
+			}
+
 
 
 			// this.ctrl.updateheadline$ = function(e) {
