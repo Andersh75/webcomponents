@@ -195,11 +195,31 @@
 </section-input-ce>
 
 
-
+<section-output-ce>
+        <headline-ce title="Summering" class="h1 text-info" slot="anyheadline"></headline-ce>
+        <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
+                <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
+                <headline-input-ce title="År 1" placeholder="Antal kr/kvm..." value="" slot="anyform">
+                    <input-ce title="År 1" placeholder="Antal kr/kvm..." value="" slot="anyinput"></input-ce>
+                </headline-input-ce>
+                <headline-input-ce title="År 2" placeholder="Antal kr/kvm..." value="" slot="anyform">
+                    <input-ce title="År 2" placeholder="Antal kr/kvm..." value="" slot="anyinput"></input-ce>
+                </headline-input-ce>
+                <headline-input-ce title="År 3" placeholder="Antal kr/kvm..." value="" slot="anyform">
+                    <input-ce title="År 3" placeholder="Antal kr/kvm..." value="" slot="anyinput"></input-ce>
+                </headline-input-ce>
+        </anykind-container-ce>
+        <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
+                <headline-ce title="Reparationskostnader" class="h4" slot="headline"></headline-ce>
+                <headline-input-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="repair:amount-0@capitalize$"></headline-input-ce>
+                <headline-input-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+                <headline-input-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+        </anykind-container-ce>
+</section-output-ce>
 
 <section-input-ce listener="clearowninputsection@clearsection">
-    <headline-ce title="Äga" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-    <button-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>
+    <headline-ce title="Äga" class="h1 text-info" slot="anyheadline"></headline-ce>
+    <button-ce value="Rensa" toggle class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>
     
     <anykind-container-ce slot="anycontainer">
             <headline-ce title="Initial ytstorlek" class="h4" slot="headline"></headline-ce>
@@ -218,8 +238,8 @@
 
     <anykind-container-ce slot="anycontainer">
             <headline-ce title="Reparationer och löpande underhåll" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Reparationer och löpande underhål" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-            <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" selectedIndex="0" slot="anyform" datatarget="repaircost"></headline-select-ce>
+            <headline-input-ce title="Reparationer och löpande underhål" placeholder="Antal kr/kvm..." value="" slot="anyform" sb="repair:amount-0"></headline-input-ce>
+            <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" selectedIndex="0" slot="anyform" datatarget="repaircost" sb="repair:increase"></headline-select-ce>
     </anykind-container-ce>
     
 </section-input-ce>
@@ -228,12 +248,7 @@
 
 
 
-<section-output-ce>
-    <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
-            <headline-ce title="Reparationer och löpande underhåll" class="h4" slot="headline"></headline-ce>
-            <headline-input-ce title="Reparationer och löpande underhål" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-    </anykind-container-ce>
-</section-output-ce>
+
 
 
 <div id="dragtarget" style="display: inline-block; background-color: blue; padding: 10px">

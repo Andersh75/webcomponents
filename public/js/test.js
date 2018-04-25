@@ -74,6 +74,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
 myRxmq.channel('test').behaviorsubject('test').subscribe(console.log);
+myRxmq.channel('repair').behaviorsubject('increase').subscribe(x => console.log('R&I: ' + x));
 
 // let button = document.querySelector("#knappen");
 

@@ -35,7 +35,7 @@
 			</style>
 
 			<headline-ce id="headline" title class="h5"></headline-ce>
-			<select-ce id="select" selectedindex></select-ce>
+			<select-ce id="select" sb="" selectedindex></select-ce>
 </template>
 
 
@@ -60,7 +60,7 @@
 		}
 
 		extendCtrl(that, model, view) {
-			let parent;
+		
 
 			//init
 			this.ctrl.run = function() {
@@ -68,7 +68,7 @@
 				let select = that.shadowRoot.querySelector('#select');
 				eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title});
 				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
-
+				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
 			};
 
 
@@ -77,6 +77,7 @@
 
 			//local events initiated by child
 
+			//local events initiated by global stream
 
 			//local events initiated by parent
 			this.ctrl.clearallfromparent = function(e) {
