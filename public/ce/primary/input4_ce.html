@@ -1,0 +1,56 @@
+	
+	<script type="module">
+	import { PI, Input3CE } from '/js/inputce.js';
+
+alert(PI);
+const tpl = window.document.createElement("template");
+tpl.innerHTML = `
+<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+<div id="wrapper" class="input-group input-group-sm mb-3">
+  <input id="input" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+  </div>
+`;
+
+	(function(window, document, undefined) {
+
+
+		class Input4CE extends Input3CE {
+			constructor() {
+				super();
+				this.tpl = tpl;
+				this.parent;
+				this.extend();
+			}
+
+			
+		}
+
+		window.customElements.define('input4-ce', Input4CE);
+
+		// module.exports = {
+		// 	InputCE: InputCE
+		// };
+
+		// class InputCE2 extends InputCE {
+		// 	constructor() {
+		// 		super();
+		// 	}
+		// }
+
+		// window.customElements.define('input-ce2', InputCE2);
+
+
+		})(window, document);
+	 
+	</script>
+	
+	<script type="text/javascript" src="/js/curry.js"></script>
+	<script type="text/javascript" src="/js/helper.js"></script>
+	<!-- <script type="module">
+        import { PI } from '/js/inputce.js';
+
+        alert(PI);
+</script> -->

@@ -1,3 +1,7 @@
+// import { sum } from './inputce.js';
+
+//console.log( sum(1,2,3,4) ); // 10
+
 // class EndlessReplaySubject extends Rx.ReplaySubject {
 
 //   complete() {}
@@ -72,6 +76,9 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
+// console.warn('HEJ');
+// mytestfn();
+// console.warn('HOPP');
 
 myRxmq.channel('test').behaviorsubject('test').subscribe(console.log);
 myRxmq.channel('repair').behaviorsubject('increase').subscribe(x => console.log('R&I: ' + x));
