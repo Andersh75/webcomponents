@@ -1,19 +1,3 @@
-const PI = 3.1415926;
-
-function sum(...args) {
-  log('sum', args);
-  return args.reduce((num, tot) => tot + num);
-}
-
-function mult(...args) {
-  log('mult', args);
-  return args.reduce((num, tot) => tot * num);
-}
-
-// private function
-function log(...msg) {
-  console.log(...msg);
-}
 // const tpl = window.document.createElement("template");
 // tpl.innerHTML = `
 // <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
@@ -25,11 +9,11 @@ function log(...msg) {
 //   </div>
 // `;
 
-class Input3CE extends CustomElement2 {
+class InputBaseCE extends CustomElement2 {
 	constructor() {
     super();
     //this.tpl = tpl;
-    //this.parent;
+    // this.parent;
     //this.extend();
 	}
 
@@ -37,6 +21,11 @@ class Input3CE extends CustomElement2 {
 	static get observedAttributes() {
 		return ['value', 'placeholder', 'year', 'sb'];
 	};
+
+	extendBase() {
+		this.extendView(this, this.model); //adds new methods to this.view
+		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+	}
 
 
 
@@ -83,43 +72,43 @@ class Input3CE extends CustomElement2 {
 
 
 		//local events initiated by global stream
-		this.ctrl.capitalize$ = function(e) {
-			const combineLatest$ = function(...streams) {
-				return Rx.Observable.combineLatest(streams);
-			};
-			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
-			.map(([e1, e2]) => [Number(e1), Number(e2)])
-			.subscribe((x) => {
-				let year = that.year;
-				let numYear = Number(year);
-				let result = x[0] * Math.pow((x[1] + 1), numYear);
-				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-				that.value = roundedResult;
-				let attribute = 'value';
-				view.updateView(attribute, that.value);
-			})
-		}
+		// this.ctrl.capitalize$ = function(e) {
+		// 	const combineLatest$ = function(...streams) {
+		// 		return Rx.Observable.combineLatest(streams);
+		// 	};
+		// 	combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+		// 	.map(([e1, e2]) => [Number(e1), Number(e2)])
+		// 	.subscribe((x) => {
+		// 		let year = that.year;
+		// 		let numYear = Number(year);
+		// 		let result = x[0] * Math.pow((x[1] + 1), numYear);
+		// 		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+		// 		that.value = roundedResult;
+		// 		let attribute = 'value';
+		// 		view.updateView(attribute, that.value);
+		// 	})
+		// }
 	}
 
 	extendView(that, model) {
-		this.view.renderPlaceholder = function(obj) {
-			that.shadowRoot.querySelector('#input').placeholder = obj;
-		};
+		// this.view.renderPlaceholder = function(obj) {
+		// 	that.shadowRoot.querySelector('#input').placeholder = obj;
+		// };
 
-		this.view.renderValue = function(obj) {
-			that.shadowRoot.querySelector('#input').value = obj;
-		};
+		// this.view.renderValue = function(obj) {
+		// 	that.shadowRoot.querySelector('#input').value = obj;
+		// };
 
-		this.view.updateView = function(attribute, data) {
-			switch(attribute) {
-				case 'value':
-				that.view.renderValue.call(that, data);
-				break;
-				case 'placeholder':
-				that.view.renderPlaceholder.call(that, data);
-				break;
-			}	
-		};
+		// this.view.updateView = function(attribute, data) {
+		// 	switch(attribute) {
+		// 		case 'value':
+		// 		that.view.renderValue.call(that, data);
+		// 		break;
+		// 		case 'placeholder':
+		// 		that.view.renderPlaceholder.call(that, data);
+		// 		break;
+		// 	}	
+		// };
 	}
 
 	extendModel(that) {
@@ -155,7 +144,7 @@ class Input3CE extends CustomElement2 {
 	}
 }
 
-export { PI, sum, mult, Input3CE };
+export { InputBaseCE };
 
 
 

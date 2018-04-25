@@ -16,6 +16,8 @@
   <script src="js/helper.js" type="text/javascript"></script>
   <script src="js/customelement.js" type="text/javascript"></script>
   <script src="js/customelement2.js" type="text/javascript"></script>
+  <script src="ce/primary/input_one_ce.js" type="module"></script>
+  <script src="ce/composed_without_slots/headline_input_ce.js" type="module"></script>
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
   
@@ -64,11 +66,11 @@
 
 
   <link rel="import" href="ce/primary/input_ce.html">
-  <link rel="import" href="ce/primary/input4_ce.html">
+  <!-- <link rel="import" href="ce/primary/input4_ce.html"> -->
   <link rel="import" href="ce/primary/headline_ce.html">
   <link rel="import" href="ce/primary/button_ce.html">
   <link rel="import" href="ce/primary/select_ce.html">
-  <link rel="import" href="ce/composed_without_slots/headline_input_ce.html">
+  <!-- <link rel="import" href="ce/composed_without_slots/headline_input_ce.html"> -->
   <link rel="import" href="ce/composed_without_slots/headline_select_ce.html">
   <link rel="import" href="ce/composed_with_slots/anykind_container_ce.html">
   <link rel="import" href="ce/composed_with_slots/section_input_ce.html">
@@ -174,11 +176,16 @@
 
 
 
+ <anykind-container-ce slot="anycontainer">
+        <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
+        <headline-input-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce>
+    </anykind-container-ce>  
 
+ <!-- <input-one-ce value="" placeholder="Antal brukare..."></input-one-ce> 
+ <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sb="textinput1:keyup" sr="textinput1:keyup@updateheadline3$"></headline-input-ce> -->
 
-
-
-<section-input-ce listener="cleargeneralinputsection@clearanykindcontainers">
+<!-- <section-input-ce listener="cleargeneralinputsection@clearanykindcontainers">
+        
     <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
     <button-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-ce>
     
@@ -208,22 +215,16 @@
         <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
         <headline-input-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce>
     </anykind-container-ce>    
-</section-input-ce>
+</section-input-ce> -->
 
-
+<!-- 
 <section-output-ce>
         <headline-ce title="Summering" class="h1 text-info" slot="anyheadline"></headline-ce>
         <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
                 <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
-                <headline-input-ce title="År 1" placeholder="Antal kr/kvm..." value="" slot="anyform">
-                    <input-ce title="År 1" placeholder="Antal kr/kvm..." value="" slot="anyinput"></input-ce>
-                </headline-input-ce>
-                <headline-input-ce title="År 2" placeholder="Antal kr/kvm..." value="" slot="anyform">
-                    <input4-ce title="År 2" placeholder="Antal kr/kvm..." value="" slot="anyinput"></input4-ce>
-                </headline-input-ce>
-                <headline-input-ce title="År 3" placeholder="Antal kr/kvm..." value="" slot="anyform">
-                    <input-ce title="År 3" placeholder="Antal kr/kvm..." value="" slot="anyinput"></input-ce>
-                </headline-input-ce>
+                <headline-input-ce title="År 1" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+                <headline-input-ce title="År 2" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
+                <headline-input-ce title="År 3" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
         </anykind-container-ce>
         <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
                 <headline-ce title="Reparationskostnader" class="h4" slot="headline"></headline-ce>
@@ -258,7 +259,7 @@
             <headline-select-ce title="Kostnadsutveckling för reparationer och löpande underhåll" selectedIndex="0" slot="anyform" datatarget="repaircost" sb="repair:increase"></headline-select-ce>
     </anykind-container-ce>
     
-</section-input-ce>
+</section-input-ce> -->
 
 
 
@@ -267,12 +268,12 @@
 
 
 
-<div id="dragtarget" style="display: inline-block; background-color: blue; padding: 10px">
+<!-- <div id="dragtarget" style="display: inline-block; background-color: blue; padding: 10px">
     <p id="oslo"></p>
     <p id="stockholm"></p>
 </div>
 
-<select-ce selectedindex></select-ce>
+<select-ce selectedindex></select-ce> -->
     
 <!-- 
     <section-input-ce listener="clearrentinputsection@clearsection">
