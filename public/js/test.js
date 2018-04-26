@@ -79,9 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
 // console.warn('HEJ');
 // mytestfn();
 // console.warn('HOPP');
-
-myRxmq.channel('test').behaviorsubject('test').subscribe(console.log);
-myRxmq.channel('repair').behaviorsubject('increase').subscribe(x => console.log('R&I: ' + x));
+console.log('test.js');
+myRxmq.channel('heat').behaviorsubject('discount-1').subscribe(x => console.log('test.js: ' + x));
+myRxmq.channel('heat').behaviorsubject('discount-2').subscribe(x => console.log('test.js: ' + x));
+// myRxmq.channel('repair').behaviorsubject('increase').subscribe(x => console.log('R&I: ' + x));
 
 // let button = document.querySelector("#knappen");
 
@@ -105,7 +106,7 @@ myRxmq.channel('repair').behaviorsubject('increase').subscribe(x => console.log(
 
 
 
-const ticker$ = Rx.Observable.interval(1000);
+//const ticker$ = Rx.Observable.interval(1000);
 //ticker$.subscribe(e => receiver.value = e);
 
 // sender1Subject.subscribe(e => console.log(e));
@@ -141,102 +142,102 @@ const ticker$ = Rx.Observable.interval(1000);
 
 
 
-let row1 = document.querySelector('#row1');
-let row2 = document.querySelector('#row2');
-let row3 = document.querySelector('#row3');
+// let row1 = document.querySelector('#row1');
+// let row2 = document.querySelector('#row2');
+// let row3 = document.querySelector('#row3');
 
-let row1Senders = row1.querySelectorAll('.sender');
-let row2Senders = row2.querySelectorAll('.sender');
-let row3Sender1 = row3.querySelector('.sender1');
-let row3Sender2 = row3.querySelector('.sender2');
+// let row1Senders = row1.querySelectorAll('.sender');
+// let row2Senders = row2.querySelectorAll('.sender');
+// let row3Sender1 = row3.querySelector('.sender1');
+// let row3Sender2 = row3.querySelector('.sender2');
 
-let row1Receiver = row1.querySelector('.receiver');
-let row2Receiver = row2.querySelector('.receiver');
+// let row1Receiver = row1.querySelector('.receiver');
+// let row2Receiver = row2.querySelector('.receiver');
 
-let row3Receiver1 = row3.querySelector('[year="1"]');
-let row3Receiver2 = row3.querySelector('[year="2"]');
-let row3Receiver3 = row3.querySelector('[year="3"]');
-let row3Receiver4 = row3.querySelector('[year="4"]');
-
-
-let sendersAndReceivers = [{senders: row1Senders, receiver: row1Receiver}, {senders: row2Senders, receiver: row2Receiver}];
-
-console.log(row1Senders);
-
-const combineLatest$ = function(...streams) {
-	return Rx.Observable.combineLatest(streams);
-};
-
-const element$ = function(element) {
-	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-};
-
-let elementsToElements$ = function(...elements) {
-	return elements.map(element => element$(element));
-};
+// let row3Receiver1 = row3.querySelector('[year="1"]');
+// let row3Receiver2 = row3.querySelector('[year="2"]');
+// let row3Receiver3 = row3.querySelector('[year="3"]');
+// let row3Receiver4 = row3.querySelector('[year="4"]');
 
 
-sendersAndReceivers.forEach(obj => {
-	excel(obj.senders, obj.receiver, sum);
-});
+// let sendersAndReceivers = [{senders: row1Senders, receiver: row1Receiver}, {senders: row2Senders, receiver: row2Receiver}];
+
+// console.log(row1Senders);
+
+// const combineLatest$ = function(...streams) {
+// 	return Rx.Observable.combineLatest(streams);
+// };
+
+// const element$ = function(element) {
+// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
+// };
+
+// let elementsToElements$ = function(...elements) {
+// 	return elements.map(element => element$(element));
+// };
 
 
-function sum(acc, num) {
-	return acc + num;
-}
+// sendersAndReceivers.forEach(obj => {
+// 	excel(obj.senders, obj.receiver, sum);
+// });
 
 
-
-function excel(senders, receiver, method) {
-	let elements$ = elementsToElements$.apply(null, senders);
-
-	Rx.Observable.combineLatest(elements$)
-	.map(x => x.map(y => {
-		return {year: Number(y.getAttribute('year')), value: Number(y.value)};
-	}))
-	.map(x => x.map(y => y.year * y.value))
-	.map(x => x.reduce((acc, num) => method(acc, num)))
-	//.subscribe(console.log);
-	.subscribe(result => receiver.value = result);
-}
-
-const sender1$ = element$(row3Sender1);
-const sender2$ = element$(row3Sender2);
-const combinedSender$ = Rx.Observable.combineLatest(sender1$, sender2$);
-const subject = new Rx.Subject();
-
-
-const row3ReceiverFn = function(el) {
-	return function(x) {
-		let year = el.getAttribute("year");
-		let numYear = Number(year);
-		let result = x[0] * Math.pow((x[1] + 1), numYear);
-		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-		return el.value = roundedResult;
-	};
-};
-
-const observer1 = row3ReceiverFn(row3Receiver1);
-
-const observer2 = row3ReceiverFn(row3Receiver2);
-
-const observer3 = row3ReceiverFn(row3Receiver3);
-
-const observer4 = row3ReceiverFn(row3Receiver4);
+// function sum(acc, num) {
+// 	return acc + num;
+// }
 
 
 
-subject
-.subscribe(observer1);
+// function excel(senders, receiver, method) {
+// 	let elements$ = elementsToElements$.apply(null, senders);
 
-subject.subscribe(observer2);
-subject.subscribe(observer3);
-subject.subscribe(observer4);
+// 	Rx.Observable.combineLatest(elements$)
+// 	.map(x => x.map(y => {
+// 		return {year: Number(y.getAttribute('year')), value: Number(y.value)};
+// 	}))
+// 	.map(x => x.map(y => y.year * y.value))
+// 	.map(x => x.reduce((acc, num) => method(acc, num)))
+// 	//.subscribe(console.log);
+// 	.subscribe(result => receiver.value = result);
+// }
 
-combinedSender$
-.map(([e1, e2]) => [e1.value, e2.value])
-.map(([e1, e2]) => [Number(e1), Number(e2)])
-.subscribe(subject);
+// const sender1$ = element$(row3Sender1);
+// const sender2$ = element$(row3Sender2);
+// const combinedSender$ = Rx.Observable.combineLatest(sender1$, sender2$);
+// const subject = new Rx.Subject();
+
+
+// const row3ReceiverFn = function(el) {
+// 	return function(x) {
+// 		let year = el.getAttribute("year");
+// 		let numYear = Number(year);
+// 		let result = x[0] * Math.pow((x[1] + 1), numYear);
+// 		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+// 		return el.value = roundedResult;
+// 	};
+// };
+
+// const observer1 = row3ReceiverFn(row3Receiver1);
+
+// const observer2 = row3ReceiverFn(row3Receiver2);
+
+// const observer3 = row3ReceiverFn(row3Receiver3);
+
+// const observer4 = row3ReceiverFn(row3Receiver4);
+
+
+
+// subject
+// .subscribe(observer1);
+
+// subject.subscribe(observer2);
+// subject.subscribe(observer3);
+// subject.subscribe(observer4);
+
+// combinedSender$
+// .map(([e1, e2]) => [e1.value, e2.value])
+// .map(([e1, e2]) => [Number(e1), Number(e2)])
+// .subscribe(subject);
 
 
 

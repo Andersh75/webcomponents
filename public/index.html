@@ -16,8 +16,15 @@
   <script src="js/helper.js" type="text/javascript"></script>
   <script src="js/customelement.js" type="text/javascript"></script>
   <script src="js/customelement2.js" type="text/javascript"></script>
-  <script src="ce/primary/input_one_ce.js" type="module"></script>
-  <script src="ce/composed_without_slots/headline_input_ce.js" type="module"></script>
+  <script src="ce/primary/input_base_ce.js" type="module"></script>
+  <script src="ce/primary/select_base_ce.js" type="module"></script>
+  <script src="ce/primary/headline_base_ce.js" type="module"></script>
+  <script src="ce/primary/button_base_ce.js" type="module"></script>
+  <script src="ce/composed_without_slots/headline_input_base_ce.js" type="module"></script>
+  <script src="ce/composed_without_slots/headline_select_base_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/anykind_container_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/section_input_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/section_output_ce.js" type="module"></script>
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
   
@@ -65,16 +72,16 @@
 </script> -->
 
 
-  <link rel="import" href="ce/primary/input_ce.html">
+  <!-- <link rel="import" href="ce/primary/input_ce.html"> -->
   <!-- <link rel="import" href="ce/primary/input4_ce.html"> -->
-  <link rel="import" href="ce/primary/headline_ce.html">
+  <!-- <link rel="import" href="ce/primary/headline_ce.html">
   <link rel="import" href="ce/primary/button_ce.html">
   <link rel="import" href="ce/primary/select_ce.html">
-  <!-- <link rel="import" href="ce/composed_without_slots/headline_input_ce.html"> -->
-  <link rel="import" href="ce/composed_without_slots/headline_select_ce.html">
-  <link rel="import" href="ce/composed_with_slots/anykind_container_ce.html">
-  <link rel="import" href="ce/composed_with_slots/section_input_ce.html">
-  <link rel="import" href="ce/composed_with_slots/section_output_ce.html">
+  <link rel="import" href="ce/composed_without_slots/headline_input_ce.html">
+  <link rel="import" href="ce/composed_without_slots/headline_select_ce.html"> -->
+  <!-- <link rel="import" href="ce/composed_with_slots/anykind_container_ce.html"> -->
+  <!-- <link rel="import" href="ce/composed_with_slots/section_input_ce.html"> -->
+  <!-- <link rel="import" href="ce/composed_with_slots/section_output_ce.html"> -->
 
   
 </head>
@@ -174,66 +181,84 @@
 
 
 
+<!-- 
+ <headline-input-base-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb="test:test"></headline-input-base-ce>
+ <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce>
+
+ -->
 
 
- <anykind-container-ce slot="anycontainer">
-        <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
-        <headline-input-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce>
-    </anykind-container-ce>  
 
- <!-- <input-one-ce value="" placeholder="Antal brukare..."></input-one-ce> 
- <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sb="textinput1:keyup" sr="textinput1:keyup@updateheadline3$"></headline-input-ce> -->
 
-<!-- <section-input-ce listener="cleargeneralinputsection@clearanykindcontainers">
+
+ <!-- <anykind-container-ce>
+    <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
+    <headline-input-base-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-base-ce>
+</anykind-container-ce>   -->
+
+
+
+<section-input-ce listener="cleargeneralinputsection@clearanykindcontainers">
         
-    <headline-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
-    <button-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-ce>
+    <headline-base-ce title="Allmänt" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-base-ce>
+    <button-base-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-base-ce>
     
     <anykind-container-ce slot="anycontainer">
-        <headline-ce title="Kalkylperiod" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Startår" selectedindex="3" slot="anyform" datatarget="startyear"></headline-select-ce>
-        <headline-input-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sb="textinput1:keyup" sr="textinput1:keyup@updateheadline3$"></headline-input-ce>     
+        <headline-base-ce title="Kalkylperiod" class="h4" slot="headline"></headline-base-ce>
+        <headline-select-base-ce title="Startår" selectedindex="3" slot="anyform" datatarget="startyear"></headline-select-base-ce>
+        <headline-input-base-ce title="Kalkyllängd" value="" placeholder="Antal brukare..." slot="anyform" sb="textinput1:keyup" sr="textinput1:keyup@updateheadline3$"></headline-input-base-ce>     
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
-        <headline-ce title="Inflation" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Inflation" selectedindex="0" slot="anyform" datatarget="inflation"></headline-select-ce>   
+        <headline-base-ce title="Inflation" class="h4" slot="headline"></headline-base-ce>
+        <headline-select-base-ce title="Inflation" selectedindex="0" slot="anyform" datatarget="inflation" sb="inflation:rate"></headline-select-base-ce>   
     </anykind-container-ce> 
 
     <anykind-container-ce slot="anycontainer">
-        <headline-ce title="Kalkylränta" class="h4" slot="headline"></headline-ce>
-        <headline-select-ce title="Kalkylränta" selectedindex="0" slot="anyform" datatarget="discountrate"></headline-select-ce>   
+        <headline-base-ce title="Kalkylränta" class="h4" slot="headline"></headline-base-ce>
+        <headline-select-base-ce title="Kalkylränta" selectedindex="0" slot="anyform" datatarget="discountrate" sb="discount:rate"></headline-select-base-ce>   
     </anykind-container-ce> 
 
     <anykind-container-ce slot="anycontainer">
-        <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
-        <headline-input-ce title="Antal kWh/kvm/år" value="" placeholder="Antal brukare..." slot="anyform" sr="clearbutton2:click@updateheadline2$"></headline-input-ce> 
-        <headline-select-ce title="Kostnad per kWh" selectedindex="0" slot="anyform" datatarget="heatcost"></headline-select-ce>
+        <headline-base-ce title="Värmekostnader" class="h4" slot="headline"></headline-base-ce>
+        <headline-input-base-ce title="Antal kWh/kvm/år" value="" placeholder="Antal brukare..." slot="anyform" sb="heat:kwh" sr="clearbutton2:click@updateheadline2$"></headline-input-base-ce> 
+        <headline-select-base-ce title="Kostnad per kWh" selectedindex="0" slot="anyform" datatarget="heatcost" sb="heat:price"></headline-select-base-ce>
     </anykind-container-ce>
 
     <anykind-container-ce slot="anycontainer">
-        <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
-        <headline-input-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-ce>
+        <headline-base-ce title="Brukare" class="h4" slot="headline"></headline-base-ce>
+        <headline-input-base-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-base-ce>
     </anykind-container-ce>    
-</section-input-ce> -->
+</section-input-ce>
 
-<!-- 
+
 <section-output-ce>
-        <headline-ce title="Summering" class="h1 text-info" slot="anyheadline"></headline-ce>
-        <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
-                <headline-ce title="Värmekostnader" class="h4" slot="headline"></headline-ce>
-                <headline-input-ce title="År 1" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-                <headline-input-ce title="År 2" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-                <headline-input-ce title="År 3" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-        </anykind-container-ce>
-        <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
-                <headline-ce title="Reparationskostnader" class="h4" slot="headline"></headline-ce>
-                <headline-input-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="repair:amount-0@capitalize$"></headline-input-ce>
-                <headline-input-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-                <headline-input-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-ce>
-        </anykind-container-ce>
+    <headline-base-ce title="Summering" class="h1 text-info" slot="anyheadline"></headline-base-ce>
+    <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
+            <headline-base-ce title="Värmekostnader" class="h4" slot="headline"></headline-base-ce>
+            <headline-input-base-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-1"></headline-input-base-ce>
+            <headline-input-base-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-2"></headline-input-base-ce>
+            <headline-input-base-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-3"></headline-input-base-ce>
+    </anykind-container-ce>
+    <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
+        <headline-base-ce title="Diskonterade värmekostnader" class="h4" slot="headline"></headline-base-ce>
+        <headline-input-base-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:amount-1@discount$" sb="heat:discount-1"></headline-input-base-ce>
+        <headline-input-base-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:amount-2@discount$" sb="heat:discount-2"></headline-input-base-ce>
+        <headline-input-base-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:amount-3@discount$" sb="heat:discount-3"></headline-input-base-ce>
+    </anykind-container-ce>
+    <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
+        <headline-base-ce title="Summa Diskonterade värmekostnader" class="h4" slot="headline"></headline-base-ce>
+        <headline-input-base-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-base-ce>
+    </anykind-container-ce>
+    <!-- <anykind-container-ce slot="anycontainer" listener="singleselectupdate@testfn">
+            <headline-base-ce title="Reparationskostnader" class="h4" slot="headline"></headline-base-ce>
+            <headline-input-base-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="repair:amount-0@capitalize$"></headline-input-ce>
+            <headline-input-base-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-base-ce>
+            <headline-input-base-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-base-ce>
+    </anykind-container-ce> -->
 </section-output-ce>
 
+<!-- 
 <section-input-ce listener="clearowninputsection@clearsection">
     <headline-ce title="Äga" class="h1 text-info" slot="anyheadline"></headline-ce>
     <button-ce value="Rensa" toggle class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>

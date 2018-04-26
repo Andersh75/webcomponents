@@ -105,9 +105,10 @@ class CustomElement2 extends HTMLElement {
 	//Returns an object called details
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
-
+		console.log('AttributesChangedCallback');
 		if (name === 'sb') {
 			setComponentObservable.call(this);
+			console.log('sb attribute changed');
 			this.ctrl.stream();
 		} else {
 			let details = {};
@@ -125,6 +126,7 @@ class CustomElement2 extends HTMLElement {
 	//
 
 	connectedCallback() {
+		console.log('conectedCallback');
 		//Create setters and getters for all attributes
 		for (let i = 0; i < this.attributes.length; i++) {
 			let attribute = this.attributes.item(i).name;
