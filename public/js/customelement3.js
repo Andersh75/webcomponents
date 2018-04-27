@@ -10,7 +10,7 @@
 // For instance, a focus event does not bubble. There are other examples too, we’ll meet them. But still it’s an exception, rather than a rule, most events do bubble.
 
 
-class CustomElement2 extends HTMLElement {
+class CustomElement3 extends HTMLElement {
 
 	constructor() {
 		super();	
@@ -26,7 +26,9 @@ class CustomElement2 extends HTMLElement {
 	
 	//will be run from each custom component constructor.
 
-	extend() {
+	static extend() {
+		console.log('static');
+		console.log(this);
 		this.template = this.tpl.content; //creates a pointer at the content of the template of the custom component.
 		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
 		this.extendModel(this); //adds new methods to this.model

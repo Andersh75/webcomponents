@@ -1,34 +1,20 @@
-const tpl = window.document.createElement("template");
-tpl.innerHTML = `
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-		<style>
-
-		</style>
-
-	<button type="button" class="btn btn-secondary"></button>
-`;
-
-
-
-class ButtonBaseCE extends CustomElement2 {
+class ButtonBaseCE extends CustomElement3 {
 
 	constructor() {
 		super();
-		this.tpl = tpl;
-		this.parent;
-		this.extend();
-		this.extendBase();
+		//this.parent;
 	}
 
 		
-	static get observedAttributes() {
-		return [ 'toggle', 'value' ];
-	}
+	// static get observedAttributes() {
+	// 	return [ 'toggle', 'value' ];
+	// }
 
-	extendBase() {
-		this.extendView(this, this.model); //adds new methods to this.view
-		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+	extend() {
+		ButtonBaseCE.extend.call(this);
+		this.extendBaseModel(this); //adds new methods to this.model
+		this.extendBaseView(this, this.model); //adds new methods to this.view
+		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 
 	extendCtrl(that, model, view) {

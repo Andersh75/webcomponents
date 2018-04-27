@@ -17,20 +17,26 @@ class InputOneCE extends InputBaseCE {
 	constructor() {
 		super();
 		this.tpl = tpl;
-		this.parent;
 		this.extend();
-		this.extendBase();
 	}
 
-	extendCtrl(that, model, view) {
-		
-		
+	static get observedAttributes() {
+		return ['value', 'placeholder', 'year', 'sb'];
+	};
+
+	extendBaseCtrl(that, model, view) {
+		//local
+		console.log('extend Base');
+
+	}
+	
+	extendBaseView(that, model) {
+
 	}
 
-
-	extendView(that, model) {
+	extendBaseModel(that) {
 		
-	}
+	}	
 }
 
 window.customElements.define('input-one-ce', InputOneCE);

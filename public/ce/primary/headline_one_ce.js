@@ -28,25 +28,26 @@ class HeadlineOneCE extends HeadlineBaseCE {
 	constructor() {
 		super();
 		this.tpl = tpl;
-		this.parent;
 		this.extend();
-		this.extendBase();
 	}
 
 	static get observedAttributes() {
 		return ['title'];
-	};
+	}
 	
-	//Controller
-	extendCtrl(that, model, view) {
+	extendBaseCtrl(that, model, view) {
+		//local
+		console.log('extend Base');
+
+	}
+	
+	extendBaseView(that, model) {
+
 	}
 
-
-	//View
-	//always passive
-	extendView(that, model) {
+	extendBaseModel(that) {
 		
-	}
+	}	
 	
 
 }

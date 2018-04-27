@@ -14,7 +14,7 @@ tpl.innerHTML = `
 		:host {
 			display: inline-grid;
 			grid-template-columns: auto;
-			grid-template-rows: 20px auto 20px auto 20px auto 20px;
+			grid-template-rows: 20px auto 20px auto 20px;
 			background-color: beige
 		}
 		
@@ -53,27 +53,26 @@ class HeadlineInputOneCE extends HeadlineInputBaseCE {
 	constructor() {
 		super();
 		this.tpl = tpl;
-		this.parent;
 		this.extend();
-		this.extendBase();
 	}
 
 	static get observedAttributes() {
 		return [ 'title', 'placeholder', 'value' ];
 	}
-
-	//Controller
-	extendCtrl(that, model, view) {
-	}
-
-
-	//View
-	//always passive
-	extendView(that, model) {
 		
+	extendBaseCtrl(that, model, view) {
+		//local
+		console.log('extend Base');
+
 	}
 	
-	
+	extendBaseView(that, model) {
+
+	}
+
+	extendBaseModel(that) {
+		
+	}	
 }
 
 window.customElements.define('headline-input-one-ce', HeadlineInputOneCE);

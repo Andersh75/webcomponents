@@ -1,28 +1,18 @@
-const tpl = window.document.createElement("template");
-tpl.innerHTML = `
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<style>
-
-	</style>
-
-	<span id="headline"></span>
-`;
-
-class HeadlineBaseCE extends CustomElement2 {
+class HeadlineBaseCE extends CustomElement3 {
 	constructor() {
 		super();
-		this.tpl = tpl;
-		this.parent;
-		this.extend();
+		//this.parent;
 	}
 
-	static get observedAttributes() {
-		return ['title'];
-	};
-	
-	extendBase() {
-		this.extendView(this, this.model); //adds new methods to this.view
-		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+	// static get observedAttributes() {
+	// 	return [ 'title' ];
+	// }
+
+	extend() {
+		HeadlineBaseCE.extend.call(this);
+		this.extendBaseModel(this); //adds new methods to this.model
+		this.extendBaseView(this, this.model); //adds new methods to this.view
+		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 	
 	//Controller

@@ -20,26 +20,27 @@ tpl.innerHTML = `
 		constructor() {
 			super();
 			this.tpl = tpl;
-			this.parent;
 			this.extend();
-			this.extendBase();
 		}
 
 			
 		static get observedAttributes() {
 			return [ 'toggle', 'value' ];
 		}
-
-		//Controller
-		extendCtrl(that, model, view) {
+		
+		extendBaseCtrl(that, model, view) {
+			//local
+			console.log('extend Base');
+	
 		}
-
-
-		//View
-		//always passive
-		extendView(that, model) {
+		
+		extendBaseView(that, model) {
+	
+		}
+	
+		extendBaseModel(that) {
 			
-		}
+		}	
 	}
 
 

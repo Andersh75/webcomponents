@@ -1,55 +1,19 @@
-const tpl = window.document.createElement("template");
-
-tpl.innerHTML = `
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-	<style>
-		:host {
-			display: inline-grid;
-			grid-template-columns: auto;
-			grid-template-rows: 20px auto 20px auto 20px;
-			background-color: beige
-		}
-		
-		#headline {
-			color: green;
-			grid-column-start: 1;
-			grid-column-end: 1;
-			grid-row-start: 2;
-			grid-row-end: 2;
-		}
-
-		#input {
-			color: green;
-			grid-column-start: 1;
-			grid-column-end: 1;
-			grid-row-start: 4;
-			grid-row-end: 4;
-		}
-
-	</style>
-
-	<headline-base-ce id="headline" title class="h5"></headline-base-ce>
-	<input-base-ce id="input" sb="" placeholder value></input-base-ce>
-`;
-
-class HeadlineInputBaseCE extends CustomElement2 {
+class HeadlineInputBaseCE extends CustomElement3 {
 
 	constructor() {
 		super();
-		this.tpl = tpl;
-		this.parent;
-		this.extend();
+		//this.parent;
 	}
 
-	static get observedAttributes() {
-		return [ 'title', 'placeholder', 'value' ];
-	}
+	// static get observedAttributes() {
+	// 	return [ 'title', 'placeholder', 'value' ];
+	// }
 
-	extendBase() {
-		this.extendView(this, this.model); //adds new methods to this.view
-		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+	extend() {
+		HeadlineInputBaseCE.extend.call(this);
+		this.extendBaseModel(this); //adds new methods to this.model
+		this.extendBaseView(this, this.model); //adds new methods to this.view
+		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 
 	//extends this.ctrl in CustomElement

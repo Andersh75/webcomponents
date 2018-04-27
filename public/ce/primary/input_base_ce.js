@@ -1,41 +1,19 @@
-// const tpl = window.document.createElement("template");
-// tpl.innerHTML = `
-// <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-// <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+class InputBaseCE extends CustomElement3 {
 
-
-// <div id="wrappper" class="input-group input-group-sm mb-3">
-//   <input id="input" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-//   </div>
-// `;
-
-const tpl = window.document.createElement("template");
-tpl.innerHTML = `
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-
-	<div id="wrapper" class="input-group input-group-sm mb-3">
-		<input id="input" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-	</div>
-`;
-
-class InputBaseCE extends CustomElement2 {
 	constructor() {
 		super();
-		this.tpl = tpl;
-		this.parent;
-		this.extend();
+		//this.parent;
 	}
 
+	// static get observedAttributes() {
+	// 	return [ 'value', 'placeholder', 'year', 'sb' ];
+	// }
 
-	static get observedAttributes() {
-		return ['value', 'placeholder', 'year', 'sb'];
-	};
-
-	extendBase() {
-		this.extendView(this, this.model); //adds new methods to this.view
-		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+	extend() {
+		InputBaseCE.extend.call(this);
+		this.extendBaseModel(this); //adds new methods to this.model
+		this.extendBaseView(this, this.model); //adds new methods to this.view
+		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 
 
@@ -89,6 +67,7 @@ class InputBaseCE extends CustomElement2 {
 			};
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
+			.do(console.log)
 			.subscribe((x) => {
 				let year = that.year;
 				let numYear = Number(year);
