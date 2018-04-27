@@ -45,10 +45,10 @@ tpl.innerHTML = `
 	</style>
 
 	<headline-one-ce id="headline" title class="h5"></headline-one-ce>
-	<input-one-ce id="input" sb="" placeholder value></input-one-ce>
+	<input-number-ce id="input" sb="" placeholder value></input-number-ce>
 `;
 
-class HeadlineInputOneCE extends HeadlineInputBaseCE {
+class HeadlineInputNumberCE extends HeadlineInputBaseCE {
 
 	constructor() {
 		super();
@@ -100,4 +100,4 @@ class HeadlineInputOneCE extends HeadlineInputBaseCE {
 	}	
 }
 
-window.customElements.define('headline-input-one-ce', HeadlineInputOneCE);
+window.customElements.define('headline-input-number-ce', HeadlineInputNumberCE);

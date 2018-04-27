@@ -11,18 +11,18 @@ tpl.innerHTML = `
 		<div class="input-group mb-3">
 			<select id="select" class="custom-select">
 			  <option disabled selected value="">välj...</option>
-			  <option value="0.01">0.01</option>
-			  <option value="0.02">0.02</option>
-			  <option value="0.03">0.03</option>
-			  <option value="0.04">0.04</option>
-			  <option value="0.05">0.05</option>
+			  <option value="0.01">1%</option>
+			  <option value="0.02">2%</option>
+			  <option value="0.03">3%</option>
+			  <option value="0.04">4%</option>
+			  <option value="0.05">5%</option>
 			</select>
 		  </div>
 `;
 
 
 
-	class SelectInflationCE extends SelectBaseCE {
+	class SelectDiscountCE extends SelectBaseCE {
 
 		constructor() {
 			super();
@@ -51,4 +51,4 @@ tpl.innerHTML = `
 		}
 	}
 
-	window.customElements.define('select-inflation-ce', SelectInflationCE);
+	window.customElements.define('select-discount-ce', SelectDiscountCE);

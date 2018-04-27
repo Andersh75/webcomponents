@@ -2,7 +2,7 @@ import { HeadlineSelectBaseCE } from '/ce/composed_without_slots/headline_select
 	// specific:
 	// required attributes: headline-ce: title, select-ce: selectedindex
 
-	const tpl = window.document.createElement("template");
+const tpl = window.document.createElement("template");
 tpl.innerHTML = `
 <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -35,7 +35,7 @@ tpl.innerHTML = `
 			</style>
 
 			<headline-one-ce id="headline" title class="h5"></headline-one-ce>
-			<select-inflation-ce id="select" sb="" selectedindex></select-inflation-ce>
+			<select-inflation-ce id="select" sb="" selectedindex selectedvalue></select-inflation-ce>
 `;
 
 
@@ -49,7 +49,7 @@ class HeadlineSelectInflationCE extends HeadlineSelectBaseCE {
 	}
 
 	static get observedAttributes() {
-		return [ 'title', 'placeholder', 'datatarget', 'selectedindex' ];
+		return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'selectedvalue'  ];
 	}
 		
 	extendBaseCtrl(that, model, view) {

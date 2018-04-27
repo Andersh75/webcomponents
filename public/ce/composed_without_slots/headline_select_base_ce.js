@@ -39,9 +39,10 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 			.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
 		};
 
-		this.ctrl.changedAttribute = function(details) {
-			// console.log('DETAILS!');
-			// console.log(details.changedAttribute.newVal);
+		this.ctrl.changedAttribute = function(details, that) {
+			console.log('DETAILS!!!');
+			console.log(details);
+			console.log(that);
 			myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
 		};
 

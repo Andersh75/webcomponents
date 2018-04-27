@@ -78,6 +78,8 @@ class SelectBaseCE extends CustomElement3 {
 	//always passive
 	extendView(that, model) {
 		this.view.renderSelectedIndex = function(obj) {
+			console.log('THEOBJ!');
+			console.log(obj);
 			Array.prototype.slice.call(that.shadowRoot.querySelector('#select')).forEach(child => {
 				child.removeAttribute('selected');
 			})
@@ -98,19 +100,36 @@ class SelectBaseCE extends CustomElement3 {
 	extendModel(that) {
 		let db ={};
 		db.selectedindex = "0";
+		db.selectedvalue = "";
 
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
-			let oldVal;
-			that[attribute] = newVal;
+			let oldVal = {};
+
+			if (attribute === 'selectedindex') {
+				console.log('!selecteindex');
+				console.log('newVal');
+				console.log(newVal);
+				console.log(newVal.selectedindex);
+				that[attribute] = newVal.selectedindex;
+				console.log('!selectedvalue');
+				console.log(that.shadowRoot.querySelector('#select').children[newVal.selectedindex]);
+				that.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
+			} else {
+				that[attribute] = newVal;
+			}
+			
 			if (parent !== undefined) {
 				that.parent = parent;
 			}
 
 			switch(attribute) {
 				case 'selectedindex':
-					oldVal = db.selectedindex;
-					db.selectedindex = newVal;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: db.selectedindex});
+					oldVal.selectedindex = db.selectedindex;
+					db.selectedindex = newVal.selectedindex;
+
+					oldVal.selectedvalue = db.selectedvalue;
+					db.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: db});
 					break;
 			} 
 		};

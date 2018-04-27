@@ -32,7 +32,7 @@ tpl.innerHTML = `
 	
 
 		static get observedAttributes() {
-			return [ 'selectedindex', 'sb'];
+			return [ 'selectedindex', 'sb', 'selectedvalue'];
 		}
 
 		

@@ -35,12 +35,12 @@ tpl.innerHTML = `
 			</style>
 
 			<headline-one-ce id="headline" title class="h5"></headline-one-ce>
-			<select-one-ce id="select" sb="" selectedindex selectedvalue></select-one-ce>
+			<select-year-ce id="select" sb="" selectedindex selectedvalue></select-year-ce>
 `;
 
 
 
-class HeadlineSelectOneCE extends HeadlineSelectBaseCE {
+class HeadlineSelectYearCE extends HeadlineSelectBaseCE {
 
 	constructor() {
 		super();
@@ -68,4 +68,4 @@ class HeadlineSelectOneCE extends HeadlineSelectBaseCE {
 
 }
 
-window.customElements.define('headline-select-one-ce', HeadlineSelectOneCE);
+window.customElements.define('headline-select-year-ce', HeadlineSelectYearCE);

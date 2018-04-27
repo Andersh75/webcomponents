@@ -2,7 +2,7 @@ import { HeadlineSelectBaseCE } from '/ce/composed_without_slots/headline_select
 	// specific:
 	// required attributes: headline-ce: title, select-ce: selectedindex
 
-	const tpl = window.document.createElement("template");
+const tpl = window.document.createElement("template");
 tpl.innerHTML = `
 <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -35,12 +35,12 @@ tpl.innerHTML = `
 			</style>
 
 			<headline-one-ce id="headline" title class="h5"></headline-one-ce>
-			<select-one-ce id="select" sb="" selectedindex selectedvalue></select-one-ce>
+			<select-discount-ce id="select" sb="" selectedindex selectedvalue></select-discount-ce>
 `;
 
 
 
-class HeadlineSelectOneCE extends HeadlineSelectBaseCE {
+class HeadlineSelectDiscountCE extends HeadlineSelectBaseCE {
 
 	constructor() {
 		super();
@@ -68,4 +68,4 @@ class HeadlineSelectOneCE extends HeadlineSelectBaseCE {
 
 }
 
-window.customElements.define('headline-select-one-ce', HeadlineSelectOneCE);
+window.customElements.define('headline-select-discount-ce', HeadlineSelectDiscountCE);

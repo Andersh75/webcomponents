@@ -49,7 +49,10 @@ class CustomElement3 extends HTMLElement {
 			this.shadowRoot.querySelector('select').addEventListener('change', e => {
 			e.stopPropagation; //prevents from bubbling and capturing
 			e.preventDefault; //prevent browser specific default actions for elements.
-			let data = e.composedPath()[0].selectedIndex;
+			let data = {};
+			data.selectedindex = e.composedPath()[0].selectedIndex;
+			data.selectedvalue = e.composedPath()[0].value;
+			
 			let attribute = 'selectedindex';
 			eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
 			});
@@ -73,6 +76,7 @@ class CustomElement3 extends HTMLElement {
 					let data = e.composedPath()[0].value;
 					let attribute = 'value';
 					eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute});
+					document.activeElement.blur();
 				}
 			});
 			this.shadowRoot.querySelector('input').addEventListener('blur', e => {
@@ -98,7 +102,7 @@ class CustomElement3 extends HTMLElement {
 			this.addEventListener('click', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined});	
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined});
 			});
 		}	
 	}
@@ -119,7 +123,7 @@ class CustomElement3 extends HTMLElement {
 			details.changedAttribute.name = name;
 			details.changedAttribute.oldVal = oldVal;
 			details.changedAttribute.newVal = newVal;
-			this.ctrl.changedAttribute(details);
+			this.ctrl.changedAttribute(details, this);
 			eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
 			
 		}
@@ -198,23 +202,45 @@ function Ctrl(that, model, view, ctrl) {
 		},
 		userAction: function(e) { //local events initiated by users
 			let attribute = e.detail.attribute;
-			let data = e.detail.data;
+			let data;
+			console.log('USERACTION');
+			console.log(e);
 			if (attribute !== undefined) {
 				try {
-					that.ctrl.addedUserAction(data, attribute)
-					.then((result) => {
-						console.log('RESOLVED!');
-						data = result.data;
-						attribute = result.attribute;
-						console.log(result.data);
-						console.log(result.attribute);
-					});
+					if (attribute === 'selectedindex') {
+						data = {};
+						data.selectedindex = e.detail.data.selectedindex;
+						data.selectedvalue = e.detail.data.selectedvalue;
+						that.ctrl.addedUserAction(data, attribute)
+						.then((result) => {
+							console.log('RESOLVED!');
+							data = result.data;
+							attribute = result.attribute;
+							console.log(result.data);
+							console.log(result.attribute);
+							model.updateModelWithAttribute(attribute, {selectedvalue: data.selectedvalue, selectedindex: data.selectedindex});
+						});
+					} else {
+						data = e.detail.data;
+						that.ctrl.addedUserAction(data, attribute)
+						.then((result) => {
+							console.log('RESOLVED!');
+							data = result.data;
+							attribute = result.attribute;
+							console.log(result.data);
+							console.log(result.attribute);
+							console.log('DATA TO UPDATE MODEL');
+							console.log(data);
+							model.updateModelWithAttribute(attribute, data);
+						})
+						.catch(() => {
+							throw 'Not a number';
+						});
+					}
 				}
 				catch (error) {
-					console.error();
+					console.error(error);
 				}
-
-				model.updateModelWithAttribute(attribute, data);
 			}		
 		},
 		clearSelfFromParent: function(e) { //local events initiated by users
@@ -238,6 +264,8 @@ function Ctrl(that, model, view, ctrl) {
 				
 				if (parent !== undefined) {
 					console.log('Updates parent attribute');
+					console.log(attribute);
+					console.log(newVal);
 					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: parent, attribute: attribute, newVal: newVal});
 				} else {
 					console.log('No parent...');
@@ -249,14 +277,25 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.attribute;
 			let data = e.detail.data;
 			if (attribute !== undefined) {
-				model.updateModelWithAttribute(attribute, data, parent);
+				if (attribute === 'selectedindex') {
+					model.updateModelWithAttribute(attribute, {selectedindex: data}, parent);
+				} else {
+					model.updateModelWithAttribute(attribute, data, parent);
+				}
 			}	
 		},
 		updatedAttributeFromChild: function(e) {
 			let child = e.detail.child;
 			let parent = e.detail.parent;
 			let attribute = e.detail.attribute;
-			parent[attribute] = e.detail.newVal;
+			if (attribute === 'selectedindex') {
+				parent[attribute] = e.detail.newVal.selectedindex;
+				console.log('parent.selectedvalue = e.detail.newVal.selectedvalue');
+				console.log(e.detail.newVal.selectedvalue);
+				parent.selectedvalue = e.detail.newVal.selectedvalue;
+			} else {
+				parent[attribute] = e.detail.newVal;
+			}
 		}
 	};
 }

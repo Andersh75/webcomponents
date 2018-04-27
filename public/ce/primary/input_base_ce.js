@@ -35,6 +35,13 @@ class InputBaseCE extends CustomElement3 {
 			}	
 		};
 
+		this.ctrl.addedUserAction = function(data, attribute) {
+			return new Promise((resolve, reject) => {
+			
+				resolve({data: data, attribute: attribute});
+			}
+		)};
+
 
 		//stream from element
 		this.ctrl.stream = function() {
