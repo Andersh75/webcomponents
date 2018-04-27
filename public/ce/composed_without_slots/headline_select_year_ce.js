@@ -12,11 +12,11 @@ tpl.innerHTML = `
 				display: inline-grid;
 				grid-template-columns: auto;
   				grid-template-rows: 20px auto 20px auto 20px;
-				background-color: beige
+				background-color: 
 			}
 			
 			#headline {
-				color: blue;
+				color: green;
 				grid-column-start: 1;
   				grid-column-end: 1;
   				grid-row-start: 2;
@@ -33,9 +33,12 @@ tpl.innerHTML = `
 
 
 			</style>
-
-			<headline-one-ce id="headline" title class="h5"></headline-one-ce>
-			<select-year-ce id="select" sb="" selectedindex selectedvalue></select-year-ce>
+			<form>	
+				<div class="form-group">
+					<headline-label-ce id="headline" title></headline-label-ce>
+					<select-year-ce id="select" sb="" selectedindex selectedvalue></select-year-ce>
+				</div>
+			</form>
 `;
 
 

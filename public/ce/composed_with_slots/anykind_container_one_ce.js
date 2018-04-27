@@ -12,7 +12,7 @@ tpl.innerHTML = `
 			  grid-template-rows: auto;
 			grid-gap: 20px;
 			padding: 40px;
-			background-color: beige
+			background-color: ;
 		}
 					
 		#headline::slotted(*) {

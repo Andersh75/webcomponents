@@ -15,7 +15,7 @@ tpl.innerHTML = `
 			display: inline-grid;
 			grid-template-columns: auto;
 			grid-template-rows: 20px auto 20px auto 20px;
-			background-color: beige
+			background-color: 
 		}
 		
 		#headline {
@@ -44,7 +44,7 @@ tpl.innerHTML = `
 
 	</style>
 
-	<headline-one-ce id="headline" title class="h5"></headline-one-ce>
+	<headline-one-ce id="headline" title class="h8"></headline-one-ce>
 	<input-one-ce id="input" sb="" placeholder value></input-one-ce>
 `;
 

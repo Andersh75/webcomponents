@@ -15,7 +15,7 @@ tpl.innerHTML = `
 			display: inline-grid;
 			grid-template-columns: auto;
 			grid-template-rows: 20px auto 20px auto 20px;
-			background-color: beige
+			background-color: 
 		}
 		
 		#headline {
@@ -43,9 +43,12 @@ tpl.innerHTML = `
 		} */
 
 	</style>
-
-	<headline-one-ce id="headline" title class="h5"></headline-one-ce>
-	<input-number-ce id="input" sb="" placeholder value></input-number-ce>
+	<form>	
+		<div class="form-group">
+			<headline-label-ce id="headline" title></headline-label-ce>
+			<input-number-ce id="input" sb="" placeholder value></input-number-ce>
+		</div>
+	</form>
 `;
 
 class HeadlineInputNumberCE extends HeadlineInputBaseCE {

@@ -8,18 +8,15 @@ tpl.innerHTML = `
 	<style>
 		
 	</style>
-		<div class="input-group mb-3">
-			<select id="select" class="custom-select">
-			  <option disabled selected value="">välj...</option>
-			  <option value="2018">2018</option>
-			  <option value="2019">2019</option>
-			  <option value="2020">2020</option>
-			  <option value="2021">2021</option>
-			  <option value="2022">2022</option>
-			</select>
-		  </div>
+		<select id="select" class="form-control form-control-sm">
+			<option disabled selected value="">välj...</option>
+			<option value="2018">2018</option>
+			<option value="2019">2019</option>
+			<option value="2020">2020</option>
+			<option value="2021">2021</option>
+			<option value="2022">2022</option>
+		</select>
 `;
-
 
 
 	class SelectYearCE extends SelectBaseCE {
