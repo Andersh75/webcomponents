@@ -76,6 +76,12 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
+
+// let testel = document.querySelector('#testfn');
+
+// console.log('testel');
+// console.log(testel);
+// console.log(testel.testfn());
 // console.warn('HEJ');
 // mytestfn();
 // console.warn('HOPP');

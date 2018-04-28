@@ -44,8 +44,12 @@ tpl.innerHTML = `
 
 	</style>
 
-	<headline-one-ce id="headline" title class="h8"></headline-one-ce>
-	<input-one-ce id="input" sb="" placeholder value></input-one-ce>
+	<form>	
+	<div class="form-group">
+		<headline-label-ce id="headline" title></headline-label-ce>
+		<input-one-ce id="input" sb="" placeholder value></input-one-ce>
+	</div>
+</form>
 `;
 
 class HeadlineInputOneCE extends HeadlineInputBaseCE {

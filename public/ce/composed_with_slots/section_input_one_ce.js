@@ -3,7 +3,8 @@ import { SectionInputBaseCE } from '/ce/composed_with_slots/section_input_base_c
 const tpl = window.document.createElement("template");
 tpl.innerHTML = `
 <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
 <style>
 		:host {
@@ -77,12 +78,13 @@ tpl.innerHTML = `
 		}
 
 		</style>
-	
+
 		<slot id="anyheadline" name="anyheadline"></slot>
 		<slot id="anybutton" name="anybutton"></slot>
 		<slot id="anycontainer" name="anycontainer"></slot>
-`;
 
+		
+`;
 
 
 class SectionInputOneCE extends SectionInputBaseCE {

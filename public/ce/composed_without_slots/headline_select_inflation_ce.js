@@ -34,8 +34,12 @@ tpl.innerHTML = `
 
 			</style>
 
-			<headline-one-ce id="headline" title class="h8"></headline-one-ce>
-			<select-inflation-ce id="select" sb="" selectedindex selectedvalue></select-inflation-ce>
+			<form>	
+				<div class="form-group">
+					<headline-label-ce id="headline" title></headline-label-ce>
+					<select-inflation-ce id="select" sb="" selectedindex selectedvalue></select-inflation-ce>
+				</div>
+			</form>
 `;
 
 
@@ -50,6 +54,16 @@ class HeadlineSelectInflationCE extends HeadlineSelectBaseCE {
 
 	static get observedAttributes() {
 		return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'selectedvalue'  ];
+	}
+
+	//TESTING TO INJECT DOM ELEMENTS AFTER ATTATCHMENT
+	testfn() {
+		//return 'LOGGING';
+		let formGroup = this.shadowRoot.querySelector('.form-group');
+		let newEl = document.createElement('headline-label-ce');
+		newEl.setAttribute('title', 'testtitle');
+		formGroup.appendChild(newEl);
+		return formGroup;
 	}
 		
 	extendBaseCtrl(that, model, view) {

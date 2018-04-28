@@ -8,16 +8,14 @@ tpl.innerHTML = `
 	<style>
 		
 	</style>
-		<div class="input-group mb-3">
-			<select id="select" class="custom-select">
-			  <option disabled selected value="">välj...</option>
+			<select id="select"  class="form-control form-control-sm">
+			  <option disabled selected value="">Kr...</option>
 			  <option value="0.90">0,90kr</option>
 			  <option value="0.95">0,95kr</option>
 			  <option value="1.00">1,00kr</option>
 			  <option value="1.05">1,05kr</option>
 			  <option value="1.10">1,10kr</option>
 			</select>
-		  </div>
 `;
 
 

@@ -37,14 +37,14 @@ tpl.innerHTML = `
 			<form>	
 				<div class="form-group">
 					<headline-label-ce id="headline" title></headline-label-ce>
-					<select-kwhprice-ce id="select" sb="" selectedindex selectedvalue></select-kwhprice-ce>
+					<slot name="anyselect" id="anyselect"></slot>
 				</div>
 			</form>
 `;
 
 
 
-class HeadlineSelectKwhpriceCE extends HeadlineSelectBaseCE {
+class HeadlineAnyselectCE extends HeadlineSelectBaseCE {
 
 	constructor() {
 		super();
@@ -72,4 +72,4 @@ class HeadlineSelectKwhpriceCE extends HeadlineSelectBaseCE {
 
 }
 
-window.customElements.define('headline-select-kwhprice-ce', HeadlineSelectKwhpriceCE);
+window.customElements.define('headline-anyselect-ce', HeadlineAnyselectCE);

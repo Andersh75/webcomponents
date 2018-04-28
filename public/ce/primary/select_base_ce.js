@@ -34,27 +34,24 @@ class SelectBaseCE extends CustomElement3 {
 
 		//stream from element
 		this.ctrl.stream = function() {
-			// console.log('STREAM IN SELECT');
 			// const element$ = function(element) {
-			// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'change').map(x => x.target), Rx.Observable.fromEvent(element, 'select').map(x => x.target), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
+			// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
 			// };
 
 			// element$(that)
-			// // .map(element => element.value)
-			// // .subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
-			// .subscribe(console.log)
+			// .map(element => element.value)
+			// .subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
 		};
 
 		this.ctrl.changedAttribute = function(details) {
 			// console.log('DETAILS!');
 			// console.log(details.changedAttribute);
-			// if (details.changedAttribute.name === "selectedindex") {
-			// 	console.log('here');
-			// 	console.log(that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value);
-			// 	myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value);
-			// }
-
-			
+			// if (details.changedAttribute.name === "selectedvalue") {
+			// 	console.log(details.changedAttribute.newVal);
+			// 	//console.log(that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value);
+			// 	myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+			// 	//myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value);
+			// }	
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {

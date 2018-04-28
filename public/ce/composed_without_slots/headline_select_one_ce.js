@@ -34,8 +34,12 @@ tpl.innerHTML = `
 
 			</style>
 
-			<headline-one-ce id="headline" title class="h8"></headline-one-ce>
-			<select-one-ce id="select" sb="" selectedindex selectedvalue></select-one-ce>
+			<form>	
+				<div class="form-group">
+					<headline-label-ce id="headline" title></headline-label-ce>
+					<select-one-ce id="select" sb="" selectedindex selectedvalue></select-one-ce>
+				</div>
+			</form>
 `;
 
 
