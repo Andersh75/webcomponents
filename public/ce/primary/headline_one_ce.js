@@ -37,7 +37,6 @@ class HeadlineOneCE extends HeadlineBaseCE {
 	
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 	}
 	

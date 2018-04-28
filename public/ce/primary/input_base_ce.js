@@ -55,8 +55,6 @@ class InputBaseCE extends CustomElement3 {
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			console.log('DETAILS!');
-			console.log(details.changedAttribute.newVal);
 			myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
 		};
 

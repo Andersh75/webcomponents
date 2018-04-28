@@ -50,7 +50,6 @@ class AnykindContainerOneCE extends AnykindContainerBaseCE {
 		
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 	}
 	

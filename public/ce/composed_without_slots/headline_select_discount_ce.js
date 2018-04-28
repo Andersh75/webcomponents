@@ -53,12 +53,11 @@ class HeadlineSelectDiscountCE extends HeadlineSelectBaseCE {
 	}
 
 	static get observedAttributes() {
-		return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'selectedvalue'  ];
+		return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'selectedvalue', 'sb', 'sr'  ];
 	}
 		
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 	}
 	

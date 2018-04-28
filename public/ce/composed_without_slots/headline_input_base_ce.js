@@ -41,8 +41,13 @@ class HeadlineInputBaseCE extends CustomElement3 {
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			// console.log('DETAILS!');
-			// console.log(details.changedAttribute.newVal);
+			console.log('DETAILS!');
+			console.log(details);
+			if (details.changedAttribute.name === "value") {
+				if (!h.boolean.isEmpty(that.sb)) {
+					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+				}	
+			}
 			// myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
 		};
 
@@ -58,7 +63,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))				
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
-			.do(console.log)	
+			//.do(console.log)	
 			.subscribe((x) => {
 				let year = that.year;
 				let numYear = Number(year);
@@ -85,11 +90,15 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				let year = that.year;
 				let numYear = Number(year);
 				let result = x[0] * x[1] * Math.pow((x[2] + 1), numYear);
+				console.log('result');
+				console.log(result);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-				if(h.boolean.isNumber(roundedResult)) {		
+				if(h.boolean.isNumber(roundedResult)) {
+					console.log('result');
+					console.log(roundedResult);	
 					that.value = roundedResult;
 					let input = that.shadowRoot.querySelector('#input');
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});		
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
 				}	
 			})
 		}
@@ -116,8 +125,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 			const combineLatest$ = function(...streams) {
 				return Rx.Observable.combineLatest(streams);
 			};
-			console.log('e.detail[0');
-			console.log(e.detail[0]);
+
 
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve('discount-1'), myRxmq.channel(e.detail[0]).behaviorobserve('discount-2'), myRxmq.channel(e.detail[0]).behaviorobserve('discount-3'))					
 			.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])
@@ -125,8 +133,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				let result = x.reduce((acc, el) => {
 					return acc = acc + el;
 				}, 0);
-				console.log('result!!');
-				console.log(result);
+
 
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 				that.value = roundedResult;

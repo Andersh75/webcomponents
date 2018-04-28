@@ -30,13 +30,39 @@ tpl.innerHTML = `
 	
 
 		static get observedAttributes() {
-			return [ 'selectedindex', 'sb', 'selectedvalue'];
+			return [ 'selectedindex', 'sb', 'selectedvalue', 'sr'];
 		}
 
 		
 		extendBaseCtrl(that, model, view) {
 			//local
-			console.log('extend Base');
+
+			//stream from element
+			// this.ctrl.stream = function() {
+			// 	console.log('stream: select_inflation');
+			// 	const element$ = function(element) {
+			// 		return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
+			// 	};
+
+			// 	element$(that)
+				
+			// 	.map(element => element.selectedvalue)
+			// 	.do(console.log)
+				
+			// 	.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+			// };
+
+			// this.ctrl.changedAttribute = function(details) {
+			// 	console.log('ChangedAttribute: select_inflation');
+			// 	console.log(details);
+			// 	if (details.changedAttribute.name === "selectedindex") {
+			// 		that.selectedvalue = that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value;
+			// 	}
+
+			// 	if (details.changedAttribute.name === "selectedvalue") {
+			// 		myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+			// 	}		
+			// };
 	
 		}
 		

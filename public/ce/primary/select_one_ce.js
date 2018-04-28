@@ -30,13 +30,12 @@ tpl.innerHTML = `
 	
 
 		static get observedAttributes() {
-			return [ 'selectedindex', 'sb', 'selectedvalue'];
+			return [ 'selectedindex', 'sb', 'selectedvalue', 'sr'];
 		}
 
 		
 		extendBaseCtrl(that, model, view) {
 			//local
-			console.log('extend Base');
 	
 		}
 		

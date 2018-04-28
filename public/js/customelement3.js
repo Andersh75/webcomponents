@@ -20,6 +20,7 @@ class CustomElement3 extends HTMLElement {
 		this.view = View(this, this.model); //View() returns an object with own this and with eval method.
 		this.ctrl = Ctrl(this, this.model, this.view); //Ctrl() returns an object with own this and with eval method.
 		this.eventTarget = this.model.eval("eventTarget"); //creates a pointer to the const eventTarget, a DOM element that is outside this model but within its scope.
+		this.acc = {};
 	}
 
 	//-----------
@@ -27,8 +28,8 @@ class CustomElement3 extends HTMLElement {
 	//will be run from each custom component constructor.
 
 	static extend() {
-		console.log('static');
-		console.log(this);
+		// console.log('static');
+		// console.log(this);
 		this.template = this.tpl.content; //creates a pointer at the content of the template of the custom component.
 		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
 		this.extendModel(this); //adds new methods to this.model
@@ -113,27 +114,25 @@ class CustomElement3 extends HTMLElement {
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
 		console.log('AttributesChangedCallback');
-		if (name === 'sb') {
-			setComponentObservable.call(this);
-			console.log('sb attribute changed');
-			this.ctrl.stream();
+		if (!(name in this.acc)) {
+			console.log('not exist: ' + name);
+			this.acc[name] = true;
 		} else {
 			let details = {};
-			details.changedAttribute = {};
-			details.changedAttribute.name = name;
-			details.changedAttribute.oldVal = oldVal;
-			details.changedAttribute.newVal = newVal;
-			this.ctrl.changedAttribute(details, this);
-			eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
-			
-		}
-		
+				details.changedAttribute = {};
+				details.changedAttribute.name = name;
+				details.changedAttribute.oldVal = oldVal;
+				details.changedAttribute.newVal = newVal;
+				this.ctrl.changedAttribute(details, this);
+				eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
+		}	
 	}
 
 	//
 
 	connectedCallback() {
 		console.log('conectedCallback');
+		console.log(this);
 		//Create setters and getters for all attributes
 		for (let i = 0; i < this.attributes.length; i++) {
 			let attribute = this.attributes.item(i).name;
@@ -203,8 +202,8 @@ function Ctrl(that, model, view, ctrl) {
 		userAction: function(e) { //local events initiated by users
 			let attribute = e.detail.attribute;
 			let data;
-			console.log('USERACTION');
-			console.log(e);
+			// console.log('USERACTION');
+			// console.log(e);
 			if (attribute !== undefined) {
 				try {
 					if (attribute === 'selectedindex') {
@@ -213,24 +212,24 @@ function Ctrl(that, model, view, ctrl) {
 						data.selectedvalue = e.detail.data.selectedvalue;
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							console.log('RESOLVED!');
+							// console.log('RESOLVED!');
 							data = result.data;
 							attribute = result.attribute;
-							console.log(result.data);
-							console.log(result.attribute);
+							// console.log(result.data);
+							// console.log(result.attribute);
 							model.updateModelWithAttribute(attribute, {selectedvalue: data.selectedvalue, selectedindex: data.selectedindex});
 						});
 					} else {
 						data = e.detail.data;
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							console.log('RESOLVED!');
+							// console.log('RESOLVED!');
 							data = result.data;
 							attribute = result.attribute;
-							console.log(result.data);
-							console.log(result.attribute);
-							console.log('DATA TO UPDATE MODEL');
-							console.log(data);
+							// console.log(result.data);
+							// console.log(result.attribute);
+							// console.log('DATA TO UPDATE MODEL');
+							// console.log(data);
 							model.updateModelWithAttribute(attribute, data);
 						})
 						.catch(() => {
@@ -239,7 +238,7 @@ function Ctrl(that, model, view, ctrl) {
 					}
 				}
 				catch (error) {
-					console.error(error);
+					// console.error(error);
 				}
 			}		
 		},
@@ -263,12 +262,12 @@ function Ctrl(that, model, view, ctrl) {
 				view.updateView(attribute, item);
 				
 				if (parent !== undefined) {
-					console.log('Updates parent attribute');
-					console.log(attribute);
-					console.log(newVal);
+					// console.log('Updates parent attribute');
+					// console.log(attribute);
+					// console.log(newVal);
 					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: parent, attribute: attribute, newVal: newVal});
 				} else {
-					console.log('No parent...');
+					// console.log('No parent...');
 				}
 			}
 		},
@@ -290,8 +289,8 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.attribute;
 			if (attribute === 'selectedindex') {
 				parent[attribute] = e.detail.newVal.selectedindex;
-				console.log('parent.selectedvalue = e.detail.newVal.selectedvalue');
-				console.log(e.detail.newVal.selectedvalue);
+				// console.log('parent.selectedvalue = e.detail.newVal.selectedvalue');
+				// console.log(e.detail.newVal.selectedvalue);
 				parent.selectedvalue = e.detail.newVal.selectedvalue;
 			} else {
 				parent[attribute] = e.detail.newVal;

@@ -66,14 +66,13 @@ class HeadlineInputOneCE extends HeadlineInputBaseCE {
 		
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 
 		this.ctrl.priceandcapitalize$ = function(e) {
 			const combineLatest$ = function(...streams) {
 				return Rx.Observable.combineLatest(streams);
 			};
-
+			console.log('pac');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('price'), myRxmq.channel('inflation').behaviorobserve('rate'))
 			.do(console.log)				
 			.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])

@@ -30,7 +30,6 @@ tpl.innerHTML = `
 		
 		extendBaseCtrl(that, model, view) {
 			//local
-			console.log('extend Base');
 	
 		}
 		

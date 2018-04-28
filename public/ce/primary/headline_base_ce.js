@@ -20,11 +20,8 @@ class HeadlineBaseCE extends CustomElement3 {
 
 		//init
 		this.ctrl.run = function() {
-			console.log('run');
 			if (!h.boolean.isEmpty(that.title)) {
 				let attribute = 'title';
-				console.log('has initial title');
-				console.log(that.title);
 				view.updateView(attribute, that.title);
 			}
 		};
@@ -90,8 +87,6 @@ class HeadlineBaseCE extends CustomElement3 {
 	//always passive
 	extendView(that, model) {
 		this.view.renderTitle = function(obj) {
-			console.log('renderTitle');
-			console.log(obj);
 			that.shadowRoot.querySelector('#headline').textContent = obj;
 		};
 

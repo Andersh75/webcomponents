@@ -101,7 +101,6 @@ class SectionInputOneCE extends SectionInputBaseCE {
 
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 	}
 	

@@ -6,7 +6,7 @@ class SelectBaseCE extends CustomElement3 {
 	}
 
 	// static get observedAttributes() {
-	// 	return [ 'selectedindex', 'sb' ];
+	// 	return [ 'selectedindex', 'sb', 'sr' ];
 	// }
 
 	extend() {
@@ -22,41 +22,40 @@ class SelectBaseCE extends CustomElement3 {
 		
 		//intit
 		this.ctrl.run = function() {
-			if (!h.boolean.isEmpty(that.sb)) {
-				that.ctrl.stream();
-			}
 			if (!h.boolean.isEmpty(that.selectedindex)) {
+				that.selectedvalue = that.shadowRoot.querySelector('#select').options[that.selectedindex].value;
 				let attribute = 'selectedindex';
 				view.updateView(attribute, that[attribute]);
-			}
+
+				that.ctrl.stream();				
+			}		
 		};
 
 
 		//stream from element
 		this.ctrl.stream = function() {
-			// const element$ = function(element) {
-			// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-			// };
-
-			// element$(that)
-			// .map(element => element.value)
-			// .subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+			console.log('stream: select_base');
+			if (!h.boolean.isEmpty(that.sb)) {
+				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.selectedvalue);
+			}	
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			// console.log('DETAILS!');
-			// console.log(details.changedAttribute);
-			// if (details.changedAttribute.name === "selectedvalue") {
-			// 	console.log(details.changedAttribute.newVal);
-			// 	//console.log(that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value);
-			// 	myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
-			// 	//myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value);
-			// }	
+			console.log('ChangedAttribute: select_base');
+			console.log(details);
+			if (details.changedAttribute.name === "selectedindex") {
+				that.selectedvalue = that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value;
+			}
+
+			if (details.changedAttribute.name === "selectedvalue") {
+				if (!h.boolean.isEmpty(that.sb)) {
+					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+				}	
+			}		
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
 			return new Promise((resolve, reject) => {
-				console.log('FRIST HERE');
 				resolve({data: data, attribute: attribute});
 			}
 		)};
@@ -75,8 +74,6 @@ class SelectBaseCE extends CustomElement3 {
 	//always passive
 	extendView(that, model) {
 		this.view.renderSelectedIndex = function(obj) {
-			console.log('THEOBJ!');
-			console.log(obj);
 			Array.prototype.slice.call(that.shadowRoot.querySelector('#select')).forEach(child => {
 				child.removeAttribute('selected');
 			})
@@ -103,13 +100,7 @@ class SelectBaseCE extends CustomElement3 {
 			let oldVal = {};
 
 			if (attribute === 'selectedindex') {
-				console.log('!selecteindex');
-				console.log('newVal');
-				console.log(newVal);
-				console.log(newVal.selectedindex);
 				that[attribute] = newVal.selectedindex;
-				console.log('!selectedvalue');
-				console.log(that.shadowRoot.querySelector('#select').children[newVal.selectedindex]);
 				that.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
 			} else {
 				that[attribute] = newVal;

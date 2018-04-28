@@ -6,7 +6,7 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 	}
 		
 	// static get observedAttributes() {
-	// 	return [ 'title', 'placeholder', 'datatarget', 'selectedindex' ];
+	// 	return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'sb', 'sr' ];
 	// }
 
 	extend() {
@@ -17,33 +17,41 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 	}
 
 	extendCtrl(that, model, view) {
-	
-		console.log('extending');
+
 		//init
 		this.ctrl.run = function() {
 			let headline = that.shadowRoot.querySelector('#headline');
 			let select = that.shadowRoot.querySelector('#select');
+
+			if (headline !== null) {
 			eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title});
-			eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
-			eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
+			}
+
+			if (select !== null) {
+				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
+				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
+			}		
 		};
 
 		//stream from element
-		this.ctrl.stream = function() {
-			const element$ = function(element) {
-				return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-			};
+		// this.ctrl.stream = function() {
+		// 	const element$ = function(element) {
+		// 		return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
+		// 	};
 
-			element$(that)
-			.map(element => element.value)
-			.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
-		};
+		// 	element$(that)
+		// 	.map(element => element.value)
+		// 	.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+		// };
 
 		this.ctrl.changedAttribute = function(details, that) {
-			console.log('DETAILS!!!');
+			console.log('ChangedAttribute: headline_select_base');
 			console.log(details);
-			console.log(that);
-			myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+			if (details.changedAttribute.name === "selectedvalue") {
+				if (!h.boolean.isEmpty(that.sb)) {
+					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+				}	
+			}	
 		};
 
 

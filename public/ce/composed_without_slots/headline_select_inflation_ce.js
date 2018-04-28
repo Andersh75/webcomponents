@@ -53,22 +53,21 @@ class HeadlineSelectInflationCE extends HeadlineSelectBaseCE {
 	}
 
 	static get observedAttributes() {
-		return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'selectedvalue'  ];
+		return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'selectedvalue', 'sb', 'sr'  ];
 	}
 
 	//TESTING TO INJECT DOM ELEMENTS AFTER ATTATCHMENT
-	testfn() {
-		//return 'LOGGING';
-		let formGroup = this.shadowRoot.querySelector('.form-group');
-		let newEl = document.createElement('headline-label-ce');
-		newEl.setAttribute('title', 'testtitle');
-		formGroup.appendChild(newEl);
-		return formGroup;
-	}
+	// testfn() {
+	// 	//return 'LOGGING';
+	// 	let formGroup = this.shadowRoot.querySelector('.form-group');
+	// 	let newEl = document.createElement('headline-label-ce');
+	// 	newEl.setAttribute('title', 'testtitle');
+	// 	formGroup.appendChild(newEl);
+	// 	return formGroup;
+	// }
 		
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 	}
 	

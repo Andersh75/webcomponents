@@ -65,32 +65,31 @@ class HeadlineInputNumberCE extends HeadlineInputBaseCE {
 		
 	extendBaseCtrl(that, model, view) {
 		//local
-		console.log('extend Base');
 
 
-		this.ctrl.priceandcapitalize$ = function(e) {
-			const combineLatest$ = function(...streams) {
-				return Rx.Observable.combineLatest(streams);
-			};
+		// this.ctrl.priceandcapitalize$ = function(e) {
+		// 	const combineLatest$ = function(...streams) {
+		// 		return Rx.Observable.combineLatest(streams);
+		// 	};
 
-			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('price'), myRxmq.channel('inflation').behaviorobserve('rate'))
-			.do(console.log)				
-			.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])
+		// 	combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('price'), myRxmq.channel('inflation').behaviorobserve('rate'))
+		// 	.do(console.log)				
+		// 	.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])
 				
-			.subscribe((x) => {
-				let year = that.year;
-				let numYear = Number(year);
-				//let result = x[0] * x[1] * Math.pow((x[2] + 1), numYear);
-				let result = x[0] * x[1];
+		// 	.subscribe((x) => {
+		// 		let year = that.year;
+		// 		let numYear = Number(year);
+		// 		//let result = x[0] * x[1] * Math.pow((x[2] + 1), numYear);
+		// 		let result = x[0] * x[1];
 
-				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-				if(h.boolean.isNumber(roundedResult)) {		
-					that.value = roundedResult;
-					let input = that.shadowRoot.querySelector('#input');
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});		
-				}	
-			})
-		}
+		// 		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+		// 		if(h.boolean.isNumber(roundedResult)) {		
+		// 			that.value = roundedResult;
+		// 			let input = that.shadowRoot.querySelector('#input');
+		// 			eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});		
+		// 		}	
+		// 	})
+		// }
 
 	}
 	
