@@ -6,7 +6,7 @@ class SelectBaseCE extends CustomElement3 {
 	}
 
 	// static get observedAttributes() {
-	// 	return [ 'selectedindex', 'sb', 'sr' ];
+	// 	return [ 'selectedindex', 'selectedvalue', 'sb', 'sr'];
 	// }
 
 	extend() {
