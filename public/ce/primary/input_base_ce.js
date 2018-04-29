@@ -26,7 +26,7 @@ class InputBaseCE extends CustomElement3 {
 				let attribute = 'value';
 				view.updateView(attribute, that.value);
 
-				that.ctrl.stream();
+				that.ctrl.stream(that.value);
 			}
 			if (!h.boolean.isEmpty(that.placeholder)) {
 				let attribute = 'placeholder';
@@ -36,24 +36,14 @@ class InputBaseCE extends CustomElement3 {
 
 		this.ctrl.addedUserAction = function(data, attribute) {
 			return new Promise((resolve, reject) => {
-			
 				resolve({data: data, attribute: attribute});
-			}
-		)};
-
-
-		//stream from element
-		this.ctrl.stream = function() {
-			if (!h.boolean.isEmpty(that.sb)) {
-				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.value);
-			}	
+			});
 		};
+
 
 		this.ctrl.changedAttribute = function(details) {
 			if (details.changedAttribute.name === "value") {
-				if (!h.boolean.isEmpty(that.sb)) {
-					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
-				}	
+				that.ctrl.stream(that.value);	
 			}	
 		};
 
@@ -124,14 +114,7 @@ class InputBaseCE extends CustomElement3 {
 		db.sb = "";
 
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
-			let oldVal;
-			if (attribute === 'value') {
-				console.log('new value');
-				console.log(newVal);
-				that[attribute] = newVal.value;
-			} else {
-				that[attribute] = newVal;
-			}
+			let oldVal = {};
 
 			if (parent !== undefined) {
 				that.parent = parent;
@@ -139,15 +122,19 @@ class InputBaseCE extends CustomElement3 {
 
 			switch(attribute) {
 				case 'value':
-					oldVal = db.value;
+					that[attribute] = newVal.value;
+					oldVal.value = db.value;
 					db.value = newVal.value;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: db.value});
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: db});
 					break;
 				case 'placeholder':
-					oldVal = db.placeholder;
+					that[attribute] = newVal;
+					oldVal.placeholder = db.placeholder;
 					db.placeholder = newVal;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'placeholder', oldVal: oldVal, newVal: db.placeholder});
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'placeholder', oldVal: oldVal, newVal: db});
 					break;
+				default:
+					that[attribute] = newVal;
 			} 	
 		};
 

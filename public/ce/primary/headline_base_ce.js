@@ -105,19 +105,22 @@ class HeadlineBaseCE extends CustomElement3 {
 		db.title = "";
 
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
-			let oldVal;
-			that[attribute] = newVal;
+			let oldVal = {};
+
 			if (parent !== undefined) {
 				that.parent = parent;
 			}
 
 			switch(attribute) {
 				case 'title':
-					oldVal = db.title;
-					db.title = newVal;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'title', oldVal: oldVal, newVal: db.title});
+					that[attribute] = newVal.title;
+					oldVal.title = db.title;
+					db.title = newVal.title;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'title', oldVal: oldVal, newVal: db});
 					break;
-			} 
+				default:
+					that[attribute] = newVal;
+			} 	
 		};
 
 		this.model.get = function(attribute) {

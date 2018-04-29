@@ -113,9 +113,7 @@ class CustomElement3 extends HTMLElement {
 	//Returns an object called details
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
-		//console.log('AttributesChangedCallback');
 		if (!(name in this.acc)) {
-			//console.log('not exist: ' + name);
 			this.acc[name] = true;
 		} else {
 			let details = {};
@@ -129,11 +127,8 @@ class CustomElement3 extends HTMLElement {
 	}
 
 	//
-
+	//Create setters and getters for all attributes
 	connectedCallback() {
-		//console.log('conectedCallback');
-		//console.log(this);
-		//Create setters and getters for all attributes
 		for (let i = 0; i < this.attributes.length; i++) {
 			let attribute = this.attributes.item(i).name;
 			Object.defineProperty(this, attribute, {
@@ -202,8 +197,6 @@ function Ctrl(that, model, view, ctrl) {
 		userAction: function(e) { //local events initiated by users
 			let attribute = e.detail.attribute;
 			let data;
-			// console.log('USERACTION');
-			// console.log(e);
 			if (attribute !== undefined) {
 				try {
 					if (attribute === 'selectedindex') {
@@ -265,15 +258,14 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.name;
 			let child = e.detail.child;
 			let newVal = e.detail.newVal;
+			console.log('updatedmodel');
+			console.log(e.detail);
 			
 			if (attribute !== undefined) {
 				let item = model.get(attribute);
 				view.updateView(attribute, item);
 				
 				if (parent !== undefined) {
-					// console.log('Updates parent attribute');
-					// console.log(attribute);
-					// console.log(newVal);
 					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: parent, attribute: attribute, newVal: newVal});
 				} else {
 					// console.log('No parent...');
@@ -285,11 +277,10 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.attribute;
 			let data = e.detail.data;
 			if (attribute !== undefined) {
-				if (attribute === 'selectedindex' || attribute === 'value') {
+				if (attribute === 'selectedindex' || attribute === 'value' || attribute === 'title') {
 					let load = {};
 					load[attribute] = data;
 					model.updateModelWithAttribute(attribute, load, parent);
-					//model.updateModelWithAttribute(attribute, {selectedindex: data}, parent);
 				} else {
 					
 					model.updateModelWithAttribute(attribute, data, parent);
@@ -300,14 +291,13 @@ function Ctrl(that, model, view, ctrl) {
 			let child = e.detail.child;
 			let parent = e.detail.parent;
 			let attribute = e.detail.attribute;
-			if (attribute === 'selectedindex') {
-				parent[attribute] = e.detail.newVal.selectedindex;
-				// console.log('parent.selectedvalue = e.detail.newVal.selectedvalue');
-				// console.log(e.detail.newVal.selectedvalue);
-				parent.selectedvalue = e.detail.newVal.selectedvalue;
-			} else {
-				parent[attribute] = e.detail.newVal;
-			}
+			parent[attribute] = e.detail.newVal[attribute];
+		},
+
+		stream: function(value) {
+			if (!h.boolean.isEmpty(that.sb)) {
+				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(value);
+			}	
 		}
 	};
 }
