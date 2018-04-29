@@ -34,7 +34,6 @@ tpl.innerHTML = `
 
 		
 		extendBaseCtrl(that, model, view) {
-			//local
 	
 		}
 		

@@ -34,7 +34,7 @@ class SelectBaseCE extends CustomElement3 {
 
 		//stream from element
 		this.ctrl.stream = function() {
-			console.log('stream: select_base');
+			//console.log('stream: select_base');
 			if (!h.boolean.isEmpty(that.sb)) {
 				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.selectedvalue);
 			}	

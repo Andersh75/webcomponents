@@ -28,20 +28,22 @@ class InputNumberCE extends InputBaseCE {
 		this.ctrl.addedUserAction = function(data, attribute) {
 			return new Promise((resolve, reject) => {
 
-				if (data === "") {
+				if (data[attribute] === "") {
 
 					resolve({data: data, attribute: attribute});
 				} else {
-					let stringToNumber = Number(data);
+					let stringToNumber = Number(data[attribute]);
 
 					if (!isNaN(stringToNumber)) {
 						if (Number.isInteger(stringToNumber)){
 							resolve({data: data, attribute: attribute});
 						} else {
-							resolve({data: "", attribute: attribute});
+							data[attribute] = "";
+							resolve({data: data, attribute: attribute});
 						}
 					} else {
-						resolve({data: "", attribute: attribute});
+						data[attribute] = "";
+						resolve({data: data, attribute: attribute});
 					}
 				}
 

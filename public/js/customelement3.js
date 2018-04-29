@@ -28,8 +28,6 @@ class CustomElement3 extends HTMLElement {
 	//will be run from each custom component constructor.
 
 	static extend() {
-		// console.log('static');
-		// console.log(this);
 		this.template = this.tpl.content; //creates a pointer at the content of the template of the custom component.
 		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
 		this.extendModel(this); //adds new methods to this.model
@@ -65,7 +63,7 @@ class CustomElement3 extends HTMLElement {
 				e.preventDefault;
 				let data = false;
 				let attribute = 'toggle';
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute}); 
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); 
 			});
 
 			//input
@@ -74,18 +72,20 @@ class CustomElement3 extends HTMLElement {
 				e.stopPropagation;
 				e.preventDefault;
 				if (e.keyCode === 32 || e.keyCode === 13) {
-					let data = e.composedPath()[0].value;
+					let data = {};
+					data.value = e.composedPath()[0].value;
 					let attribute = 'value';
-					eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute});
+					eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
 					document.activeElement.blur();
 				}
 			});
 			this.shadowRoot.querySelector('input').addEventListener('blur', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				let data = e.composedPath()[0].value;
+				let data = {};
+				data.value = e.composedPath()[0].value;
 				let attribute = 'value';
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute});
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
 			});
 		} else {
 			
@@ -103,7 +103,7 @@ class CustomElement3 extends HTMLElement {
 			this.addEventListener('click', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined});
+				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined, who: this});
 			});
 		}	
 	}
@@ -113,9 +113,9 @@ class CustomElement3 extends HTMLElement {
 	//Returns an object called details
 	//Notice! this = customComponent
 	attributeChangedCallback(name, oldVal, newVal) {
-		console.log('AttributesChangedCallback');
+		//console.log('AttributesChangedCallback');
 		if (!(name in this.acc)) {
-			console.log('not exist: ' + name);
+			//console.log('not exist: ' + name);
 			this.acc[name] = true;
 		} else {
 			let details = {};
@@ -131,8 +131,8 @@ class CustomElement3 extends HTMLElement {
 	//
 
 	connectedCallback() {
-		console.log('conectedCallback');
-		console.log(this);
+		//console.log('conectedCallback');
+		//console.log(this);
 		//Create setters and getters for all attributes
 		for (let i = 0; i < this.attributes.length; i++) {
 			let attribute = this.attributes.item(i).name;
@@ -212,24 +212,33 @@ function Ctrl(that, model, view, ctrl) {
 						data.selectedvalue = e.detail.data.selectedvalue;
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							// console.log('RESOLVED!');
-							data = result.data;
+							let load = {};
+							load.selectedvalue = result.data.selectedvalue;
+							load.selectedindex = result.data.selectedindex;
 							attribute = result.attribute;
-							// console.log(result.data);
-							// console.log(result.attribute);
-							model.updateModelWithAttribute(attribute, {selectedvalue: data.selectedvalue, selectedindex: data.selectedindex});
+							model.updateModelWithAttribute(attribute, load);
 						});
-					} else {
+					} else if (attribute === 'value'){
+						data = {};
+						data[attribute] = e.detail.data[attribute];
+						that.ctrl.addedUserAction(data, attribute)
+						.then((result) => {
+							let load = {};
+							load[attribute] = result.data[attribute];
+							attribute = result.attribute;
+							model.updateModelWithAttribute(attribute, load);
+						})
+						.catch(() => {
+							throw 'Not a number';
+						});
+					}
+					
+					else {
 						data = e.detail.data;
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							// console.log('RESOLVED!');
 							data = result.data;
 							attribute = result.attribute;
-							// console.log(result.data);
-							// console.log(result.attribute);
-							// console.log('DATA TO UPDATE MODEL');
-							// console.log(data);
 							model.updateModelWithAttribute(attribute, data);
 						})
 						.catch(() => {
@@ -276,9 +285,13 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.attribute;
 			let data = e.detail.data;
 			if (attribute !== undefined) {
-				if (attribute === 'selectedindex') {
-					model.updateModelWithAttribute(attribute, {selectedindex: data}, parent);
+				if (attribute === 'selectedindex' || attribute === 'value') {
+					let load = {};
+					load[attribute] = data;
+					model.updateModelWithAttribute(attribute, load, parent);
+					//model.updateModelWithAttribute(attribute, {selectedindex: data}, parent);
 				} else {
+					
 					model.updateModelWithAttribute(attribute, data, parent);
 				}
 			}	

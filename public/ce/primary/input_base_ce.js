@@ -25,14 +25,13 @@ class InputBaseCE extends CustomElement3 {
 			if (!h.boolean.isEmpty(that.value)) {
 				let attribute = 'value';
 				view.updateView(attribute, that.value);
+
+				that.ctrl.stream();
 			}
 			if (!h.boolean.isEmpty(that.placeholder)) {
 				let attribute = 'placeholder';
 				view.updateView(attribute, that.placeholder);
 			}
-			if (!h.boolean.isEmpty(that.sb)) {
-				that.ctrl.stream();
-			}	
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
@@ -45,17 +44,17 @@ class InputBaseCE extends CustomElement3 {
 
 		//stream from element
 		this.ctrl.stream = function() {
-			const element$ = function(element) {
-				return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-			};
-
-			element$(that)
-			.map(element => element.value)
-			.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+			if (!h.boolean.isEmpty(that.sb)) {
+				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(that.value);
+			}	
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+			if (details.changedAttribute.name === "value") {
+				if (!h.boolean.isEmpty(that.sb)) {
+					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+				}	
+			}	
 		};
 
 
@@ -126,7 +125,14 @@ class InputBaseCE extends CustomElement3 {
 
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 			let oldVal;
-			that[attribute] = newVal;
+			if (attribute === 'value') {
+				console.log('new value');
+				console.log(newVal);
+				that[attribute] = newVal.value;
+			} else {
+				that[attribute] = newVal;
+			}
+
 			if (parent !== undefined) {
 				that.parent = parent;
 			}
@@ -134,7 +140,7 @@ class InputBaseCE extends CustomElement3 {
 			switch(attribute) {
 				case 'value':
 					oldVal = db.value;
-					db.value = newVal;
+					db.value = newVal.value;
 					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: db.value});
 					break;
 				case 'placeholder':
