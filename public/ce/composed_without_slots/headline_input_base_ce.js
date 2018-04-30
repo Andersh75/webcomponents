@@ -23,10 +23,24 @@ class HeadlineInputBaseCE extends CustomElement3 {
 		this.ctrl.run = function() {
 			let headline = that.shadowRoot.querySelector('#headline');
 			let input = that.shadowRoot.querySelector('#input');
-			eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-			eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder', data: that.placeholder}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-			eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
-			eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
+
+			if (headline !== null) {
+				if (!h.boolean.isEmpty(that.title)) {
+					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				}
+			}
+
+			if (input !== null) {
+				if (!h.boolean.isEmpty(that.placeholder)) {
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder', data: that.placeholder}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				}
+				if (!h.boolean.isEmpty(that.value)) {
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				}
+				if (!h.boolean.isEmpty(that.sb)) {
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
+				}
+			}
 		};
 
 		//stream from element

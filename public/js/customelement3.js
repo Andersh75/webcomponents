@@ -198,6 +198,7 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.attribute;
 			let data;
 			if (attribute !== undefined) {
+				
 				try {
 					if (attribute === 'selectedindex') {
 						data = {};
@@ -205,24 +206,32 @@ function Ctrl(that, model, view, ctrl) {
 						data.selectedvalue = e.detail.data.selectedvalue;
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							let load = {};
-							load.selectedvalue = result.data.selectedvalue;
-							load.selectedindex = result.data.selectedindex;
-							attribute = result.attribute;
-							model.updateModelWithAttribute(attribute, load);
+							that.selectedvalue = result.data.selectedvalue;
+							that[attribute] = result.data.selectedindex;
+							// let load = {};
+							// load.selectedvalue = result.data.selectedvalue;
+							// load.selectedindex = result.data.selectedindex;
+							// attribute = result.attribute;
+							// model.updateModelWithAttribute(attribute, load);
 						});
 					} else if (attribute === 'value'){
 						data = {};
 						data[attribute] = e.detail.data[attribute];
+						console.log('DATA AND ATTRIBUTE');
+						console.log(data);
+						console.log(attribute);
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							let load = {};
-							load[attribute] = result.data[attribute];
-							attribute = result.attribute;
-							model.updateModelWithAttribute(attribute, load);
+							console.log('RESULT');
+							console.log(result);
+							that.value = result.data.value;
+							// let load = {};
+							// load[attribute] = result.data[attribute];
+							// attribute = result.attribute;
+							//model.updateModelWithAttribute(attribute, load);
 						})
 						.catch(() => {
-							throw 'Not a number';
+							throw 'Not a number - else if';
 						});
 					}
 					
@@ -235,12 +244,12 @@ function Ctrl(that, model, view, ctrl) {
 							model.updateModelWithAttribute(attribute, data);
 						})
 						.catch(() => {
-							throw 'Not a number';
+							throw 'Not a number - else';
 						});
 					}
 				}
 				catch (error) {
-					// console.error(error);
+					console.error(error);
 				}
 			}		
 		},
@@ -254,7 +263,7 @@ function Ctrl(that, model, view, ctrl) {
 			}	
 		},
 		updatedModel: function(e) { //local events initiated by users
-			let parent = e.detail.parent;
+			let parent = that.parent;
 			let attribute = e.detail.name;
 			let child = e.detail.child;
 			let newVal = e.detail.newVal;
@@ -266,31 +275,29 @@ function Ctrl(that, model, view, ctrl) {
 				view.updateView(attribute, item);
 				
 				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: parent, attribute: attribute, newVal: newVal});
+					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: that.parent, attribute: attribute, newVal: newVal});
 				} else {
-					// console.log('No parent...');
+					console.log('No parent...');
 				}
 			}
 		},
 		attributeFromParent: function(e) {
-			let parent = e.detail.parent;
+			that.parent = e.detail.parent;
 			let attribute = e.detail.attribute;
 			let data = e.detail.data;
+			console.log('Attribute from parent');
+			console.log(e.detail);
+			console.log(that.parent);
 			if (attribute !== undefined) {
-				if (attribute === 'selectedindex' || attribute === 'value' || attribute === 'title') {
-					let load = {};
-					load[attribute] = data;
-					model.updateModelWithAttribute(attribute, load, parent);
-				} else {
-					
-					model.updateModelWithAttribute(attribute, data, parent);
-				}
+				that[attribute] = data;
 			}	
 		},
 		updatedAttributeFromChild: function(e) {
 			let child = e.detail.child;
 			let parent = e.detail.parent;
 			let attribute = e.detail.attribute;
+			console.log('Attribute from child');
+			console.log(e.detail);
 			parent[attribute] = e.detail.newVal[attribute];
 		},
 

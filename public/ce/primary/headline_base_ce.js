@@ -22,26 +22,25 @@ class HeadlineBaseCE extends CustomElement3 {
 		this.ctrl.run = function() {
 			if (!h.boolean.isEmpty(that.title)) {
 				let attribute = 'title';
-				view.updateView(attribute, that.title);
+				that[attribute] = that.title;
 			}
 		};
 
 
-		//stream from element
-		this.ctrl.stream = function() {
-			// const element$ = function(element) {
-			// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-			// };
-
-			// element$(that)
-			// .map(element => element.value)
-			// .subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+		this.ctrl.addedUserAction = function(data, attribute) {
+			return new Promise((resolve, reject) => {
+				resolve({data: data, attribute: attribute});
+			});
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			// console.log('changedAttribute');
-			// console.log(details.changedAttribute);
-			// myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+			let load = {};
+			load[details.changedAttribute.name] = details.changedAttribute.newVal;
+			model.updateModelWithAttribute(details.changedAttribute.name, load);
+
+			if (details.changedAttribute.name === "value") {
+				that.ctrl.stream(that.value);	
+			}	
 		};
 
 
@@ -103,23 +102,31 @@ class HeadlineBaseCE extends CustomElement3 {
 	extendModel(that) {
 		let db = {};
 		db.title = "";
+		db.sb = "";
 
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 			let oldVal = {};
 
-			if (parent !== undefined) {
-				that.parent = parent;
-			}
+			// if (parent !== undefined) {
+			// 	that.parent = parent;
+			// }
 
 			switch(attribute) {
 				case 'title':
-					that[attribute] = newVal.title;
+					//that[attribute] = newVal.title;
 					oldVal.title = db.title;
 					db.title = newVal.title;
 					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'title', oldVal: oldVal, newVal: db});
 					break;
+				case 'sb':
+					//that[attribute] = newVal.title;
+					oldVal.sb = db.sb;
+					db.sb = newVal.sb;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: db});
+					break;
 				default:
-					that[attribute] = newVal;
+					//that[attribute] = newVal;
+					console.log('WRONG headline');
 			} 	
 		};
 

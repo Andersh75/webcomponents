@@ -23,22 +23,35 @@ class SelectBaseCE extends CustomElement3 {
 		//intit
 		this.ctrl.run = function() {
 			if (!h.boolean.isEmpty(that.selectedindex)) {
+				console.log('that.selectedvalue');
+				console.log(that.selectedvalue);
 				that.selectedvalue = that.shadowRoot.querySelector('#select').options[that.selectedindex].value;
 				let attribute = 'selectedindex';
-				view.updateView(attribute, that[attribute]);
+				that[attribute] = that.selectedindex;
+				// let load = {};
+				// load[attribute] = that.selectedindex;
+				// load.selectedvalue = that.selectedvalue;
+				// that.model.updateModelWithAttribute(attribute, load);
 
-				that.ctrl.stream(that.selectedvalue);				
+				// that.ctrl.stream(that.selectedvalue);				
 			}		
 		};
 
 		this.ctrl.changedAttribute = function(details) {
 			if (details.changedAttribute.name === "selectedindex") {
-				that.selectedvalue = that.shadowRoot.querySelector('#select').options[details.changedAttribute.newVal].value;
+				if (h.boolean.isEmpty(that.selectedvalue)) {	
+					that.selectedvalue = that.shadowRoot.querySelector('#select').options[that.selectedindex].value;
+				}
 			}
 
+			let load = {};
+			load[details.changedAttribute.name] = details.changedAttribute.newVal;
+			model.updateModelWithAttribute(details.changedAttribute.name, load);
+			
 			if (details.changedAttribute.name === "selectedvalue") {
+				console.log('Streaming selectedvalue');
 				that.ctrl.stream(that.selectedvalue);
-			}		
+			}
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
@@ -82,6 +95,7 @@ class SelectBaseCE extends CustomElement3 {
 		let db ={};
 		db.selectedindex = "0";
 		db.selectedvalue = "";
+		db.sb = "";
 
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 			let oldVal = {};
@@ -92,19 +106,36 @@ class SelectBaseCE extends CustomElement3 {
 
 			switch(attribute) {
 				case 'selectedindex':
-					that[attribute] = newVal.selectedindex;
-					that.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
+					//that[attribute] = newVal.selectedindex;
+					//that.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
 
 					oldVal.selectedindex = db.selectedindex;
 					db.selectedindex = newVal.selectedindex;
 
-					oldVal.selectedvalue = db.selectedvalue;
-					db.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
+					//oldVal.selectedvalue = db.selectedvalue;
+					//db.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
 					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: db});
+					//eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedvalue', oldVal: oldVal, newVal: db});
+					break;
+				case 'selectedvalue':
+					//that[attribute] = newVal.selectedindex;
+					//that.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
+
+					oldVal.selectedvalue = db.selectedvalue;
+					db.selectedvalue = newVal.selectedvalue;
 					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedvalue', oldVal: oldVal, newVal: db});
 					break;
+				case 'sb':
+					//that[attribute] = newVal.selectedindex;
+					//that.selectedvalue = that.shadowRoot.querySelector('#select').children[newVal.selectedindex].value;
+
+					oldVal.sb = db.sb;
+					db.sb = newVal.sb;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: db});
+					break;
 				default:
-					that[attribute] = newVal;
+					//that[attribute] = newVal;
+					console.log('WRONG select');
 			} 
 		};
 

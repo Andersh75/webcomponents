@@ -24,13 +24,19 @@ class InputBaseCE extends CustomElement3 {
 		this.ctrl.run = function() {
 			if (!h.boolean.isEmpty(that.value)) {
 				let attribute = 'value';
-				view.updateView(attribute, that.value);
+				that[attribute] = that.value;
+				// let load = {};
+				// load[attribute] = that.value;
+				// that.model.updateModelWithAttribute(attribute, load);
 
-				that.ctrl.stream(that.value);
+				// that.ctrl.stream(that.value);
 			}
 			if (!h.boolean.isEmpty(that.placeholder)) {
 				let attribute = 'placeholder';
-				view.updateView(attribute, that.placeholder);
+				that[attribute] = that.placeholder;
+				// let load = {};
+				// load[attribute] = that.placeholder;
+				// that.model.updateModelWithAttribute(attribute, load);
 			}
 		};
 
@@ -42,6 +48,10 @@ class InputBaseCE extends CustomElement3 {
 
 
 		this.ctrl.changedAttribute = function(details) {
+			let load = {};
+			load[details.changedAttribute.name] = details.changedAttribute.newVal;
+			model.updateModelWithAttribute(details.changedAttribute.name, load);
+
 			if (details.changedAttribute.name === "value") {
 				that.ctrl.stream(that.value);	
 			}	
@@ -116,25 +126,32 @@ class InputBaseCE extends CustomElement3 {
 		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
 			let oldVal = {};
 
-			if (parent !== undefined) {
-				that.parent = parent;
-			}
+			// if (parent !== undefined) {
+			// 	that.parent = parent;
+			// }
 
 			switch(attribute) {
 				case 'value':
-					that[attribute] = newVal.value;
+					//that[attribute] = newVal.value;
 					oldVal.value = db.value;
 					db.value = newVal.value;
 					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: db});
 					break;
 				case 'placeholder':
-					that[attribute] = newVal;
+					//that[attribute] = newVal;
 					oldVal.placeholder = db.placeholder;
-					db.placeholder = newVal;
+					db.placeholder = newVal.placeholder;
 					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'placeholder', oldVal: oldVal, newVal: db});
 					break;
+				case 'sb':
+					//that[attribute] = newVal;
+					oldVal.sb = db.sb;
+					db.sb = newVal.sb;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: db});
+					break;
 				default:
-					that[attribute] = newVal;
+					//that[attribute] = newVal;
+					console.log('WRONG input');
 			} 	
 		};
 

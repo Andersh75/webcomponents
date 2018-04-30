@@ -24,12 +24,18 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 			let select = that.shadowRoot.querySelector('#select');
 
 			if (headline !== null) {
-			eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title});
+				if (!h.boolean.isEmpty(that.title)) {
+					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+				}
 			}
 
 			if (select !== null) {
-				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
-				eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
+				if (!h.boolean.isEmpty(that.selectedindex)) {
+					eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
+				}
+				if (!h.boolean.isEmpty(that.sb)) {
+					eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
+				}
 			}		
 		};
 

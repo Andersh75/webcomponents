@@ -206,11 +206,11 @@
 
 
 
-<!-- 
- <headline-input-base-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb="test:test"></headline-input-base-ce>
- <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce>
 
- -->
+ <!-- <headline-input-one-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb=""></headline-input-base-ce> -->
+ <!-- <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce> -->
+
+
 
 
 
@@ -237,8 +237,8 @@
         <section-input-one-ce id="common" listener="cleargeneralinputsection@clearanykindcontainers">
         
             <headline-one-ce title="Allmänt" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-            <button-one-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-one-ce>
-            
+            <!-- <button-one-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-one-ce>
+             -->
             <anykind-container-one-ce slot="anycontainer">
                 <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
                 <headline-select-year-ce title="Startår" selectedindex="1" selectedvalue slot="anyform" datatarget="startyear"></headline-select-year-ce>
@@ -250,7 +250,6 @@
                 <headline-anyselect-ce title="Inflation" slot="anyform" datatarget="inflation">
                     <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="inflation:rate"></select-inflation-ce>
                 </headline-anyselect-ce> 
-                <!-- <headline-select-inflation-ce title="Inflation" selectedindex="0" selectedvalue slot="anyform" datatarget="inflation" sb="inflation:rate"></headline-select-inflation-ce>    -->
             </anykind-container-one-ce> 
         
             <anykind-container-one-ce slot="anycontainer">
@@ -313,9 +312,6 @@
             <anykind-container-one-ce slot="anycontainer">
                 <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
                 <headline-input-number-ce title="Kostnad per kvm" value="" placeholder="Antal kr..." slot="anyform" sb="" sr=""></headline-input-number-ce> 
-                <!-- <headline-anyselect-ce id="testfn" title="Hyreshöjningstakt" slot="anyform" datatarget="inflation" sb="">
-                    <select-inflation-ce slot="anyselect" sb="" selectedindex="3" selectedvalue></select-inflation-ce>
-                </headline-anyselect-ce>   -->
             </anykind-container-one-ce> 
         
             <anykind-container-one-ce slot="anycontainer">
@@ -351,12 +347,6 @@
         <headline-one-ce title="Summa Diskonterade värmekostnader" class="h5" slot="headline"></headline-one-ce>
         <headline-input-one-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-one-ce>
     </anykind-container-one-ce>
-    <!-- <anykind-container-one-ce slot="anycontainer">
-            <headline-base-ce title="Reparationskostnader" class="h4" slot="headline"></headline-base-ce>
-            <headline-input-base-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="repair:amount-0@capitalize$"></headline-input-ce>
-            <headline-input-base-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-base-ce>
-            <headline-input-base-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform"></headline-input-base-ce>
-    </anykind-container-one-ce> -->
 </section-output-one-ce>
 
 <!-- 
