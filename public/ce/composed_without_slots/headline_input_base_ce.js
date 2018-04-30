@@ -2,12 +2,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 
 	constructor() {
 		super();
-		//this.parent;
 	}
-
-	// static get observedAttributes() {
-	// 	return [ 'title', 'placeholder', 'value' ];
-	// }
 
 	extend() {
 		HeadlineInputBaseCE.extend.call(this);
@@ -37,32 +32,19 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				if (!h.boolean.isEmpty(that.value)) {
 					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
-				if (!h.boolean.isEmpty(that.sb)) {
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
-				}
 			}
-		};
-
-		//stream from element
-		this.ctrl.stream = function() {
-			// const element$ = function(element) {
-			// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-			// };
-
-			// element$(that)
-			// .map(element => element.value)
-			// .subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			console.log('DETAILS!');
-			console.log(details);
 			if (details.changedAttribute.name === "value") {
-				if (!h.boolean.isEmpty(that.sb)) {
-					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
-				}	
-			}
-			// myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+				that.ctrl.stream(that.value);	
+			}	
+		};
+
+		this.ctrl.addedUserAction = function(data, attribute) {
+			return new Promise((resolve, reject) => {
+				resolve({data: data, attribute: attribute});
+			});
 		};
 
 		//local events initiated by child
@@ -236,12 +218,16 @@ class HeadlineInputBaseCE extends CustomElement3 {
 
 	//extends this.view in CustomElement
 	extendView(that, model) {
-	
+		this.view.updateView = function(attribute, item) {
+		};
 	}
 
 	//extends this.model from CustomElement
 	extendModel(that) {
-		
+		that.db.title = "";
+		that.db.placeholder = "";
+		that.db.value = "";
+		that.db.sb = "";	
 	}
 	
 	

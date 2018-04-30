@@ -35,11 +35,10 @@ class HeadlineLabelCE extends HeadlineBaseCE {
 	}
 
 	static get observedAttributes() {
-		return ['title'];
+		return ['title', 'sb', 'sr'];
 	}
 	
 	extendBaseCtrl(that, model, view) {
-		//local
 
 	}
 	

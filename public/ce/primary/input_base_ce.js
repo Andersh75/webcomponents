@@ -2,12 +2,7 @@ class InputBaseCE extends CustomElement3 {
 
 	constructor() {
 		super();
-		//this.parent;
 	}
-
-	// static get observedAttributes() {
-	// 	return [ 'value', 'placeholder', 'year', 'sb' ];
-	// }
 
 	extend() {
 		InputBaseCE.extend.call(this);
@@ -25,36 +20,23 @@ class InputBaseCE extends CustomElement3 {
 			if (!h.boolean.isEmpty(that.value)) {
 				let attribute = 'value';
 				that[attribute] = that.value;
-				// let load = {};
-				// load[attribute] = that.value;
-				// that.model.updateModelWithAttribute(attribute, load);
-
-				// that.ctrl.stream(that.value);
 			}
 			if (!h.boolean.isEmpty(that.placeholder)) {
 				let attribute = 'placeholder';
 				that[attribute] = that.placeholder;
-				// let load = {};
-				// load[attribute] = that.placeholder;
-				// that.model.updateModelWithAttribute(attribute, load);
 			}
+		};
+
+		this.ctrl.changedAttribute = function(details) {
+			if (details.changedAttribute.name === "value") {
+				that.ctrl.stream(that.value);	
+			}	
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
 			return new Promise((resolve, reject) => {
 				resolve({data: data, attribute: attribute});
 			});
-		};
-
-
-		this.ctrl.changedAttribute = function(details) {
-			let load = {};
-			load[details.changedAttribute.name] = details.changedAttribute.newVal;
-			model.updateModelWithAttribute(details.changedAttribute.name, load);
-
-			if (details.changedAttribute.name === "value") {
-				that.ctrl.stream(that.value);	
-			}	
 		};
 
 
@@ -118,46 +100,9 @@ class InputBaseCE extends CustomElement3 {
 	}
 
 	extendModel(that) {
-		let db = {};
-		db.placeholder = "";
-		db.value = "";
-		db.sb = "";
-
-		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
-			let oldVal = {};
-
-			// if (parent !== undefined) {
-			// 	that.parent = parent;
-			// }
-
-			switch(attribute) {
-				case 'value':
-					//that[attribute] = newVal.value;
-					oldVal.value = db.value;
-					db.value = newVal.value;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: db});
-					break;
-				case 'placeholder':
-					//that[attribute] = newVal;
-					oldVal.placeholder = db.placeholder;
-					db.placeholder = newVal.placeholder;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'placeholder', oldVal: oldVal, newVal: db});
-					break;
-				case 'sb':
-					//that[attribute] = newVal;
-					oldVal.sb = db.sb;
-					db.sb = newVal.sb;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: db});
-					break;
-				default:
-					//that[attribute] = newVal;
-					console.log('WRONG input');
-			} 	
-		};
-
-		this.model.get = function(attribute) {
-			return db[attribute];
-		};
+		that.db.placeholder = "";
+		that.db.value = "";
+		that.db.sb = "";
 	}
 }
 

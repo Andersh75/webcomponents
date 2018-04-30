@@ -23,30 +23,16 @@ class SectionOutputBaseCE extends CustomElement3 {
 
 		//global
 		this.ctrl.clearsection = function() {
-		// 	console.log('CLEARING SECTION');
-		// 	let anycontainer = that.shadowRoot.querySelector('#anycontainer');
-		// 	//console.log(anycontainer.assignedNodes());
-		// 	Array.prototype.slice.call(anycontainer.assignedNodes()).forEach(node => {
-		// 		eventDispatcher(node.eventTarget, 'clearfromparent');
-		// 		console.log(node);
-		// 	})
+			alert('wrong!');
 		}
 
 		//stream from element
 		this.ctrl.stream = function() {
-			// const element$ = function(element) {
-			// 	return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-			// };
-
-			// element$(that)
-			// .map(element => element.value)
-			// .subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
+			alert('wrong!');
 		};
 
 		this.ctrl.changedAttribute = function(details) {
-			// console.log('DETAILS!');
-			// console.log(details.changedAttribute.newVal);
-			// myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
+			alert('wrong!');
 		};
 	}
 

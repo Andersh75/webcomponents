@@ -19,11 +19,10 @@ class InputOneCE extends InputBaseCE {
 	}
 
 	static get observedAttributes() {
-		return ['value', 'placeholder', 'year', 'sb'];
+		return ['value', 'placeholder', 'year', 'sb', 'sr'];
 	}
 
 	extendBaseCtrl(that, model, view) {
-		//local
 
 	}
 	

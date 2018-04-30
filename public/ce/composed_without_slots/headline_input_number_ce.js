@@ -60,7 +60,7 @@ class HeadlineInputNumberCE extends HeadlineInputBaseCE {
 	}
 
 	static get observedAttributes() {
-		return [ 'title', 'placeholder', 'value' ];
+		return [ 'title', 'placeholder', 'value', 'sb', 'sr'   ];
 	}
 		
 	extendBaseCtrl(that, model, view) {

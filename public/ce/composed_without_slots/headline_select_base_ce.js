@@ -1,13 +1,8 @@
 class HeadlineSelectBaseCE extends CustomElement3 {
 
 	constructor() {
-		super();
-		//this.parent;		
+		super();		
 	}
-		
-	// static get observedAttributes() {
-	// 	return [ 'title', 'placeholder', 'datatarget', 'selectedindex', 'sb', 'sr' ];
-	// }
 
 	extend() {
 		HeadlineSelectBaseCE.extend.call(this);
@@ -33,31 +28,19 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 				if (!h.boolean.isEmpty(that.selectedindex)) {
 					eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
 				}
-				if (!h.boolean.isEmpty(that.sb)) {
-					eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'sb', data: that.sb});
-				}
 			}		
 		};
 
-		//stream from element
-		// this.ctrl.stream = function() {
-		// 	const element$ = function(element) {
-		// 		return Rx.Observable.merge(Rx.Observable.of(element), Rx.Observable.fromEvent(element, 'blur').map(x => x.target), Rx.Observable.fromEvent(element, 'click').map(x => x.target), Rx.Observable.fromEvent(element, 'keyup').filter(x => x.keyCode == 13).map(x => x.target));
-		// 	};
-
-		// 	element$(that)
-		// 	.map(element => element.value)
-		// 	.subscribe(myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject));
-		// };
-
-		this.ctrl.changedAttribute = function(details, that) {
-			console.log('ChangedAttribute: headline_select_base');
-			console.log(details);
+		this.ctrl.changedAttribute = function(details) {
 			if (details.changedAttribute.name === "selectedvalue") {
-				if (!h.boolean.isEmpty(that.sb)) {
-					myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(details.changedAttribute.newVal);
-				}	
+				that.ctrl.stream(that.selectedvalue);	
 			}	
+		};
+
+		this.ctrl.addedUserAction = function(data, attribute) {
+			return new Promise((resolve, reject) => {
+				resolve({data: data, attribute: attribute});
+			});
 		};
 
 
@@ -78,15 +61,18 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 	
 	//View
 	extendView(that, model) {
+		this.view.updateView = function(attribute, item) {
+		};
 
 	}
 	
 	//Model
 	extendModel(that) {
-
+		that.db.title = "";
+		that.db.selectedindex = "0";
+		that.db.selectedvalue = "";
+		that.db.sb = "";
 	}
-
-
 }
 
 window.customElements.define('headline-select-base-ce', HeadlineSelectBaseCE);

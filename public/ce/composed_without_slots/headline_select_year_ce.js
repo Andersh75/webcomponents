@@ -56,7 +56,6 @@ class HeadlineSelectYearCE extends HeadlineSelectBaseCE {
 	}
 		
 	extendBaseCtrl(that, model, view) {
-		//local
 
 	}
 	

@@ -16,6 +16,7 @@ class CustomElement3 extends HTMLElement {
 		super();	
 		this.attachShadow({ mode: 'open' }); //activates shadow dom.
 		this.parent = undefined;
+		this.db = {};
 		this.model = Model(this); //Model() returns an object with own this and with dispatch and eval methods.
 		this.view = View(this, this.model); //View() returns an object with own this and with eval method.
 		this.ctrl = Ctrl(this, this.model, this.view); //Ctrl() returns an object with own this and with eval method.
@@ -121,7 +122,10 @@ class CustomElement3 extends HTMLElement {
 				details.changedAttribute.name = name;
 				details.changedAttribute.oldVal = oldVal;
 				details.changedAttribute.newVal = newVal;
-				this.ctrl.changedAttribute(details, this);
+				let load = {};
+				load[details.changedAttribute.name] = details.changedAttribute.newVal;
+				this.model.updateModelWithAttribute(details.changedAttribute.name, load);
+				this.ctrl.changedAttribute(details);
 				eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
 		}	
 	}
@@ -173,6 +177,47 @@ function Model(that) {
 		},
 		eval: function(name) {
 			return eval(name) 
+		},
+		updateModelWithAttribute: function(attribute, newVal, parent) {
+			let oldVal = {};
+
+			switch(attribute) {
+				case 'title':
+					oldVal.title = that.db.title;
+					that.db.title = newVal.title;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'title', oldVal: oldVal, newVal: that.db});
+					break;
+				case 'value':
+					oldVal.value = that.db.value;
+					that.db.value = newVal.value;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: that.db});
+					break;
+				case 'placeholder':
+					oldVal.placeholder = that.db.placeholder;
+					that.db.placeholder = newVal.placeholder;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'placeholder', oldVal: oldVal, newVal: that.db});
+					break;
+				case 'selectedindex':
+					oldVal.selectedindex = that.db.selectedindex;
+					that.db.selectedindex = newVal.selectedindex;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: that.db});
+					break;
+				case 'selectedvalue':
+					oldVal.selectedvalue = that.db.selectedvalue;
+					that.db.selectedvalue = newVal.selectedvalue;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedvalue', oldVal: oldVal, newVal: that.db});
+					break;
+				case 'sb':
+					oldVal.sb = that.db.sb;
+					that.db.sb = newVal.sb;
+					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: that.db});
+					break;
+				default:
+					alert('WRONG select');
+			}
+		},
+		get: function(attribute) {
+			return that.db[attribute];
 		}
 	};
 }

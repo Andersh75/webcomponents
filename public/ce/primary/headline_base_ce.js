@@ -1,12 +1,8 @@
 class HeadlineBaseCE extends CustomElement3 {
+	
 	constructor() {
 		super();
-		//this.parent;
 	}
-
-	// static get observedAttributes() {
-	// 	return [ 'title' ];
-	// }
 
 	extend() {
 		HeadlineBaseCE.extend.call(this);
@@ -26,21 +22,16 @@ class HeadlineBaseCE extends CustomElement3 {
 			}
 		};
 
+		this.ctrl.changedAttribute = function(details) {
+			if (details.changedAttribute.name === "title") {
+				that.ctrl.stream(that.title);	
+			}	
+		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
 			return new Promise((resolve, reject) => {
 				resolve({data: data, attribute: attribute});
 			});
-		};
-
-		this.ctrl.changedAttribute = function(details) {
-			let load = {};
-			load[details.changedAttribute.name] = details.changedAttribute.newVal;
-			model.updateModelWithAttribute(details.changedAttribute.name, load);
-
-			if (details.changedAttribute.name === "value") {
-				that.ctrl.stream(that.value);	
-			}	
 		};
 
 
@@ -51,32 +42,6 @@ class HeadlineBaseCE extends CustomElement3 {
 
 
 		//local events initiated by global stream
-		this.ctrl.capitalize$ = function(e) {
-			const combineLatest$ = function(...streams) {
-				return Rx.Observable.combineLatest(streams);
-			};
-			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
-			.map(([e1, e2]) => [Number(e1), Number(e2)])
-			.subscribe((x) => {
-				let year = that.year;
-				let numYear = Number(year);
-				let result = x[0] * Math.pow((x[1] + 1), numYear);
-				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-				that.title = roundedResult;
-				let attribute = 'title';
-				view.updateView(attribute, that.title);
-			})
-		}
-
-		this.ctrl.copy$ = function(e) {
-			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])
-			.subscribe((x) => {
-				that.title = x;
-				let input = that.shadowRoot.querySelector('#input');
-				let attribute = 'title';
-				view.updateView(attribute, that.title);
-			})
-		}
 
 
 	}
@@ -100,39 +65,8 @@ class HeadlineBaseCE extends CustomElement3 {
 	
 	//Model
 	extendModel(that) {
-		let db = {};
-		db.title = "";
-		db.sb = "";
-
-		this.model.updateModelWithAttribute = function(attribute, newVal, parent) {
-			let oldVal = {};
-
-			// if (parent !== undefined) {
-			// 	that.parent = parent;
-			// }
-
-			switch(attribute) {
-				case 'title':
-					//that[attribute] = newVal.title;
-					oldVal.title = db.title;
-					db.title = newVal.title;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'title', oldVal: oldVal, newVal: db});
-					break;
-				case 'sb':
-					//that[attribute] = newVal.title;
-					oldVal.sb = db.sb;
-					db.sb = newVal.sb;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: db});
-					break;
-				default:
-					//that[attribute] = newVal;
-					console.log('WRONG headline');
-			} 	
-		};
-
-		this.model.get = function(attribute) {
-			return db[attribute];
-		};
+		that.db.title = "";
+		that.db.sb = "";
 	}
 }
 
