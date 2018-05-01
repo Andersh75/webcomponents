@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', function () {
 // console.warn('HEJ');
 // mytestfn();
 // console.warn('HOPP');
-console.log('test.js');
-myRxmq.channel('heat').behaviorsubject('discount-1').subscribe(x => console.log('test.js: ' + x));
-myRxmq.channel('heat').behaviorsubject('discount-2').subscribe(x => console.log('test.js: ' + x));
+// console.log('test.js');
+// myRxmq.channel('heat').behaviorsubject('discount-1').subscribe(x => console.log('test.js: ' + x));
+// myRxmq.channel('heat').behaviorsubject('discount-2').subscribe(x => console.log('test.js: ' + x));
 // myRxmq.channel('repair').behaviorsubject('increase').subscribe(x => console.log('R&I: ' + x));
 
 // let button = document.querySelector("#knappen");

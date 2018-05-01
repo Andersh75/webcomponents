@@ -65,8 +65,6 @@ class SelectBaseCE extends CustomElement3 {
 		this.view.updateView = function(attribute, item) {
 			switch(attribute) {
 				case 'selectedindex':
-				console.log('THE ITEM');
-				console.log(item);
 				that.view.renderSelectedIndex.call(that, item);
 				break;
 			}	

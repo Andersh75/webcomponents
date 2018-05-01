@@ -86,12 +86,8 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				let year = that.year;
 				let numYear = Number(year);
 				let result = x[0] * x[1] * Math.pow((x[2] + 1), numYear);
-				console.log('result');
-				console.log(result);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 				if(h.boolean.isNumber(roundedResult)) {
-					console.log('result');
-					console.log(roundedResult);	
 					that.value = roundedResult;
 					let input = that.shadowRoot.querySelector('#input');
 					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value});

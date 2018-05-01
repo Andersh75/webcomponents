@@ -286,7 +286,7 @@ function Ctrl(that, model, view, ctrl) {
 				if (parent !== undefined) {
 					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {parent: parent, child: child, attribute: attribute, oldVal: oldVal, newVal: newVal});
 				} else {
-					console.log('No parent...');
+					//console.log('No parent...');
 				}
 			}
 		},
