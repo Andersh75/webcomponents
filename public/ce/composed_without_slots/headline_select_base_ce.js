@@ -20,20 +20,20 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 
 			if (headline !== null) {
 				if (!h.boolean.isEmpty(that.title)) {
-					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', newVal: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
 			}
 
 			if (select !== null) {
 				if (!h.boolean.isEmpty(that.selectedindex)) {
-					eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', data: that.selectedindex});
+					eventDispatcher(select.eventTarget, 'attributefromparent', {parent: that, attribute: 'selectedindex', newVal: that.selectedindex});
 				}
 			}		
 		};
 
-		this.ctrl.changedAttribute = function(details) {
-			if (details.changedAttribute.name === "selectedvalue") {
-				that.ctrl.stream(that.selectedvalue);	
+		this.ctrl.changedAttribute = function(changedAttribute) {
+			if (changedAttribute.attribute === "selectedvalue") {
+				that.ctrl.stream(that.selectedvalue);
 			}	
 		};
 
@@ -54,7 +54,7 @@ class HeadlineSelectBaseCE extends CustomElement3 {
 		//local events initiated by parent
 		this.ctrl.clearallfromparent = function(e) {
 			let select = that.shadowRoot.querySelector('#select');
-			eventDispatcher(select.eventTarget, 'clearselffromparent', {parent: that, attribute: 'selectedindex', data: 0});
+			eventDispatcher(select.eventTarget, 'clearselffromparent', {parent: that, attribute: 'selectedindex', newVal: 0});
 		};
 
 	}

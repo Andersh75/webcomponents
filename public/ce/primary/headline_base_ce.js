@@ -22,8 +22,8 @@ class HeadlineBaseCE extends CustomElement3 {
 			}
 		};
 
-		this.ctrl.changedAttribute = function(details) {
-			if (details.changedAttribute.name === "title") {
+		this.ctrl.changedAttribute = function(changedAttribute) {
+			if (changedAttribute.attribute === "title") {
 				that.ctrl.stream(that.title);	
 			}	
 		};

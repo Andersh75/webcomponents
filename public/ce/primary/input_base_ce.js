@@ -27,8 +27,8 @@ class InputBaseCE extends CustomElement3 {
 			}
 		};
 
-		this.ctrl.changedAttribute = function(details) {
-			if (details.changedAttribute.name === "value") {
+		this.ctrl.changedAttribute = function(changedAttribute) {
+			if (changedAttribute.attribute === "value") {
 				that.ctrl.stream(that.value);	
 			}	
 		};

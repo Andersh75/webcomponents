@@ -21,22 +21,22 @@ class HeadlineInputBaseCE extends CustomElement3 {
 
 			if (headline !== null) {
 				if (!h.boolean.isEmpty(that.title)) {
-					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', data: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: that, attribute: 'title', newVal: that.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
 			}
 
 			if (input !== null) {
 				if (!h.boolean.isEmpty(that.placeholder)) {
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder', data: that.placeholder}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'placeholder', newVal: that.placeholder}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
 				if (!h.boolean.isEmpty(that.value)) {
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
 			}
 		};
 
-		this.ctrl.changedAttribute = function(details) {
-			if (details.changedAttribute.name === "value") {
+		this.ctrl.changedAttribute = function(changedAttribute) {
+			if (changedAttribute.attribute === "value") {
 				that.ctrl.stream(that.value);	
 			}	
 		};
@@ -68,7 +68,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				if(h.boolean.isNumber(roundedResult)) {		
 					that.value = roundedResult;
 					let input = that.shadowRoot.querySelector('#input');
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});		
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value});		
 				}
 				
 			})
@@ -94,7 +94,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 					console.log(roundedResult);	
 					that.value = roundedResult;
 					let input = that.shadowRoot.querySelector('#input');
-					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+					eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value});
 				}	
 			})
 		}
@@ -113,7 +113,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 				that.value = roundedResult;
 				let input = that.shadowRoot.querySelector('#input');
-				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value});
 			})
 		}
 
@@ -134,7 +134,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 				that.value = roundedResult;
 				let input = that.shadowRoot.querySelector('#input');
-				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value});
 			})
 		}
 
@@ -152,7 +152,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 				that.value = roundedResult;
 				let input = that.shadowRoot.querySelector('#input');
-				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', data: that.value});
+				eventDispatcher(input.eventTarget, 'attributefromparent', {parent: that, attribute: 'value', newVal: that.value});
 			})
 		}
 
@@ -210,7 +210,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 		//local events initiated by parent
 		this.ctrl.clearallfromparent = function(e) {
 			let input = that.shadowRoot.querySelector('#input');
-			eventDispatcher(input.eventTarget, 'clearselffromparent', {parent: that, attribute: 'value', data: ""});
+			eventDispatcher(input.eventTarget, 'clearselffromparent', {parent: that, attribute: 'value', newVal: ""});
 		};
 		
 		

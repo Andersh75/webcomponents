@@ -43,7 +43,7 @@ class HeadlineLabelCE extends HeadlineBaseCE {
 	}
 	
 	extendBaseView(that, model) {
-
+		
 	}
 
 	extendBaseModel(that) {

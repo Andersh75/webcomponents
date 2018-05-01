@@ -113,20 +113,19 @@ class CustomElement3 extends HTMLElement {
 	//each time an observed attribute changes it will run this function. Name, old value, new value of attribute will be passed.
 	//Returns an object called details
 	//Notice! this = customComponent
-	attributeChangedCallback(name, oldVal, newVal) {
-		if (!(name in this.acc)) {
-			this.acc[name] = true;
+	attributeChangedCallback(attribute, oldVal, newVal) {
+		if (!(attribute in this.acc)) {
+			this.acc[attribute] = true;
 		} else {
+			let changedAttribute = {};
+			changedAttribute.attribute = attribute;
+			changedAttribute.newVal = newVal;
+			this.model.updateModelWithAttribute(changedAttribute);
+			this.ctrl.changedAttribute(changedAttribute);
+
 			let details = {};
-				details.changedAttribute = {};
-				details.changedAttribute.name = name;
-				details.changedAttribute.oldVal = oldVal;
-				details.changedAttribute.newVal = newVal;
-				let load = {};
-				load[details.changedAttribute.name] = details.changedAttribute.newVal;
-				this.model.updateModelWithAttribute(details.changedAttribute.name, load);
-				this.ctrl.changedAttribute(details);
-				eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
+			details.changedAttribute = changedAttribute;
+			eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
 		}	
 	}
 
@@ -178,43 +177,13 @@ function Model(that) {
 		eval: function(name) {
 			return eval(name) 
 		},
-		updateModelWithAttribute: function(attribute, newVal, parent) {
-			let oldVal = {};
-
-			switch(attribute) {
-				case 'title':
-					oldVal.title = that.db.title;
-					that.db.title = newVal.title;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'title', oldVal: oldVal, newVal: that.db});
-					break;
-				case 'value':
-					oldVal.value = that.db.value;
-					that.db.value = newVal.value;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'value', oldVal: oldVal, newVal: that.db});
-					break;
-				case 'placeholder':
-					oldVal.placeholder = that.db.placeholder;
-					that.db.placeholder = newVal.placeholder;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'placeholder', oldVal: oldVal, newVal: that.db});
-					break;
-				case 'selectedindex':
-					oldVal.selectedindex = that.db.selectedindex;
-					that.db.selectedindex = newVal.selectedindex;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedindex', oldVal: oldVal, newVal: that.db});
-					break;
-				case 'selectedvalue':
-					oldVal.selectedvalue = that.db.selectedvalue;
-					that.db.selectedvalue = newVal.selectedvalue;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'selectedvalue', oldVal: oldVal, newVal: that.db});
-					break;
-				case 'sb':
-					oldVal.sb = that.db.sb;
-					that.db.sb = newVal.sb;
-					eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, name: 'sb', oldVal: oldVal, newVal: that.db});
-					break;
-				default:
-					alert('WRONG select');
-			}
+		updateModelWithAttribute: function(changedAttribute) {
+			let oldVal = "";
+			let attribute = changedAttribute.attribute;
+			let newVal = changedAttribute.newVal;
+			oldVal = that.db[attribute];
+			that.db[attribute] = newVal;
+			eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, attribute: attribute, oldVal: oldVal, newVal: newVal});
 		},
 		get: function(attribute) {
 			return that.db[attribute];
@@ -243,7 +212,6 @@ function Ctrl(that, model, view, ctrl) {
 			let attribute = e.detail.attribute;
 			let data;
 			if (attribute !== undefined) {
-				
 				try {
 					if (attribute === 'selectedindex') {
 						data = {};
@@ -253,27 +221,13 @@ function Ctrl(that, model, view, ctrl) {
 						.then((result) => {
 							that.selectedvalue = result.data.selectedvalue;
 							that[attribute] = result.data.selectedindex;
-							// let load = {};
-							// load.selectedvalue = result.data.selectedvalue;
-							// load.selectedindex = result.data.selectedindex;
-							// attribute = result.attribute;
-							// model.updateModelWithAttribute(attribute, load);
 						});
 					} else if (attribute === 'value'){
 						data = {};
 						data[attribute] = e.detail.data[attribute];
-						console.log('DATA AND ATTRIBUTE');
-						console.log(data);
-						console.log(attribute);
 						that.ctrl.addedUserAction(data, attribute)
 						.then((result) => {
-							console.log('RESULT');
-							console.log(result);
 							that.value = result.data.value;
-							// let load = {};
-							// load[attribute] = result.data[attribute];
-							// attribute = result.attribute;
-							//model.updateModelWithAttribute(attribute, load);
 						})
 						.catch(() => {
 							throw 'Not a number - else if';
@@ -281,16 +235,20 @@ function Ctrl(that, model, view, ctrl) {
 					}
 					
 					else {
-						data = e.detail.data;
-						that.ctrl.addedUserAction(data, attribute)
-						.then((result) => {
-							data = result.data;
-							attribute = result.attribute;
-							model.updateModelWithAttribute(attribute, data);
-						})
-						.catch(() => {
-							throw 'Not a number - else';
-						});
+						alert('What userAction is this?');
+						// data = e.detail.data;
+						// that.ctrl.addedUserAction(data, attribute)
+						// .then((result) => {
+						// 	data = result.data;
+						// 	attribute = result.attribute;
+						// 	let changedAttribute = {};
+						// 	changedAttribute.attribute = result.attribute;
+						// 	changedAttribute.newVal = result.data;
+						// 	model.updateModelWithAttribute(changedAttribute);
+						// })
+						// .catch(() => {
+						// 	throw 'Not a number - else';
+						// });
 					}
 				}
 				catch (error) {
@@ -299,51 +257,44 @@ function Ctrl(that, model, view, ctrl) {
 			}		
 		},
 		clearSelfFromParent: function(e) { //local events initiated by users
-			let parent = e.detail.parent;
+			that.parent = e.detail.parent;
 			let attribute = e.detail.attribute;
-			let data = e.detail.data;
-			that[attribute] = data;
+			let newVal = e.detail.newVal;
 			if (attribute !== undefined) {
-				model.updateModelWithAttribute(attribute, data, parent);
+				that[attribute] = newVal;
+			}		
+		},
+		attributeFromParent: function(e) {
+			that.parent = e.detail.parent;
+			let attribute = e.detail.attribute;
+			let newVal = e.detail.newVal;
+			if (attribute !== undefined) {
+				that[attribute] = newVal;
 			}	
 		},
 		updatedModel: function(e) { //local events initiated by users
-			let parent = that.parent;
-			let attribute = e.detail.name;
-			let child = e.detail.child;
+			let parent = e.detail.parent;
+			let attribute = e.detail.attribute;
 			let newVal = e.detail.newVal;
-			console.log('updatedmodel');
-			console.log(e.detail);
+			let oldVal = e.detail.oldVal;
+			let child = e.detail.child;
 			
 			if (attribute !== undefined) {
 				let item = model.get(attribute);
 				view.updateView(attribute, item);
 				
 				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {child: child, parent: that.parent, attribute: attribute, newVal: newVal});
+					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {parent: parent, child: child, attribute: attribute, oldVal: oldVal, newVal: newVal});
 				} else {
 					console.log('No parent...');
 				}
 			}
 		},
-		attributeFromParent: function(e) {
-			that.parent = e.detail.parent;
-			let attribute = e.detail.attribute;
-			let data = e.detail.data;
-			console.log('Attribute from parent');
-			console.log(e.detail);
-			console.log(that.parent);
-			if (attribute !== undefined) {
-				that[attribute] = data;
-			}	
-		},
 		updatedAttributeFromChild: function(e) {
-			let child = e.detail.child;
 			let parent = e.detail.parent;
 			let attribute = e.detail.attribute;
-			console.log('Attribute from child');
-			console.log(e.detail);
-			parent[attribute] = e.detail.newVal[attribute];
+			let newVal = e.detail.newVal;
+			parent[attribute] = newVal;
 		},
 
 		stream: function(value) {
