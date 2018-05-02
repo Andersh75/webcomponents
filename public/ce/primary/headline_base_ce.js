@@ -20,12 +20,23 @@ class HeadlineBaseCE extends CustomElement3 {
 				let attribute = 'title';
 				that[attribute] = that.title;
 			}
+
+			if (!h.boolean.isEmpty(that.sr)) {
+				let attribute = 'sr';
+				that[attribute] = that.sr;
+			}
 		};
 
 		this.ctrl.changedAttribute = function(changedAttribute) {
-			if (changedAttribute.attribute === "title") {
+			let attribute = changedAttribute.attribute;
+
+			if (attribute === "title") {
 				that.ctrl.stream(that.title);	
-			}	
+			}
+
+			let newVal = model.get(attribute);
+
+			that.view.updateView(attribute, newVal);
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
@@ -42,7 +53,40 @@ class HeadlineBaseCE extends CustomElement3 {
 
 
 		//local events initiated by global stream
+		this.ctrl.priceandcapitalize$ = function(e) {
+			const combineLatest$ = function(...streams) {
+				return Rx.Observable.combineLatest(streams);
+			};
 
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('price'), myRxmq.channel('inflation').behaviorobserve('rate'))				
+			.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])
+			//.do(console.log)	
+			.subscribe((x) => {
+				let year = that.year;
+				let numYear = Number(year);
+				let result = x[0] * x[1] * Math.pow((x[2] + 1), numYear);
+				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+				if(h.boolean.isNumber(roundedResult)) {
+					that.title = roundedResult;
+				}	
+			});
+		};
+
+		this.ctrl.discount$ = function(e) { 
+			const combineLatest$ = function(...streams) {
+				return Rx.Observable.combineLatest(streams);
+			};
+
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('discount').behaviorobserve('rate'))					
+			.map(([e1, e2]) => [Number(e1), Number(e2)])
+			.subscribe((x) => {
+				let year = that.year;
+				let numYear = Number(year);
+				let result = x[0] / Math.pow((x[1] + 1), numYear);
+				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+				that.title = roundedResult;
+			})
+		}
 
 	}
 

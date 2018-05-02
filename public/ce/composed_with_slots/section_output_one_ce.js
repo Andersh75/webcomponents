@@ -36,6 +36,7 @@ tpl.innerHTML = `
 			
 			
 			</style>
+		<slot id="anytable" name="anytable"></slot>
 		<slot id="anyheadline" name="anyheadline"></slot>
 		<slot id="anycontainer" name="anycontainer"></slot>
 `;

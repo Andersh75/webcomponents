@@ -18,6 +18,9 @@
   <script src="js/customelement2.js" type="text/javascript"></script>
   <script src="js/customelement3.js" type="text/javascript"></script>
   <script src="ce/primary/input_one_ce.js" type="module"></script>
+  <script src="ce/primary/table_one_ce.js" type="module"></script>
+  <script src="ce/primary/tr_one_ce.js" type="module"></script>
+  <script src="ce/primary/td_one_ce.js" type="module"></script>
   <script src="ce/primary/input_number_ce.js" type="module"></script>
   <script src="ce/primary/select_one_ce.js" type="module"></script>
   <script src="ce/primary/select_year_ce.js" type="module"></script>
@@ -38,6 +41,7 @@
   <script src="ce/composed_without_slots/headline_select_kwhprice_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/headline_anyselect_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/anykind_container_one_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/anykind_container_v_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/section_input_one_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/section_output_one_ce.js" type="module"></script>
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
@@ -221,6 +225,7 @@
     <headline-input-base-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-base-ce>
 </anykind-container-ce>   -->
 
+
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="allmänt" aria-selected="true">Allmänt</a>
@@ -257,7 +262,7 @@
             <anykind-container-one-ce slot="anycontainer">
                 <headline-one-ce title="Kalkylränta" class="h5" slot="headline"></headline-one-ce>
                 <headline-anyselect-ce title="Kalkylränta" slot="anyform">
-                    <select-discount-ce slot="anyselect" selectedindex="0" selectedvalue sb="discount:rate"></select-discount-ce>
+                    <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb="discount:rate"></select-discount-ce>
                 </headline-anyselect-ce> 
             </anykind-container-one-ce> 
         
@@ -334,7 +339,12 @@
 
 
 <section-output-one-ce>
+    
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+    <anykind-container-v-ce slot="anycontainer">
+            <table-one-ce cells="1:10" type="capitalize" srdispatch="[heat:kwh]@priceandcapitalize$" sbdispatch="heat:amount" slot="anytable"></table-one-ce>
+            <table-one-ce cells="1:10" type="match" srdispatch="heat:amount@discount$" sbdispatch="heat:discount" slot="anytable"></table-one-ce>
+    </anykind-container-v-ce>
     <anykind-container-one-ce slot="anycontainer">
             <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
             <headline-input-one-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-1"></headline-input-one-ce>
@@ -352,6 +362,8 @@
         <headline-input-one-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-one-ce>
     </anykind-container-one-ce>
 </section-output-one-ce>
+
+
 
 <!-- 
 <section-input-ce listener="clearowninputsection@clearsection">

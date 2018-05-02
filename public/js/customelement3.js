@@ -121,7 +121,7 @@ class CustomElement3 extends HTMLElement {
 			changedAttribute.attribute = attribute;
 			changedAttribute.newVal = newVal;
 			this.model.updateModelWithAttribute(changedAttribute);
-			this.ctrl.changedAttribute(changedAttribute);
+			//this.ctrl.changedAttribute(changedAttribute);
 
 			let details = {};
 			details.changedAttribute = changedAttribute;
@@ -280,14 +280,16 @@ function Ctrl(that, model, view, ctrl) {
 			let child = e.detail.child;
 			
 			if (attribute !== undefined) {
-				let item = model.get(attribute);
-				view.updateView(attribute, item);
-				
 				if (parent !== undefined) {
 					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {parent: parent, child: child, attribute: attribute, oldVal: oldVal, newVal: newVal});
 				} else {
 					//console.log('No parent...');
 				}
+
+				let changedAttribute = {};
+				changedAttribute.attribute = attribute;
+				changedAttribute.newVal = newVal;
+				that.ctrl.changedAttribute(changedAttribute);
 			}
 		},
 		updatedAttributeFromChild: function(e) {
@@ -399,6 +401,8 @@ function setComponentDispatcher(eventName) {
 
 function setComponentObserver(model) {
 	let sr = this.sr; //string from attribute listener
+	console.log('this.sr');
+	console.log(this.sr);
 
 	if (h.boolean.isString(sr)) {
 		let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', sr); //makes an array of [remote, local...] listener
@@ -406,6 +410,11 @@ function setComponentObserver(model) {
 		let channel = channelAndSubject[0];
 		let subject = channelAndSubject[1];
 		let local = remoteAndLocal.slice(1)[0];
+		//this.srChannel = channel;
+		//this.srSubject = subject;
+		console.log(channel);
+		console.log(subject);
+		console.log(local);
 
 		this.eventTarget.dispatchEvent(new CustomEvent(local, {detail: [channel, subject]}));
 	}	

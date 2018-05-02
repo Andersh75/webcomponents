@@ -8,7 +8,7 @@ tpl.innerHTML = `
 <style>
 		:host {
 			display: grid;
-			grid-template-columns: auto;
+			grid-template-columns: 1;
 			  grid-template-rows: auto;
 			grid-gap: 20px;
 			padding: 40px;
@@ -34,10 +34,10 @@ tpl.innerHTML = `
 		#anytable::slotted(*) {
 			color: green;
 			//background-color: white;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
+			grid-column-start: 1;
+			  grid-column-end: 1;
+			  grid-row-start: auto;
+			  grid-row-end: auto;
 		}
 
 		</style>
@@ -46,7 +46,7 @@ tpl.innerHTML = `
 		<slot name="anyform" id="anyform"></slot>
 `;
 
-class AnykindContainerOneCE extends AnykindContainerBaseCE {
+class AnykindContainerVCE extends AnykindContainerBaseCE {
 
 	constructor() {
 		super();
@@ -72,4 +72,4 @@ class AnykindContainerOneCE extends AnykindContainerBaseCE {
 	}
 }
 
-window.customElements.define('anykind-container-one-ce', AnykindContainerOneCE);
+window.customElements.define('anykind-container-v-ce', AnykindContainerVCE);

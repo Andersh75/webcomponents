@@ -25,13 +25,18 @@ class SelectBaseCE extends CustomElement3 {
 		};
 
 		this.ctrl.changedAttribute = function(changedAttribute) {
-			if (changedAttribute.attribute === "selectedindex") {
+			let attribute = changedAttribute.attribute;
+
+			if (attribute === "selectedindex") {
 				if (h.boolean.isEmpty(that.selectedvalue)) {	
 					that.selectedvalue = that.shadowRoot.querySelector('#select').options[that.selectedindex].value;
 				}
+
+				let newVal = model.get(attribute);
+				that.view.updateView(attribute, newVal);
 			}
 			
-			if (changedAttribute.attribute === "selectedvalue") {
+			if (attribute === "selectedvalue") {
 				that.ctrl.stream(that.selectedvalue);
 			}
 		};
