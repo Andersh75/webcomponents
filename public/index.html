@@ -25,6 +25,7 @@
   <script src="ce/primary/input_number_ce.js" type="module"></script>
   <script src="ce/primary/select_one_ce.js" type="module"></script>
   <script src="ce/primary/select_year_ce.js" type="module"></script>
+  <script src="ce/primary/select_period_ce.js" type="module"></script>
   <script src="ce/primary/select_inflation_ce.js" type="module"></script>
   <script src="ce/primary/select_discount_ce.js" type="module"></script>
   <script src="ce/primary/select_kwhprice_ce.js" type="module"></script>
@@ -267,9 +268,13 @@
                     <select-year-ce slot="anyselect" selectedindex="1" selectedvalue></select-inflation-ce>
                 </headline-anyselect-ce>
 
-                <headline-anyinput-ce title="Kalkyllängd" slot="anyform">
+                <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
+                    <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb="period:length"></select-period-ce>
+                </headline-anyselect-ce>
+
+                <!-- <headline-anyinput-ce title="Kalkyllängd" slot="anyform">
                     <input-number-ce value="7" placeholder="Antal år..." slot="anyinput" sb="period:length" sr=""></input-number-ce>
-                </headline-anyinput-ce> 
+                </headline-anyinput-ce>  -->
                 
             </anykind-container-one-ce>
 

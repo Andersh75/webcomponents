@@ -8,19 +8,23 @@ tpl.innerHTML = `
 	<style>
 		
 	</style>
-			<select id="select" class="form-control form-control-sm">
-			  <option disabled selected value="">Procent...</option>
-			  <option value="0.01">1%</option>
-			  <option value="0.02">2%</option>
-			  <option value="0.03">3%</option>
-			  <option value="0.04">4%</option>
-			  <option value="0.05">5%</option>
-			</select>
+		<select id="select" class="form-control form-control-sm">
+			<option disabled selected value="">År...</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
 `;
 
 
-
-	class SelectInflationCE extends SelectBaseCE {
+	class SelectPeriodCE extends SelectBaseCE {
 
 		constructor() {
 			super();
@@ -30,7 +34,7 @@ tpl.innerHTML = `
 	
 
 		static get observedAttributes() {
-			return [ 'selectedindex', 'selectedvalue', 'sb', 'sr'];
+			return [ 'selectedindex', 'sb', 'selectedvalue', 'sr'];
 		}
 
 		
@@ -47,4 +51,4 @@ tpl.innerHTML = `
 		}
 	}
 
-	window.customElements.define('select-inflation-ce', SelectInflationCE);
+	window.customElements.define('select-period-ce', SelectPeriodCE);
