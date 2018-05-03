@@ -12,18 +12,13 @@ class HeadlineBaseCE extends CustomElement3 {
 	}
 	
 	//Controller
-	extendCtrl(that, model, view) {
+	extendCtrl(model, view) {
 
 		//init
 		this.ctrl.run = function() {
-			if (!h.boolean.isEmpty(that.title)) {
+			if (!h.boolean.isEmpty(this.title)) {
 				let attribute = 'title';
-				that[attribute] = that.title;
-			}
-
-			if (!h.boolean.isEmpty(that.sr)) {
-				let attribute = 'sr';
-				that[attribute] = that.sr;
+				this[attribute] = this.title;
 			}
 		};
 
@@ -31,12 +26,11 @@ class HeadlineBaseCE extends CustomElement3 {
 			let attribute = changedAttribute.attribute;
 
 			if (attribute === "title") {
-				that.ctrl.stream(that.title);	
+				this.ctrl.stream(this.title);	
 			}
 
 			let newVal = model.get(attribute);
-
-			that.view.updateView(attribute, newVal);
+			this.view.updateView.call(this, attribute, newVal);
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
@@ -62,12 +56,12 @@ class HeadlineBaseCE extends CustomElement3 {
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
 			//.do(console.log)	
 			.subscribe((x) => {
-				let year = that.year;
+				let year = this.year;
 				let numYear = Number(year);
 				let result = x[0] * Math.pow((x[1] + 1), numYear);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 				if(h.boolean.isNumber(roundedResult)) {
-					that.title = Number(roundedResult).toLocaleString('sv');
+					this.title = Number(roundedResult).toLocaleString('sv');
 				}	
 			});
 		};
@@ -81,12 +75,12 @@ class HeadlineBaseCE extends CustomElement3 {
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
 			//.do(console.log)	
 			.subscribe((x) => {
-				let year = that.year;
+				let year = this.year;
 				let numYear = Number(year);
 				let result = x[0] * Math.pow((x[1] + 1), 0);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 				if(h.boolean.isNumber(roundedResult)) {
-					that.title = Number(roundedResult).toLocaleString('sv');
+					this.title = Number(roundedResult).toLocaleString('sv');
 				}	
 			});
 		};
@@ -100,12 +94,12 @@ class HeadlineBaseCE extends CustomElement3 {
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
 			//.do(console.log)	
 			.subscribe((x) => {
-				let year = that.year;
+				let year = this.year;
 				let numYear = Number(year);
 				let result = x[0] * Math.pow((x[1] + 1), numYear);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 				if(h.boolean.isNumber(roundedResult)) {
-					that.title = Number(roundedResult).toLocaleString('sv');
+					this.title = Number(roundedResult).toLocaleString('sv');
 				}	
 			});
 		};
@@ -118,11 +112,11 @@ class HeadlineBaseCE extends CustomElement3 {
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('discount').behaviorobserve('rate'))					
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
 			.subscribe((x) => {
-				let year = that.year;
+				let year = this.year;
 				let numYear = Number(year);
 				let result = x[0] / Math.pow((x[1] + 1), numYear);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
-				that.title = Number(roundedResult).toLocaleString('sv');
+				this.title = Number(roundedResult).toLocaleString('sv');
 			})
 		}
 
@@ -131,25 +125,26 @@ class HeadlineBaseCE extends CustomElement3 {
 
 	//View
 	//always passive
-	extendView(that, model) {
+	extendView(model) {
 		this.view.renderTitle = function(obj) {
-			that.shadowRoot.querySelector('#headline').textContent = obj;
-			//that.shadowRoot.querySelector('#headline').textContent = obj;
+			this.shadowRoot.querySelector('#headline').textContent = obj;
 		};
 
 		this.view.updateView = function(attribute, item) {
 			switch(attribute) {
 				case 'title':
-				that.view.renderTitle.call(that, item);
+				this.view.renderTitle.call(this, item);
 				break;
 			}	
 		};
 	}
 	
 	//Model
-	extendModel(that) {
-		that.db.title = "";
-		that.db.sb = "";
+	extendModel() {
+		this.db.title = "";
+		this.db.sb = "";
+		this.db.sr = "";
+		this.db.srdispatch = "";
 	}
 }
 

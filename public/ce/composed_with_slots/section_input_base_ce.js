@@ -16,7 +16,7 @@ class SectionInputBaseCE extends CustomElement3 {
 		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 
-	extendCtrl(that, model, view) {
+	extendCtrl(model, view) {
 		//local
 		this.ctrl.run = function() {
 			//alert('base');
@@ -24,18 +24,18 @@ class SectionInputBaseCE extends CustomElement3 {
 
 		//initiated by remote event
 		this.ctrl.clearAnykindContainers = function() {
-			let anycontainer = that.shadowRoot.querySelector('#anycontainer');
+			let anycontainer = this.shadowRoot.querySelector('#anycontainer');
 			Array.prototype.slice.call(anycontainer.assignedNodes()).forEach(node => {
 				eventDispatcher(node.eventTarget, 'clearanyformsfromparent');
 			})
 		}
 	}
 	
-	extendView(that, model) {
+	extendView(model) {
 
 	}
 
-	extendModel(that) {
+	extendModel() {
 		
 	}
 

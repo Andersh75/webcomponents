@@ -13,14 +13,14 @@ class SelectBaseCE extends CustomElement3 {
 
 	
 	//Controller
-	extendCtrl(that, model, view) {
+	extendCtrl(model, view) {
 		
 		//intit
 		this.ctrl.run = function() {
-			if (!h.boolean.isEmpty(that.selectedindex)) {
-				that.selectedvalue = that.shadowRoot.querySelector('#select').options[that.selectedindex].value;
+			if (!h.boolean.isEmpty(this.selectedindex)) {
+				this.selectedvalue = this.shadowRoot.querySelector('#select').options[this.selectedindex].value;
 				let attribute = 'selectedindex';
-				that[attribute] = that.selectedindex;				
+				this[attribute] = this.selectedindex;				
 			}		
 		};
 
@@ -28,16 +28,16 @@ class SelectBaseCE extends CustomElement3 {
 			let attribute = changedAttribute.attribute;
 
 			if (attribute === "selectedindex") {
-				if (h.boolean.isEmpty(that.selectedvalue)) {	
-					that.selectedvalue = that.shadowRoot.querySelector('#select').options[that.selectedindex].value;
+				if (h.boolean.isEmpty(this.selectedvalue)) {	
+					this.selectedvalue = this.shadowRoot.querySelector('#select').options[this.selectedindex].value;
 				}
 
 				let newVal = model.get(attribute);
-				that.view.updateView(attribute, newVal);
+				this.view.updateView.call(this, attribute, newVal);
 			}
 			
 			if (attribute === "selectedvalue") {
-				that.ctrl.stream(that.selectedvalue);
+				this.ctrl.stream(this.selectedvalue);
 			}
 		};
 
@@ -59,18 +59,18 @@ class SelectBaseCE extends CustomElement3 {
 
 	//View
 	//always passive
-	extendView(that, model) {
+	extendView(model) {
 		this.view.renderSelectedIndex = function(obj) {
-			Array.prototype.slice.call(that.shadowRoot.querySelector('#select')).forEach(child => {
+			Array.prototype.slice.call(this.shadowRoot.querySelector('#select')).forEach(child => {
 				child.removeAttribute('selected');
 			})
-			that.shadowRoot.querySelector('#select').children[obj].setAttribute('selected', 'selected');
+			this.shadowRoot.querySelector('#select').children[obj].setAttribute('selected', 'selected');
 		};
 
 		this.view.updateView = function(attribute, item) {
 			switch(attribute) {
 				case 'selectedindex':
-				that.view.renderSelectedIndex.call(that, item);
+				this.view.renderSelectedIndex.call(this, item);
 				break;
 			}	
 		};
@@ -78,10 +78,10 @@ class SelectBaseCE extends CustomElement3 {
 	}
 	
 	//Model
-	extendModel(that) {
-		that.db.selectedindex = "0";
-		that.db.selectedvalue = "";
-		that.db.sb = "";
+	extendModel() {
+		this.db.selectedindex = "0";
+		this.db.selectedvalue = "";
+		this.db.sb = "";
 	}
 }
 

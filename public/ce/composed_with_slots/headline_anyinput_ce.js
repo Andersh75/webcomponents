@@ -1,4 +1,4 @@
-import { HeadlineInputBaseCE } from '/ce/composed_without_slots/headline_input_base_ce.js';
+import { HeadlineAnyinputBaseCE } from '/ce/composed_with_slots/headline_anyinput_base_ce.js';
 	// specific:
 	// required attributes: headline-ce: title, select-ce: selectedindex
 
@@ -44,7 +44,7 @@ tpl.innerHTML = `
 
 
 
-class HeadlineAnyinputCE extends HeadlineInputBaseCE {
+class HeadlineAnyinputCE extends HeadlineAnyinputBaseCE {
 
 	constructor() {
 		super();

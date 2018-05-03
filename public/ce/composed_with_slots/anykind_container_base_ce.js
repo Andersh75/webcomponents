@@ -16,14 +16,14 @@ class AnykindContainerBaseCE extends CustomElement3 {
 		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 
-	extendCtrl(that, model, view) {
+	extendCtrl(model, view) {
 		//local
 		this.ctrl.run = function() {
 		};
 
 		//parent
 		this.ctrl.clearAnyformsFromParent = function(e) {
-			let anyform = that.shadowRoot.querySelector('#anyform');
+			let anyform = this.shadowRoot.querySelector('#anyform');
 			Array.prototype.slice.call(anyform.assignedNodes()).forEach(node => {
 				eventDispatcher(node.eventTarget, 'clearallfromparent');
 			})
@@ -31,11 +31,11 @@ class AnykindContainerBaseCE extends CustomElement3 {
 	}
 
 			
-	extendView(that, model) {
+	extendView(model) {
 
 	}
 
-	extendModel(that) {
+	extendModel() {
 		
 	}
 }

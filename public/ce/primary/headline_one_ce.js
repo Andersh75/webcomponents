@@ -31,7 +31,7 @@ class HeadlineOneCE extends HeadlineBaseCE {
 	}
 
 	static get observedAttributes() {
-		return ['title', 'sb', 'sr'];
+		return ['title', 'sb', 'sr', 'srdispatch'];
 	}
 	
 	extendBaseCtrl(that, model, view) {

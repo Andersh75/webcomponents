@@ -13,17 +13,17 @@ class InputBaseCE extends CustomElement3 {
 
 
 
-	extendCtrl(that, model, view) {
+	extendCtrl(model, view) {
 
 		//init
 		this.ctrl.run = function() {
-			if (!h.boolean.isEmpty(that.value)) {
+			if (!h.boolean.isEmpty(this.value)) {
 				let attribute = 'value';
-				that[attribute] = that.value;
+				this[attribute] = this.value;
 			}
-			if (!h.boolean.isEmpty(that.placeholder)) {
+			if (!h.boolean.isEmpty(this.placeholder)) {
 				let attribute = 'placeholder';
-				that[attribute] = that.placeholder;
+				this[attribute] = this.placeholder;
 			}
 		};
 
@@ -31,10 +31,10 @@ class InputBaseCE extends CustomElement3 {
 			let attribute = changedAttribute.attribute;
 
 			if (attribute === "value") {
-				that.ctrl.stream(that.value);	
+				this.ctrl.stream(this.value);	
 			}
 			let newVal = model.get(attribute);
-			that.view.updateView(attribute, newVal);
+			this.view.updateView.call(this, attribute, newVal);
 		};
 
 		this.ctrl.addedUserAction = function(data, attribute) {
@@ -59,13 +59,13 @@ class InputBaseCE extends CustomElement3 {
 		// 	.map(([e1, e2]) => [Number(e1), Number(e2)])
 		// 	.do(console.log)
 		// 	.subscribe((x) => {
-		// 		let year = that.year;
+		// 		let year = this.year;
 		// 		let numYear = Number(year);
 		// 		let result = x[0] * Math.pow((x[1] + 1), numYear);
 		// 		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-		// 		that.value = roundedResult;
+		// 		this.value = roundedResult;
 		// 		let attribute = 'value';
-		// 		view.updateView(attribute, that.value);
+		// 		view.updateView(attribute, this.value);
 		// 	})
 		// }
 
@@ -77,52 +77,52 @@ class InputBaseCE extends CustomElement3 {
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('inflation').behaviorobserve('rate'))				
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
 			.subscribe((x) => {
-				let year = that.year;
+				let year = this.year;
 				let numYear = Number(year);
 				let result = x[0] * Math.pow((x[1] + 1), numYear);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-				that.value = roundedResult;
+				this.value = roundedResult;
 			});
 		};
 
 		this.ctrl.copy$ = function(e) {
 			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])
 			.subscribe((x) => {
-				that.value = x;
-				let input = that.shadowRoot.querySelector('#input');
+				this.value = x;
+				let input = this.shadowRoot.querySelector('#input');
 				let attribute = 'value';
-				view.updateView(attribute, that.value);
+				view.updateView(attribute, this.value);
 			})
 		}
 
 		
 	}
 
-	extendView(that, model) {
+	extendView(model) {
 		this.view.renderPlaceholder = function(obj) {
-			that.shadowRoot.querySelector('#input').placeholder = obj;
+			this.shadowRoot.querySelector('#input').placeholder = obj;
 		};
 
 		this.view.renderValue = function(obj) {
-			that.shadowRoot.querySelector('#input').value = obj;
+			this.shadowRoot.querySelector('#input').value = obj;
 		};
 
 		this.view.updateView = function(attribute, data) {
 			switch(attribute) {
 				case 'value':
-				that.view.renderValue.call(that, data);
+				this.view.renderValue.call(this, data);
 				break;
 				case 'placeholder':
-				that.view.renderPlaceholder.call(that, data);
+				this.view.renderPlaceholder.call(this, data);
 				break;
 			}	
 		};
 	}
 
-	extendModel(that) {
-		that.db.placeholder = "";
-		that.db.value = "";
-		that.db.sb = "";
+	extendModel() {
+		this.db.placeholder = "";
+		this.db.value = "";
+		this.db.sb = "";
 	}
 }
 

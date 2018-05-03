@@ -33,15 +33,15 @@ class CustomElement3 extends HTMLElement {
 	static extend() {
 		this.template = this.tpl.content; //creates a pointer at the content of the template of the custom component.
 		this.shadowRoot.appendChild(this.template.cloneNode(true)); //clones this.template and appends it as child to shadowRoot. 
-		this.extendModel(this); //adds new methods to this.model
-		this.extendView(this, this.model); //adds new methods to this.view
-		this.extendCtrl(this, this.model, this.view); //adds new methods to this.ctrl
+		this.extendModel.call(this); //adds new methods to this.model
+		this.extendView.call(this, this.model); //adds new methods to this.view
+		this.extendCtrl.call(this, this.model, this.view); //adds new methods to this.ctrl
 
 
 		//gets keys from this.ctrl and puts them in an array. Removes first element, the eval method.
 		//for every key it maps an eventlistener on the eventTarget which listens to the event with the same name as the key and runs its method.
 		Object.keys(this.ctrl).slice(1).map(key => { 
-			this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key]);
+			this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key].bind(this));
 		});
 
 		//Adds proper eventlistener to the user-input elements-----
@@ -149,6 +149,8 @@ class CustomElement3 extends HTMLElement {
 			
 		}
 
+		setComponentSrdispatch.call(this);
+
 		//makes component fire local events when remote event fires. Remote event is attached in each local event.
 		setComponentListener.call(this, this.model); //this.model is an object with dispatch and eval functions
 		setComponentDispatcher(this.dispatch); //this.dispatch is name of remote event that get published from component
@@ -157,8 +159,10 @@ class CustomElement3 extends HTMLElement {
 		setComponentObserver.call(this, this.model); //this.model is an object with dispatch and eval functions
 		setComponentObservable.call(this);
 
+		
+
 		//Activates components specific run functions upon connected callback
-		this.ctrl.run();	
+		this.ctrl.run.call(this);	
 	}  
 } //Class ends here!
 
@@ -294,7 +298,7 @@ function Ctrl(that, model, view, ctrl) {
 				let changedAttribute = {};
 				changedAttribute.attribute = attribute;
 				changedAttribute.newVal = newVal;
-				that.ctrl.changedAttribute(changedAttribute);
+				that.ctrl.changedAttribute.call(that, changedAttribute);
 			}
 		},
 		updatedAttributeFromChild: function(e) {
@@ -433,6 +437,14 @@ function setComponentObservable() {
 		
 		this.sbChannel = channelAndSubject[0];
 		this.sbSubject = channelAndSubject[1];	
+	}
+}
+
+function setComponentSrdispatch() {
+	let srdispatch = this.srdispatch;
+
+	if (h.boolean.isString(srdispatch)) {
+		this.srDispatchObj = JSON.parse(this.srdispatch);	
 	}
 }
 

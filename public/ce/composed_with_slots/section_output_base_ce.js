@@ -16,7 +16,7 @@ class SectionOutputBaseCE extends CustomElement3 {
 		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
 	}
 
-	extendCtrl(that, model, view) {
+	extendCtrl(model, view) {
 		//local
 		this.ctrl.run = function() {
 		};
@@ -36,11 +36,11 @@ class SectionOutputBaseCE extends CustomElement3 {
 		};
 	}
 
-	extendView(that, model) {
+	extendView(model) {
 		
 	}		
 
-	extendModel(that) {
+	extendModel() {
 		
 	}
 }
