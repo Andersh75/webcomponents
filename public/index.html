@@ -19,6 +19,7 @@
   <script src="js/customelement3.js" type="text/javascript"></script>
   <script src="ce/primary/input_one_ce.js" type="module"></script>
   <script src="ce/primary/table_one_ce.js" type="module"></script>
+  <script src="ce/primary/divtable_one_ce.js" type="module"></script>
   <script src="ce/primary/tr_one_ce.js" type="module"></script>
   <script src="ce/primary/td_one_ce.js" type="module"></script>
   <script src="ce/primary/input_number_ce.js" type="module"></script>
@@ -86,14 +87,22 @@
 
 </script>
 
+
 <style>
     .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
         background-color: azure;
     }
 
+    #myTab {
+        padding-left: 100px;
+    }
+
         a, a:hover {
        color: #495057;
     }
+
+
+
 </style>
 
 <!-- <script type="module">
@@ -116,7 +125,7 @@
 
   
 </head>
-<body>
+<body id="body">
 <!-- <div id="buttonbox">
     <button id="knappen">Dubbelklicka!</button>
     <button id="knappen2">Dubbelklicka!</button>
@@ -259,7 +268,7 @@
                 </headline-anyselect-ce>
 
                 <headline-anyinput-ce title="Kalkyllängd" slot="anyform">
-                    <input-number-ce value="20" placeholder="Antal år..." slot="anyinput" sb="" sr=""></input-number-ce>
+                    <input-number-ce value="7" placeholder="Antal år..." slot="anyinput" sb="period:length" sr=""></input-number-ce>
                 </headline-anyinput-ce> 
                 
             </anykind-container-one-ce>
@@ -304,14 +313,14 @@
 
             </anykind-container-one-ce>
             <script>
-                    const combineLatest$ = function(...streams) {
-                    return Rx.Observable.combineLatest(streams);
-                    };
-                    combineLatest$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))					
-                    .map(([e1, e2]) => [Number(e1), Number(e2)])
-                    .map(([e1, e2]) => e1 * e2)
-                    .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
-                </script>
+                const combineLatestHeat$ = function(...streams) {
+                return Rx.Observable.combineLatest(streams);
+                };
+                combineLatestHeat$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))					
+                .map(([e1, e2]) => [Number(e1), Number(e2)])
+                .map(([e1, e2]) => e1 * e2)
+                .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
+            </script>
             
 
             <!-- BRUKARE -->
@@ -339,7 +348,7 @@
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kvm..." slot="anyinput" sb=""></input-number-ce>
+                    <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb="ownkvm:amount"></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -367,20 +376,30 @@
                 <headline-one-ce title="Reparationer och löpande underhåll" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kr/kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb=""></input-number-ce>
+                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb="ownrepair:price" sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyselect-ce title="Kostnadsutveckling" slot="anyform">
-                    <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb=""></select-kwhprice-ce>
+                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="ownrepairpriceincrease:rate"></select-kwhprice-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce>  
 
-        </section-input-one-ce>        
+            <script>
+                const combineLatestOwnRepair$ = function(...streams) {
+                return Rx.Observable.combineLatest(streams);
+                };
+                combineLatestOwnRepair$(myRxmq.channel('ownkvm').behaviorobserve('amount'), myRxmq.channel('ownrepair').behaviorobserve('price'))					
+                .map(([e1, e2]) => [Number(e1), Number(e2)])
+                .map(([e1, e2]) => e1 * e2)
+                .subscribe(myRxmq.channel('ownrepair').behaviorsubject('cost'));
+            </script>
+
+        </section-input-one-ce>
     </div>
 
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        <section-input-one-ce id="own" listener="cleargeneralinputsection@clearanykindcontainers">
+        <section-input-one-ce id="rent" listener="cleargeneralinputsection@clearanykindcontainers">
         
             <headline-one-ce title="Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
             <!-- <button-one-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-one-ce> -->
@@ -390,7 +409,7 @@
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kvm..." slot="anyinput" sb="" sr=""></input-number-ce>
+                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb="rentkvm:amount" sr=""></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -400,7 +419,7 @@
                 <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Kostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb="" sr=""></input-number-ce>
+                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb="rentrent:price" sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce> 
@@ -410,7 +429,7 @@
                 <headline-one-ce title="Uppförande- och avvecklingskostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Etableringskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb="" sr=""></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb="rentestablish:price" sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyinput-ce title="Expansionskostnad per kvm" slot="anyform">
@@ -422,6 +441,26 @@
                 </headline-anyinput-ce>
   
             </anykind-container-one-ce>  
+
+            <script>
+                const combineLatestRentRent$ = function(...streams) {
+                return Rx.Observable.combineLatest(streams);
+                };
+                combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentrent').behaviorobserve('price'))					
+                .map(([e1, e2]) => [Number(e1), Number(e2)])
+                .map(([e1, e2]) => e1 * e2)
+                .subscribe(myRxmq.channel('rentrent').behaviorsubject('cost'));
+            </script>
+
+            <script>
+                const combineLatestRentEstablish$ = function(...streams) {
+                return Rx.Observable.combineLatest(streams);
+                };
+                combineLatestRentEstablish$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentestablish').behaviorobserve('price'))					
+                .map(([e1, e2]) => [Number(e1), Number(e2)])
+                .map(([e1, e2]) => e1 * e2)
+                .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
+            </script>
         </section-input-one-ce>  
     </div>
   </div>
@@ -436,7 +475,13 @@
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
 
     <anykind-container-v-ce slot="anycontainer">
-            <table-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></table-one-ce>
+            <table-one-ce cells="2:10" period title="Äga" type="capitalize" srdispatch='[{ "name":"Värme", "sr":"heat:cost", "local":"capitalize$"}, { "name":"Reparationer", "sr":"ownrepair:cost", "local":"capitalizeownrepair$"}]' sbdispatch="heat:amount" slot="anytable" sr="period:length@period$"></table-one-ce>
+            <!-- <divtable-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></divtable-one-ce> -->
+    </anykind-container-v-ce>
+
+    <anykind-container-v-ce slot="anycontainer">
+            <table-one-ce cells="3:10" period title="Hyra" type="capitalize" srdispatch='[{ "name":"Värme", "sr":"heat:cost", "local":"capitalize$"}, { "name":"Etablering", "sr":"rentestablish:cost", "local":"initial$"}, { "name":"Hyra", "sr":"rentrent:cost", "local":"capitalize$"}]' sbdispatch="heat:amount" slot="anytable" sr="period:length@period$"></table-one-ce>
+            <!-- <divtable-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></divtable-one-ce> -->
     </anykind-container-v-ce>
 
     <anykind-container-one-ce slot="anycontainer">

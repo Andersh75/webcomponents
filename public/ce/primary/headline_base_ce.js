@@ -65,9 +65,47 @@ class HeadlineBaseCE extends CustomElement3 {
 				let year = that.year;
 				let numYear = Number(year);
 				let result = x[0] * Math.pow((x[1] + 1), numYear);
-				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 				if(h.boolean.isNumber(roundedResult)) {
-					that.title = roundedResult;
+					that.title = Number(roundedResult).toLocaleString('sv');
+				}	
+			});
+		};
+
+		this.ctrl.initial$ = function(e) {
+			const combineLatest$ = function(...streams) {
+				return Rx.Observable.combineLatest(streams);
+			};
+
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('inflation').behaviorobserve('rate'))				
+			.map(([e1, e2]) => [Number(e1), Number(e2)])
+			//.do(console.log)	
+			.subscribe((x) => {
+				let year = that.year;
+				let numYear = Number(year);
+				let result = x[0] * Math.pow((x[1] + 1), 0);
+				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
+				if(h.boolean.isNumber(roundedResult)) {
+					that.title = Number(roundedResult).toLocaleString('sv');
+				}	
+			});
+		};
+
+		this.ctrl.capitalizeownrepair$ = function(e) {
+			const combineLatest$ = function(...streams) {
+				return Rx.Observable.combineLatest(streams);
+			};
+
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('ownrepairpriceincrease').behaviorobserve('rate'))				
+			.map(([e1, e2]) => [Number(e1), Number(e2)])
+			//.do(console.log)	
+			.subscribe((x) => {
+				let year = that.year;
+				let numYear = Number(year);
+				let result = x[0] * Math.pow((x[1] + 1), numYear);
+				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
+				if(h.boolean.isNumber(roundedResult)) {
+					that.title = Number(roundedResult).toLocaleString('sv');
 				}	
 			});
 		};
@@ -83,8 +121,8 @@ class HeadlineBaseCE extends CustomElement3 {
 				let year = that.year;
 				let numYear = Number(year);
 				let result = x[0] / Math.pow((x[1] + 1), numYear);
-				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-				that.title = roundedResult;
+				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
+				that.title = Number(roundedResult).toLocaleString('sv');
 			})
 		}
 
@@ -96,6 +134,7 @@ class HeadlineBaseCE extends CustomElement3 {
 	extendView(that, model) {
 		this.view.renderTitle = function(obj) {
 			that.shadowRoot.querySelector('#headline').textContent = obj;
+			//that.shadowRoot.querySelector('#headline').textContent = obj;
 		};
 
 		this.view.updateView = function(attribute, item) {

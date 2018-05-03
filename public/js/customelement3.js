@@ -136,14 +136,17 @@ class CustomElement3 extends HTMLElement {
 	connectedCallback() {
 		for (let i = 0; i < this.attributes.length; i++) {
 			let attribute = this.attributes.item(i).name;
-			Object.defineProperty(this, attribute, {
-				get: function() {
-					return this.getAttribute(attribute);
-				},
-				set: function(newString) {
-					return this.setAttribute(attribute, newString);
-				}
-			});
+			if (!this.hasOwnProperty(attribute)) {
+				Object.defineProperty(this, attribute, {
+					get: function() {
+						return this.getAttribute(attribute);
+					},
+					set: function(newString) {
+						return this.setAttribute(attribute, newString);
+					}
+				});
+			}
+			
 		}
 
 		//makes component fire local events when remote event fires. Remote event is attached in each local event.

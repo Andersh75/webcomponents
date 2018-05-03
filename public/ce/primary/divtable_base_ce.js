@@ -1,18 +1,15 @@
-class TableBaseCE extends CustomElement3 {
+class DivtableBaseCE extends CustomElement3 {
 
 	constructor() {
 		super();
 	}
 
 	extend() {
-		TableBaseCE.extend.call(this);
+		DivtableBaseCE.extend.call(this);
 		this.extendBaseModel(this); //adds new methods to this.model
 		this.extendBaseView(this, this.model); //adds new methods to this.view
 		this.extendBaseCtrl(this, this.model, this.view); //adds new methods to this.ctrl
-		//this.sortTable = 
 	}
-
-
 
 
 
@@ -26,10 +23,10 @@ class TableBaseCE extends CustomElement3 {
 				that[attribute] = that.srdispatch;
 			}
 
-			// if (!h.boolean.isEmpty(that.period)) {
-			// 	let attribute = 'period';
-			// 	that[attribute] = that.period;
-			// }
+			if (!h.boolean.isEmpty(that.cells)) {
+				let attribute = 'cells';
+				that[attribute] = that.cells;
+			}
 
 
 
@@ -51,29 +48,25 @@ class TableBaseCE extends CustomElement3 {
 		this.ctrl.changedAttribute = function(changedAttribute) {
 			let attribute = changedAttribute.attribute;
 
-			// if (attribute === "srdispatch") {
-			// 	// console.log('that.srdispatch');
-			// 	// console.log(that.srdispatch);
-			// 	// //let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', that.srdispatch);
-			// 	// console.log(remoteAndLocal);
-			// 	// console.log(JSON.parse(remoteAndLocal[0]));
-			// 	// //that.local = remoteAndLocal[1];
-			// 	// console.log(that.local);
-			// 	// that.remote = JSON.parse(that.srdispatch);
-			// 	// console.log(that.remote);
-			// }
-			
-			if (attribute === "period") {
-				that.remote = JSON.parse(that.srdispatch);
+			if (attribute === "srdispatch") {
+				console.log('that.srdispatch');
+				console.log(that.srdispatch);
+				let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', that.srdispatch);
+				console.log(remoteAndLocal);
+				console.log(JSON.parse(remoteAndLocal[0]));
+				that.local = remoteAndLocal[1];
+				console.log(that.local);
+				that.remote = JSON.parse(remoteAndLocal[0]);
 				console.log(that.remote);
+			}
+			
+			if (attribute === "cells") {
 
 				console.log('TABLE KIND');
 				console.log(that.type);
 				
-				let newVal = that.cells;
+				let newVal = model.get(attribute);
 				if (that.type === 'capitalize') {
-					console.log('to render');
-					console.log(newVal);
 					that.view.updateViewCapitalize(attribute, newVal);
 				}
 
@@ -128,34 +121,19 @@ class TableBaseCE extends CustomElement3 {
 
 
 		//local events initiated by global stream
-		this.ctrl.period$ = function(e) {
-			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])				
-			.map((e) => Number(e))
-			.filter((e) => !isNaN(e))
-			.do(x => console.log('period: ' + x))	
-			.subscribe((x) => {
-					that.period = x;
-			});
-		};
 	}
 
 	extendView(that, model) {
 		this.view.renderCellsCapitalize = function(obj) {
-			while (that.shadowRoot.querySelector('#table').firstChild) {
-				that.shadowRoot.querySelector('#table').removeChild(that.shadowRoot.querySelector('#table').firstChild);
-			}
 			let rowsAndCells = h.str.stringToArrayUsingSplitter(':', obj);
 			let rows = rowsAndCells[0];
-			//let cells = rowsAndCells[1];
-			console.log('that.period');
-			console.log(that.period);
-			let cells = that.period;
+			let cells = rowsAndCells[1];
 
 			let sbChannelAndSubject = h.str.stringToArrayUsingSplitter(':', that.sbdispatch); //makes an array of [remote, local...] listener
 			let sbChannel = sbChannelAndSubject[0];
 			let sbSubject = sbChannelAndSubject[1];
 
-			//let srLocal = that.local;
+			let srLocal = that.local;
 
 			let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', that.remote[0].sr); //makes an array of [remote, local...] listener
 			let srChannel = srChannelAndSubject[0];
@@ -167,7 +145,7 @@ class TableBaseCE extends CustomElement3 {
 
 			headerRow(cells, 'Kostnadsslag\\År', that);
 
-			normalRow(cells, that, rows, sbChannel, sbSubject);
+			normalRow(cells, that, srLocal, rows, sbChannel, sbSubject);
 
 
 
@@ -180,7 +158,6 @@ class TableBaseCE extends CustomElement3 {
 			// console.log('that.srdispatch');
 			// console.log(that.srdispatch);
 			// console.log(obj);
-
 
 			let srRemoteAndLocal = h.str.stringToArrayUsingSplitter('@', that.srdispatch); //makes an array of [remote, local...] listener
 			let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', srRemoteAndLocal[0]); //makes an array of [remote, local...] listener
@@ -218,7 +195,7 @@ class TableBaseCE extends CustomElement3 {
 
 		this.view.updateViewCapitalize = function(attribute, data) {
 			switch(attribute) {
-				case 'period':
+				case 'cells':
 				that.view.renderCellsCapitalize.call(that, data);
 				break;
 			}
@@ -244,54 +221,48 @@ class TableBaseCE extends CustomElement3 {
 }
 
 function headerRow(cells, title, that) {
-
-	let tableHead = document.createElement('thead');
-	tableHead.setAttribute('class', 'thead-dark');
-	let tableRow = document.createElement('tr');
-	//tableRow.setAttribute('class', 'table-secondary');
+	let tableRow = document.createElement('div');
+	tableRow.setAttribute('id', 'resp-table-header')
 	tableRow.setAttribute('cells', cells);
 	tableRow.setAttribute('slot', 'tr');
 
-	let tableCell = document.createElement('th');
-	
+	let tableCell = document.createElement('div');
+	tableCell.setAttribute('class', 'table-headercell');
 	let textContent = document.createElement('headline-one-ce');
 	textContent.setAttribute('sr', "");
 	textContent.setAttribute('year', "");
-	textContent.setAttribute('title', that.title);
+	textContent.setAttribute('title', "Kostnadsslag\\År");
 	textContent.setAttribute('sb', "");
 	tableCell.appendChild(textContent);
 	tableRow.appendChild(tableCell);
 
-
-	for (let j = 0; j <= Number(cells); j++) {
-		let tableCell = document.createElement('th');
-		// tableCell.addEventListener('click', function() {
-		// 	return sortTable.call(that, 2);
-		// });
+	for (let j = 1; j <= Number(cells); j++) {
+		let tableCell = document.createElement('div');
+		tableCell.setAttribute('class', 'table-headercell');
 		tableCell.setAttribute('style', 'width: 9%');
 		let textContent = 'År ' + j;
 		tableCell.textContent = textContent;
 		tableRow.appendChild(tableCell);
 	}
-	
-	tableHead.appendChild(tableRow);
-	that.shadowRoot.querySelector('#table').appendChild(tableHead);
+	that.shadowRoot.querySelector('#table').appendChild(tableRow);
 }
 
 
-function normalRow(cells, that, rows, sbChannel, sbSubject) {
-	let tableBody = document.createElement('tbody');
+function normalRow(cells, that, srLocal, rows, sbChannel, sbSubject) {
+	let tableRowGroup = document.createElement('div');
+	tableRowGroup.setAttribute('id', 'resp-table-body');
 	for (let i = 1; i <= Number(rows); i++) {
 		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', that.remote[i-1].sr); //makes an array of [remote, local...] listener
 		let srChannel = srChannelAndSubject[0];
 		let srSubject = srChannelAndSubject[1];
-		let srLocal = that.remote[i-1]['local'];
 	
-		let tableRow = document.createElement('tr');
+		let tableRow = document.createElement('div');
+		tableRow.setAttribute('class', 'resp-table-row');
 		tableRow.setAttribute('cells', cells);
 		tableRow.setAttribute('slot', 'tr');
 	
-		let tableCell = document.createElement('th');
+		let tableCell = document.createElement('div');
+		tableCell.setAttribute('class', 'table-headercell');
 		let textContent = document.createElement('headline-one-ce');
 		textContent.setAttribute('sr', "");
 		textContent.setAttribute('year', "");
@@ -299,108 +270,23 @@ function normalRow(cells, that, rows, sbChannel, sbSubject) {
 		textContent.setAttribute('sb', "");
 		tableCell.appendChild(textContent);
 		tableRow.appendChild(tableCell);
-
-
-		if (srLocal === 'initial$') {
-			let tableCell = document.createElement('td');
+		for (let j = 1; j <= Number(cells); j++) {
+			let tableCell = document.createElement('div');
+			tableCell.setAttribute('class', 'resp-table-cell');
 			let textContent = document.createElement('headline-one-ce');
 			textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
-			textContent.setAttribute('year', 0);
+			textContent.setAttribute('year', j);
 			textContent.setAttribute('title', "");
-			textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + 0);
+			textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + j);
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
-			for (let j = 1; j <= Number(cells); j++) {
-				let tableCell = document.createElement('td');
-				let textContent = document.createElement('headline-one-ce');
-				//textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
-				textContent.setAttribute('year', j);
-				textContent.setAttribute('title', "");
-				textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + j);
-				tableCell.appendChild(textContent);
-				tableRow.appendChild(tableCell);
-			}
-		} else {
-			let tableCell = document.createElement('td');
-			let textContent = document.createElement('headline-one-ce');
-			//textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
-			textContent.setAttribute('year', 0);
-			textContent.setAttribute('title', "");
-			textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + 0);
-			tableCell.appendChild(textContent);
-			tableRow.appendChild(tableCell);
-			for (let j = 1; j <= Number(cells); j++) {
-				let tableCell = document.createElement('td');
-				let textContent = document.createElement('headline-one-ce');
-				textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
-				textContent.setAttribute('year', j);
-				textContent.setAttribute('title', "");
-				textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + j);
-				tableCell.appendChild(textContent);
-				tableRow.appendChild(tableCell);
-			}
 		}
+
+		tableRowGroup.appendChild(tableRow);
 		
-		tableBody.appendChild(tableRow);
 	}
-	that.shadowRoot.querySelector('#table').appendChild(tableBody);
-}
 
-
-function sortTable(n) {
-	console.log('HEJ');
-	var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-	table = this.shadowRoot.querySelector('#table');
-	switching = true;
-	// Set the sorting direction to ascending:
-	dir = "asc"; 
-	/* Make a loop that will continue until
-	no switching has been done: */
-	while (switching) {
-	// Start by saying: no switching is done:
-	switching = false;
-	rows = table.querySelectorAll("tr");
-	/* Loop through all table rows (except the
-	first, which contains table headers): */
-	for (i = 1; i < (rows.length - 1); i++) {
-		// Start by saying there should be no switching:
-		shouldSwitch = false;
-		/* Get the two elements you want to compare,
-		one from current row and one from the next: */
-		x = rows[i].querySelectorAll("td")[n];
-		y = rows[i + 1].querySelectorAll("td")[n];
-		/* Check if the two rows should switch place,
-		based on the direction, asc or desc: */
-		if (dir == "asc") {
-		if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-			// If so, mark as a switch and break the loop:
-			shouldSwitch= true;
-			break;
-		}
-		} else if (dir == "desc") {
-		if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-			// If so, mark as a switch and break the loop:
-			shouldSwitch= true;
-			break;
-		}
-		}
-	}
-	if (shouldSwitch) {
-		/* If a switch has been marked, make the switch
-		and mark that a switch has been done: */
-		rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-		switching = true;
-		// Each time a switch is done, increase this count by 1:
-		switchcount ++; 
-	} else {
-		/* If no switching has been done AND the direction is "asc",
-		set the direction to "desc" and run the while loop again. */
-		if (switchcount == 0 && dir == "asc") {
-		dir = "desc";
-		switching = true;
-		}
-	}
-	}
+	that.shadowRoot.querySelector('#table').appendChild(tableRowGroup);
 }
 
 
@@ -408,9 +294,9 @@ function sortTable(n) {
 
 
 
-window.customElements.define('table-base-ce', TableBaseCE);
+window.customElements.define('divtable-base-ce', DivtableBaseCE);
 
-export { TableBaseCE };
+export { DivtableBaseCE };
 
 
 

@@ -5,8 +5,14 @@ tpl.innerHTML = `
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-
-	<table id="table" class="table table-bordered"></table>
+	<style>
+		#table {
+			background-color: white;
+		}
+	</style>
+	<div class="table-responsive">
+		<table id="table" class="table table-striped table-bordered"></table>
+	</div>
 `;
 
 
@@ -19,7 +25,7 @@ class TableOneCE extends TableBaseCE {
 	}
 
 	static get observedAttributes() {
-		return ['cells', 'sb', 'sr', 'srdispatch', 'sbdispatch', 'type'];
+		return ['cells', 'sb', 'sr', 'srdispatch', 'sbdispatch', 'type', 'title', 'period', 'cells'];
 	}
 
 	extendBaseCtrl(that, model, view) {

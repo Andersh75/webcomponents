@@ -11,7 +11,10 @@ tpl.innerHTML = `
 			grid-template-columns: auto;
 			  grid-template-rows: auto;
 			grid-gap: 20px;
-			padding: 40px;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			padding-left: 40px;
+			padding-right: 40px;
 			background-color: 
 		}
 					

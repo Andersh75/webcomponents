@@ -9,8 +9,9 @@ tpl.innerHTML = `
 <style>
 		:host {
 			display: grid;
-			padding: 40px;
+			padding: 100px;
 			padding-top: 60px;
+			padding-bottom: 20px;
 			grid-template-columns: auto;
 			  grid-template-rows: auto;
 			grid-column-gap: 20px;
@@ -31,6 +32,7 @@ tpl.innerHTML = `
 		} */
 
 		#anyheadline::slotted(*) {
+			padding-left:40px;
 			color: green;
 			grid-column-start: 1;
 			  grid-column-end: 1;

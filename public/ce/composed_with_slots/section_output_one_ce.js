@@ -8,7 +8,7 @@ tpl.innerHTML = `
 	<style>
 			:host {
 				display: grid;
-				padding: 40px;
+				padding: 100px;
 				padding-top: 60px;
 				background-color: azure;
 				grid-template-columns: 100%;
@@ -19,6 +19,7 @@ tpl.innerHTML = `
 
 
 			#anyheadline::slotted(*) {
+				padding-left: 40px;
 				color: green;
 				grid-column-start: 1;
   				grid-column-end: 1;
