@@ -40,6 +40,7 @@
   <script src="ce/composed_without_slots/headline_select_discount_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_select_kwhprice_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/headline_anyselect_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/headline_anyinput_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/anykind_container_one_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/anykind_container_v_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/section_input_one_ce.js" type="module"></script>
@@ -84,6 +85,7 @@
     
 
 </script>
+
 <style>
     .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
         background-color: azure;
@@ -226,6 +228,8 @@
 </anykind-container-ce>   -->
 
 
+
+
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="allmänt" aria-selected="true">Allmänt</a>
@@ -268,13 +272,23 @@
         
             <anykind-container-one-ce slot="anycontainer">
                 <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
-                <headline-input-number-ce title="Antal kWh/kvm/år" value="1000" placeholder="Antal kWh..." slot="anyform" sb="heat:kwh" sr="clearbutton2:click@updateheadline2$"></headline-input-number-ce> 
-                <headline-select-kwhprice-ce title="Kostnad per kWh" selectedindex="2" selectedvalue slot="anyform" datatarget="heatcost" sb="heat:price"></headline-select-kwhprice-ce>
+                <headline-anyinput-ce title="Antal kWh/kvm/år" slot="anyform">
+                    <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb="heat:kwh"></input-number-ce>
+                </headline-anyinput-ce> 
+                <headline-select-kwhprice-ce title="Kostnad per kWh" selectedindex="2" selectedvalue slot="anyform" sb="heat:price"></headline-select-kwhprice-ce>
             </anykind-container-one-ce>
-        
+            <script>
+                    const combineLatest$ = function(...streams) {
+                    return Rx.Observable.combineLatest(streams);
+                    };
+                    combineLatest$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))					
+                    .map(([e1, e2]) => [Number(e1), Number(e2)])
+                    .map(([e1, e2]) => e1 * e2)
+                    .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
+                </script>
             <anykind-container-one-ce slot="anycontainer">
                 <headline-one-ce title="Brukare" class="h5" slot="headline"></headline-one-ce>
-                <headline-input-number-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-number-ce>
+                <headline-input-number-ce title="Antal brukare" value="" placeholder="Antal brukare..." sb="users:cost" slot="anyform"></headline-input-number-ce>
             </anykind-container-one-ce>    
         </section-input-one-ce>
     </div>
@@ -341,22 +355,47 @@
 <section-output-one-ce>
     
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+
     <anykind-container-v-ce slot="anycontainer">
-            <table-one-ce cells="1:10" type="capitalize" srdispatch="[heat:kwh]@priceandcapitalize$" sbdispatch="heat:amount" slot="anytable"></table-one-ce>
-            <table-one-ce cells="1:10" type="match" srdispatch="heat:amount@discount$" sbdispatch="heat:discount" slot="anytable"></table-one-ce>
+            <table-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></table-one-ce>
     </anykind-container-v-ce>
+
     <anykind-container-one-ce slot="anycontainer">
-            <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
-            <headline-input-one-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-1"></headline-input-one-ce>
-            <headline-input-one-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-2"></headline-input-one-ce>
-            <headline-input-one-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:kwh@priceandcapitalize$" sb="heat:amount-3"></headline-input-one-ce>
+
+        <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
+        
+        <headline-anyinput-ce title="År 1" slot="anyform">
+            <input-number-ce year="1" placeholder="Antal kr/kvm..." value="" slot="anyinput" sr="heat:cost@capitalize$" sb="heat:amount-1"></input-number-ce>
+        </headline-anyinput-ce>
+        
+        <headline-anyinput-ce title="År 2" slot="anyform">
+            <input-number-ce year="2" placeholder="Antal kr/kvm..." value="" slot="anyinput" sr="heat:cost@capitalize$" sb="heat:amount-2"></input-number-ce>
+        </headline-anyinput-ce> 
+        
+        <headline-anyinput-ce title="År 3" slot="anyform">
+            <input-number-ce year="3" placeholder="Antal kr/kvm..." value="" slot="anyinput" sr="heat:cost@capitalize$" sb="heat:amount-3"></input-number-ce>
+        </headline-anyinput-ce> 
+
     </anykind-container-one-ce>
+
+
     <anykind-container-one-ce slot="anycontainer">
         <headline-one-ce title="Diskonterade värmekostnader" class="h5" slot="headline"></headline-one-ce>
-        <headline-input-one-ce title="År 1" year="1" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:amount-1@discount$" sb="heat:discount-1"></headline-input-one-ce>
-        <headline-input-one-ce title="År 2" year="2" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:amount-2@discount$" sb="heat:discount-2"></headline-input-one-ce>
-        <headline-input-one-ce title="År 3" year="3" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:amount-3@discount$" sb="heat:discount-3"></headline-input-one-ce>
+
+        <headline-anyinput-ce title="År 1" slot="anyform">
+            <input-number-ce year="1" placeholder="Antal kr/kvm..." value="" slot="anyinput" sr="heat:amount-1@discount$" sb="heat:discount-1"></input-number-ce>
+        </headline-anyinput-ce>
+
+        <headline-anyinput-ce title="År 2" slot="anyform">
+            <input-number-ce year="1" placeholder="Antal kr/kvm..." value="" slot="anyinput" sr="heat:amount-2@discount$" sb="heat:discount-2"></input-number-ce>
+        </headline-anyinput-ce>
+
+        <headline-anyinput-ce title="År 3" slot="anyform">
+            <input-number-ce year="1" placeholder="Antal kr/kvm..." value="" slot="anyinput" sr="heat:amount-3@discount$" sb="heat:discount-3"></input-number-ce>
+        </headline-anyinput-ce>
+    
     </anykind-container-one-ce>
+    
     <anykind-container-one-ce slot="anycontainer">
         <headline-one-ce title="Summa Diskonterade värmekostnader" class="h5" slot="headline"></headline-one-ce>
         <headline-input-one-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-one-ce>

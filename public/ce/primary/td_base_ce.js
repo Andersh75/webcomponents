@@ -17,7 +17,7 @@ class TdBaseCE extends CustomElement3 {
 
 		//init
 		this.ctrl.run = function() {
-			console.log('HERE');
+			//console.log('HERE');
 			
 			if (!h.boolean.isEmpty(that.value)) {
 				let attribute = 'value';
@@ -29,8 +29,8 @@ class TdBaseCE extends CustomElement3 {
 			let attribute = changedAttribute.attribute;
 
 			if (attribute === "value") {
-				console.log('CA VALUE');
-				console.log(that.cells);
+				// console.log('CA VALUE');
+				// console.log(that.cells);
 				let newVal = model.get(attribute);
 				that.view.updateView(attribute, newVal);
 			}
@@ -51,12 +51,12 @@ class TdBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.copy$ = function(e) {
-			console.log('copy');
-			console.log(e.detail);
+			// console.log('copy');
+			// console.log(e.detail);
 			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])
 			.subscribe((x) => {
-				console.log('x');
-				console.log(x);
+				// console.log('x');
+				// console.log(x);
 				that.cell = x;
 				let attribute = 'cell';
 				view.updateView(attribute, that.cell);

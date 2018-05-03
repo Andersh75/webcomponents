@@ -81,7 +81,7 @@ class HeadlineInputBaseCE extends CustomElement3 {
 
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('price'), myRxmq.channel('inflation').behaviorobserve('rate'))				
 			.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])
-			.do(console.log)	
+			//.do(console.log)	
 			.subscribe((x) => {
 				let year = that.year;
 				let numYear = Number(year);

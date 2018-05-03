@@ -22,6 +22,8 @@ class CustomElement3 extends HTMLElement {
 		this.ctrl = Ctrl(this, this.model, this.view); //Ctrl() returns an object with own this and with eval method.
 		this.eventTarget = this.model.eval("eventTarget"); //creates a pointer to the const eventTarget, a DOM element that is outside this model but within its scope.
 		this.acc = {};
+		this.local = undefined;
+		this.remote = undefined;
 	}
 
 	//-----------
@@ -401,8 +403,8 @@ function setComponentDispatcher(eventName) {
 
 function setComponentObserver(model) {
 	let sr = this.sr; //string from attribute listener
-	console.log('this.sr');
-	console.log(this.sr);
+	// console.log('this.sr');
+	// console.log(this.sr);
 
 	if (h.boolean.isString(sr)) {
 		let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', sr); //makes an array of [remote, local...] listener
@@ -412,9 +414,9 @@ function setComponentObserver(model) {
 		let local = remoteAndLocal.slice(1)[0];
 		//this.srChannel = channel;
 		//this.srSubject = subject;
-		console.log(channel);
-		console.log(subject);
-		console.log(local);
+		// console.log(channel);
+		// console.log(subject);
+		// console.log(local);
 
 		this.eventTarget.dispatchEvent(new CustomEvent(local, {detail: [channel, subject]}));
 	}	

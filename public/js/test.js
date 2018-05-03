@@ -77,6 +77,9 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+// myRxmq.channel('inflation').behaviorobserve('rate')
+// .subscribe(x => alert(x));
+
 // let testel = document.querySelector('#testfn');
 
 // console.log('testel');

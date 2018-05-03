@@ -72,9 +72,9 @@ class HeadlineInputOneCE extends HeadlineInputBaseCE {
 			const combineLatest$ = function(...streams) {
 				return Rx.Observable.combineLatest(streams);
 			};
-			console.log('pac');
+			//console.log('pac');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('price'), myRxmq.channel('inflation').behaviorobserve('rate'))
-			.do(console.log)				
+			//.do(console.log)				
 			.map(([e1, e2, e3]) => [Number(e1), Number(e2), Number(e3)])
 				
 			.subscribe((x) => {

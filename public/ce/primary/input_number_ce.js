@@ -48,8 +48,10 @@ class InputNumberCE extends InputBaseCE {
 				}
 
 
-			}
-		)};
+			});
+		};
+
+
 	}
 	
 	extendBaseView(that, model) {

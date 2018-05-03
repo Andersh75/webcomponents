@@ -51,23 +51,39 @@ class InputBaseCE extends CustomElement3 {
 
 
 		//local events initiated by global stream
+		// this.ctrl.capitalize$ = function(e) {
+		// 	const combineLatest$ = function(...streams) {
+		// 		return Rx.Observable.combineLatest(streams);
+		// 	};
+		// 	combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+		// 	.map(([e1, e2]) => [Number(e1), Number(e2)])
+		// 	.do(console.log)
+		// 	.subscribe((x) => {
+		// 		let year = that.year;
+		// 		let numYear = Number(year);
+		// 		let result = x[0] * Math.pow((x[1] + 1), numYear);
+		// 		let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+		// 		that.value = roundedResult;
+		// 		let attribute = 'value';
+		// 		view.updateView(attribute, that.value);
+		// 	})
+		// }
+
 		this.ctrl.capitalize$ = function(e) {
+			console.log('CAPITALIZE');
 			const combineLatest$ = function(...streams) {
 				return Rx.Observable.combineLatest(streams);
 			};
-			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(e.detail[0]).behaviorobserve('increase'))					
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('inflation').behaviorobserve('rate'))				
 			.map(([e1, e2]) => [Number(e1), Number(e2)])
-			.do(console.log)
 			.subscribe((x) => {
 				let year = that.year;
 				let numYear = Number(year);
 				let result = x[0] * Math.pow((x[1] + 1), numYear);
 				let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 				that.value = roundedResult;
-				let attribute = 'value';
-				view.updateView(attribute, that.value);
-			})
-		}
+			});
+		};
 
 		this.ctrl.copy$ = function(e) {
 			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])
