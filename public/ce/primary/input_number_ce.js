@@ -14,6 +14,7 @@ tpl.innerHTML = `
 class InputNumberCE extends InputBaseCE {
 	constructor() {
 		super();
+		this.stream = "value";
 		this.tpl = tpl;
 		this.extend();
 	}

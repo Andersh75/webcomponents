@@ -30,9 +30,10 @@ class InputBaseCE extends CustomElement3 {
 		this.ctrl.changedAttribute = function(changedAttribute) {
 			let attribute = changedAttribute.attribute;
 
-			if (attribute === "value") {
+			if (attribute === this.stream) {
 				this.ctrl.stream(this.value);	
 			}
+
 			let newVal = model.get(attribute);
 			this.view.updateView.call(this, attribute, newVal);
 		};
