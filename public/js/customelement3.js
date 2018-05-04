@@ -320,7 +320,18 @@ function Ctrl(that, model, view, ctrl) {
 
 		stream: function(value) {
 			if (!h.boolean.isEmpty(that.sb)) {
-				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(value);
+				console.log('that.sb');
+				console.log(that.sb);
+				console.log('that.sbChannel');
+				console.log(that.sbChannel);
+				console.log('that.sbSubject');
+				console.log(that.sbSubject);
+				console.log('value');
+				console.log(value);
+				let obj = {};
+				obj.data = value;
+				console.log('streaming!');
+				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(obj);
 			}	
 		}
 	};
@@ -456,10 +467,18 @@ function setComponentObservable() {
 	let sb = this.sb; //string from attribute listener
 
 	if (h.boolean.isString(sb)) {
-		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sb); //makes an array of [remote, local...] listener
+		let sbAndDetail = h.str.stringToArrayUsingSplitter('@', sb);
+		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sbAndDetail[0]); //makes an array of [remote, local...] listener
 		
 		this.sbChannel = channelAndSubject[0];
-		this.sbSubject = channelAndSubject[1];	
+		console.log('this.sbChannel');
+		console.log(this.sbChannel);
+		this.sbSubject = channelAndSubject[1];
+		console.log('this.sbSubject');
+		console.log(this.sbSubject);
+		this.sbDetail = sbAndDetail[1];	
+		console.log('this.sbDetail');
+		console.log(this.sbDetail);
 	}
 }
 

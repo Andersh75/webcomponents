@@ -256,10 +256,7 @@
         <section-input-one-ce id="common" listener="cleargeneralinputsection@clearanykindcontainers">
         
             <headline-one-ce title="Allmänt" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-            <!-- <button-one-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-one-ce>
-             -->
 
-            <!-- KALKYLPERIOD -->
             <anykind-container-one-ce slot="anycontainer">
 
                 <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
@@ -269,51 +266,41 @@
                 </headline-anyselect-ce>
 
                 <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
-                    <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb="period:length"></select-period-ce>
+                    <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb="period:length@{}"></select-period-ce>
                 </headline-anyselect-ce>
-
-                <!-- <headline-anyinput-ce title="Kalkyllängd" slot="anyform">
-                    <input-number-ce value="7" placeholder="Antal år..." slot="anyinput" sb="period:length" sr=""></input-number-ce>
-                </headline-anyinput-ce>  -->
                 
             </anykind-container-one-ce>
 
-
-            <!-- INFLATION -->
             <anykind-container-one-ce slot="anycontainer">
 
                 <headline-one-ce title="Inflation" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyselect-ce title="Inflation" slot="anyform" datatarget="inflation">
-                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="inflation:rate"></select-inflation-ce>
+                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="inflation:rate@{}"></select-inflation-ce>
                 </headline-anyselect-ce> 
 
             </anykind-container-one-ce> 
         
-
-            <!-- KALKYLRÄNTA -->
             <anykind-container-one-ce slot="anycontainer">
 
                 <headline-one-ce title="Kalkylränta" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyselect-ce title="Kalkylränta" slot="anyform">
-                    <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb="discount:rate"></select-discount-ce>
+                    <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb="discount:rate@{}"></select-discount-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce> 
         
-
-            <!-- VÄRMEKOSTNADER -->
             <anykind-container-one-ce slot="anycontainer">
 
                 <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kWh/kvm/år" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb="heat:kwh"></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb="heat:kwh@{}"></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyselect-ce title="Kostnad per kWh" slot="anyform">
-                    <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb="heat:price"></select-kwhprice-ce>
+                    <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb="heat:price@{}"></select-kwhprice-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce>
@@ -321,20 +308,29 @@
                 const combineLatestHeat$ = function(...streams) {
                 return Rx.Observable.combineLatest(streams);
                 };
-                combineLatestHeat$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))					
-                .map(([e1, e2]) => [Number(e1), Number(e2)])
-                .map(([e1, e2]) => e1 * e2)
+                combineLatestHeat$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))
+                .map(([e1, e2]) => {
+                    try {
+                        return [e1.data, e2.data];
+                    } catch (error) {
+                        return [e1, e2];
+                    }
+                })
+                .map(([e1, e2]) => [Number(e1), Number(e2)])		
+                .map(([e1, e2]) => {
+                    let obj = {};
+                    obj.data = e1 * e2;
+                    return obj;
+                })
                 .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
             </script>
             
-
-            <!-- BRUKARE -->
             <anykind-container-one-ce slot="anycontainer">
 
                 <headline-one-ce title="Brukare" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal brukare" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb="users:cost"></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb="users:cost@{}"></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce>
@@ -347,13 +343,12 @@
         <section-input-one-ce id="own" listener="cleargeneralinputsection@clearanykindcontainers">
         
             <headline-one-ce title="Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-            <!-- <button-one-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-one-ce> -->
             
             <anykind-container-one-ce slot="anycontainer">
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb="ownkvm:amount"></input-number-ce>
+                    <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb="ownkvm:amount@{}"></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -363,7 +358,7 @@
                 <headline-one-ce title="Uppförandekostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Uppförandekostnad" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb=""></input-number-ce>
+                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce> 
@@ -372,7 +367,7 @@
                 <headline-one-ce title="Livslängd" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Livslängd" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal år..." slot="anyinput" sb=""></input-number-ce>
+                    <input-number-ce value="" placeholder="Antal år..." slot="anyinput" sb></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce> 
@@ -381,11 +376,11 @@
                 <headline-one-ce title="Reparationer och löpande underhåll" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kr/kvm" slot="anyform">
-                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb="ownrepair:price" sr=""></input-number-ce>
+                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb="ownrepair:price@{}" sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyselect-ce title="Kostnadsutveckling" slot="anyform">
-                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="ownrepairpriceincrease:rate"></select-kwhprice-ce>
+                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="ownrepairpriceincrease:rate@{}"></select-kwhprice-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce>  
@@ -394,9 +389,20 @@
                 const combineLatestOwnRepair$ = function(...streams) {
                 return Rx.Observable.combineLatest(streams);
                 };
-                combineLatestOwnRepair$(myRxmq.channel('ownkvm').behaviorobserve('amount'), myRxmq.channel('ownrepair').behaviorobserve('price'))					
-                .map(([e1, e2]) => [Number(e1), Number(e2)])
-                .map(([e1, e2]) => e1 * e2)
+                combineLatestOwnRepair$(myRxmq.channel('ownkvm').behaviorobserve('amount'), myRxmq.channel('ownrepair').behaviorobserve('price'))
+                .map(([e1, e2]) => {
+                    try {
+                        return [e1.data, e2.data];
+                    } catch (error) {
+                        return [e1, e2];
+                    }
+                })
+                .map(([e1, e2]) => [Number(e1), Number(e2)])		
+                .map(([e1, e2]) => {
+                    let obj = {};
+                    obj.data = e1 * e2;
+                    return obj;
+                })
                 .subscribe(myRxmq.channel('ownrepair').behaviorsubject('cost'));
             </script>
 
@@ -407,14 +413,13 @@
         <section-input-one-ce id="rent" listener="cleargeneralinputsection@clearanykindcontainers">
         
             <headline-one-ce title="Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-            <!-- <button-one-ce value="Rensa" toggle id="clearbutton" class="btn btn-secondary" dispatch="cleargeneralinputsection" slot="anybutton" sb="clearbutton1:click"></button-one-ce> -->
             
             <anykind-container-one-ce slot="anycontainer">
 
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb="rentkvm:amount" sr=""></input-number-ce>
+                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb="rentkvm:amount@{}" sr=""></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -424,7 +429,7 @@
                 <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Kostnad per kvm" slot="anyform">
-                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb="rentrent:price" sr=""></input-number-ce>
+                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb="rentrent:price@{}" sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce> 
@@ -434,15 +439,15 @@
                 <headline-one-ce title="Uppförande- och avvecklingskostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Etableringskostnad per kvm" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb="rentestablish:price" sr=""></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb="rentestablish:price@{}" sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyinput-ce title="Expansionskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb="" sr=""></input-number-ce>
+                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr=""></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyinput-ce title="Avvecklingskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb="" sr=""></input-number-ce>
+                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr=""></input-number-ce>
                 </headline-anyinput-ce>
   
             </anykind-container-one-ce>  
@@ -452,8 +457,19 @@
                 return Rx.Observable.combineLatest(streams);
                 };
                 combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentrent').behaviorobserve('price'))					
-                .map(([e1, e2]) => [Number(e1), Number(e2)])
-                .map(([e1, e2]) => e1 * e2)
+                .map(([e1, e2]) => {
+                    try {
+                        return [e1.data, e2.data];
+                    } catch (error) {
+                        return [e1, e2];
+                    }
+                })
+                .map(([e1, e2]) => [Number(e1), Number(e2)])		
+                .map(([e1, e2]) => {
+                    let obj = {};
+                    obj.data = e1 * e2;
+                    return obj;
+                })
                 .subscribe(myRxmq.channel('rentrent').behaviorsubject('cost'));
             </script>
 
@@ -462,8 +478,19 @@
                 return Rx.Observable.combineLatest(streams);
                 };
                 combineLatestRentEstablish$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentestablish').behaviorobserve('price'))					
-                .map(([e1, e2]) => [Number(e1), Number(e2)])
-                .map(([e1, e2]) => e1 * e2)
+                .map(([e1, e2]) => {
+                    try {
+                        return [e1.data, e2.data];
+                    } catch (error) {
+                        return [e1, e2];
+                    }
+                })
+                .map(([e1, e2]) => [Number(e1), Number(e2)])		
+                .map(([e1, e2]) => {
+                    let obj = {};
+                    obj.data = e1 * e2;
+                    return obj;
+                })
                 .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
             </script>
         </section-input-one-ce>  
@@ -481,38 +508,45 @@
 
     <anykind-container-v-ce slot="anycontainer">
             <table-one-ce 
-                cells="2:10" 
                 period 
                 title="Äga" 
-                type="capitalize" 
                 srdispatch='[
-                    { "name":"Värme", "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-                    { "name":"Reparationer", "sr":"ownrepair:cost", "local":{"function":"capitalize$", "capitalizer":"ownrepairpriceincrease"}}
+                    { "name":"Värme", "type":"capitalize", "sb":{"element":"owntable", "channel":"heat", "subject":"cost"}, "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+                    { "name":"Reparationer", "type":"capitalize", "sb":{"element":"owntable", "channel":"ownrepair", "subject":"cost"}, "sr":"ownrepair:cost", "local":{"function":"capitalize$", "capitalizer":"ownrepairpriceincrease"}}
                 ]' 
                 sbdispatch="heat:amount" 
                 slot="anytable" 
                 sr='period:length@{"function":"period$"}'>
             </table-one-ce>
-            <!-- <divtable-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></divtable-one-ce> -->
     </anykind-container-v-ce>
-
     <anykind-container-v-ce slot="anycontainer">
-            <table-one-ce 
-                cells="3:10" 
-                period 
-                title="Hyra" 
-                type="capitalize" 
-                srdispatch='[
-                    { "name":"Värme", "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-                    { "name":"Etablering", "sr":"rentestablish:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-                    { "name":"Hyra", "sr":"rentrent:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}
-                ]' 
-                sbdispatch="heat:amount" 
-                slot="anytable" 
-                sr='period:length@{"function":"period$"}'>
-            </table-one-ce>
-            <!-- <divtable-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></divtable-one-ce> -->
-    </anykind-container-v-ce>
+        <table-one-ce 
+            period 
+            title="Hyra" 
+            srdispatch='[
+                { "name":"Värme", "type":"capitalize", "sb":{"element":"owntable", "channel":"heat", "subject":"cost"}, "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+                { "name":"Etablering", "type":"initial", "sb":{"element":"owntable", "channel":"rentestablish", "subject":"cost"}, "sr":"rentestablish:cost", "local":{"function":"initial$"}}, 
+                { "name":"Hyra", "type":"capitalize", "sb":{"element":"owntable", "channel":"rentrent", "subject":"cost"}, "sr":"rentrent:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}
+            ]' 
+            sbdispatch="heat:amount" 
+            slot="anytable" 
+            sr='period:length@{"function":"period$"}'>
+        </table-one-ce>
+</anykind-container-v-ce>
+
+<!-- <anykind-container-v-ce slot="anycontainer">
+    <table-one-ce 
+        period 
+        title="Summa" 
+        srdispatch='[
+            { "name":"Summa Äga", "type":"sum-v", "sb":"heat:sum", "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+            { "name":"Summa Hyra", "type":"sum-v", "sb":"rentestablish:sum", "sr":"rentestablish:cost", "local":{"function":"initial$"}}
+        ]' 
+        sbdispatch="heat:amount" 
+        slot="anytable" 
+        sr='period:length@{"function":"period$"}'>
+    </table-one-ce>
+</anykind-container-v-ce> -->
 
     <!-- <anykind-container-one-ce slot="anycontainer">
 

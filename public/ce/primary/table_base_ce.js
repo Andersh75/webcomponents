@@ -44,109 +44,44 @@ class TableBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.period$ = function (e) {
+			console.log('IN PERIOD LENGTH');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
-				.map((e) => Number(e))
+				.do(console.log)
+				.map((e1) => {
+					try {
+						return e1[0].data;
+					} catch (error) {
+						return e1[0];
+					}
+				})
+				.map((e1) => Number(e1))
 				.filter((e) => !isNaN(e))
 				.subscribe((x) => {
+					console.log('period');
+					console.log(x);
 					this.period = x;
 				});
 		};
 	}
 
 	extendView(model) {
-		this.view.renderCellsCapitalize = function (obj) {
+		this.view.renderCells = function (obj) {
+			let rows = this.srDispatchObj.length;
+			let cells = this.period;
+			
 			while (this.shadowRoot.querySelector('#table').firstChild) {
 				this.shadowRoot.querySelector('#table').removeChild(this.shadowRoot.querySelector('#table').firstChild);
 			}
-			let rowsAndCells = h.str.stringToArrayUsingSplitter(':', obj);
-			let rows = rowsAndCells[0];
-			//let cells = rowsAndCells[1];
-			console.log('this.period');
-			console.log(this.period);
-			let cells = this.period;
-
-			let sbChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.sbdispatch); //makes an array of [remote, local...] listener
-			let sbChannel = sbChannelAndSubject[0];
-			let sbSubject = sbChannelAndSubject[1];
-
-			//let srLocal = this.local;
-
-			let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[0].sr); //makes an array of [remote, local...] listener
-			let srChannel = srChannelAndSubject[0];
-			let srSubject = srChannelAndSubject[1];
-
-
-
-
 
 			headerRow.call(this, cells, 'Kostnadsslag\\År');
-
-			normalRow.call(this, cells, sbChannel, sbSubject);
-
-
-
-
-
-
-		};
-
-		this.view.renderCellsMatch = function (obj) {
-			// console.log('this.srdispatch');
-			// console.log(this.srdispatch);
-			// console.log(obj);
-
-
-			let srRemoteAndLocal = h.str.stringToArrayUsingSplitter('@', this.srdispatch); //makes an array of [remote, local...] listener
-			let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', srRemoteAndLocal[0]); //makes an array of [remote, local...] listener
-			let srChannel = srChannelAndSubject[0];
-			let srSubject = srChannelAndSubject[1];
-			let srLocal = srRemoteAndLocal.slice(1)[0];
-
-			let sbChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.sbdispatch); //makes an array of [remote, local...] listener
-			let sbChannel = sbChannelAndSubject[0];
-			let sbSubject = sbChannelAndSubject[1];
-
-			let rowsAndCells = h.str.stringToArrayUsingSplitter(':', obj);
-			let rows = rowsAndCells[0];
-			let cells = rowsAndCells[1];
-
-			for (let i = 1; i <= Number(rows); i++) {
-				// console.log('MATCH ROWS');
-				// console.log(Number(rows));
-				// console.log(i);
-				let tableRow = document.createElement('tr');
-				for (let j = 1; j <= Number(cells); j++) {
-					let tableCell = document.createElement('td');
-					let textContent = document.createElement('headline-one-ce');
-					textContent.setAttribute('sr', srChannel + ':' + srSubject + "-" + j + '@' + srLocal);
-					textContent.setAttribute('year', j);
-					textContent.setAttribute('title', "");
-					textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + j);
-					tableCell.appendChild(textContent);
-					tableRow.appendChild(tableCell);
-				}
-				this.shadowRoot.querySelector('#table').appendChild(tableRow);
-			}
+			normalRow.call(this, rows, cells);
 		};
 
 
 		this.view.updateView = function (attribute, data) {
-			console.log('in update view - table');
 			switch (attribute) {
 				case 'period':
-					console.log('in update view period - table');
-					if (this.type === 'capitalize') {
-
-						this.view.renderCellsCapitalize.call(this, data);
-					}
-					break;
-			}
-		};
-
-		this.view.updateViewMatch = function (attribute, data) {
-			switch (attribute) {
-				case 'cells':
-					this.view.renderCellsMatch.call(this, data);
+					this.view.renderCells.call(this, data);
 					break;
 			}
 		};
@@ -162,11 +97,12 @@ const combineLatest$ = function (...streams) {
 };
 
 function headerRow(cells, title) {
-
+	let headerName = this.title;
+	
 	let tableHead = document.createElement('thead');
 	tableHead.setAttribute('class', 'thead-dark');
+	
 	let tableRow = document.createElement('tr');
-	//tableRow.setAttribute('class', 'table-secondary');
 	tableRow.setAttribute('cells', cells);
 	tableRow.setAttribute('slot', 'tr');
 
@@ -175,7 +111,7 @@ function headerRow(cells, title) {
 	let textContent = document.createElement('headline-one-ce');
 	textContent.setAttribute('sr', "");
 	textContent.setAttribute('year', "");
-	textContent.setAttribute('title', this.title);
+	textContent.setAttribute('title', headerName);
 	textContent.setAttribute('sb', "");
 	tableCell.appendChild(textContent);
 	tableRow.appendChild(tableCell);
@@ -194,57 +130,72 @@ function headerRow(cells, title) {
 }
 
 
-function normalRow(cells, sbChannel, sbSubject) {
-
-	let rows = this.srDispatchObj.length;
+function normalRow(rows, cells) {
 	let tableBody = document.createElement('tbody');
 	for (let i = 1; i <= rows; i++) {
-		console.log(i);
+		
 		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[i - 1].sr); //makes an array of [remote, local...] listener
 		let srChannel = srChannelAndSubject[0];
 		let srSubject = srChannelAndSubject[1];
+		
+
+		console.log('this.srDispatchObj[i - 1]');
+		console.log(this.srDispatchObj[i - 1]);
+		let sbObj = this.srDispatchObj[i - 1].sb;
+		let sbChannel = this.srDispatchObj[i - 1].sb.channel;
+		let sbSubject = this.srDispatchObj[i - 1].sb.subject;
+		let sbElement = this.srDispatchObj[i - 1].sb.element;
+		// let sbChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[i - 1].sb); //makes an array of [remote, local...] listener
+		// let sbChannel = sbChannelAndSubject[0];
+		// let sbSubject = sbChannelAndSubject[1];
+
+		let type = this.srDispatchObj[i - 1]['type'];
 		let srLocal = JSON.stringify(this.srDispatchObj[i - 1]['local']);
+
+		let rowName = this.srDispatchObj[i - 1].name;
 
 		let tableRow = document.createElement('tr');
 		tableRow.setAttribute('cells', cells);
 		tableRow.setAttribute('slot', 'tr');
 
 		let tableCell = document.createElement('th');
+		
 		let textContent = document.createElement('headline-one-ce');
 		textContent.setAttribute('sr', "");
 		textContent.setAttribute('year', "");
-		textContent.setAttribute('title', this.srDispatchObj[i - 1].name);
+		textContent.setAttribute('title', rowName);
 		textContent.setAttribute('sb', "");
 		tableCell.appendChild(textContent);
 		tableRow.appendChild(tableCell);
 
-
-		if (srLocal === 'initial$') {
+		if (type === 'initial') {
 			let tableCell = document.createElement('td');
 			let textContent = document.createElement('headline-one-ce');
 			textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
 			textContent.setAttribute('year', 0);
 			textContent.setAttribute('title', "");
-			textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + 0);
+			sbObj.year = 0;
+			textContent.setAttribute('sb', sbElement + ':' + sbSubject + '@' + JSON.stringify(sbObj));
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');
-				//textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
 				textContent.setAttribute('year', j);
 				textContent.setAttribute('title', "");
-				textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + j);
+				
+				sbObj.year = j;
+				textContent.setAttribute('sb', JSON.stringify(sbObj));
 				tableCell.appendChild(textContent);
 				tableRow.appendChild(tableCell);
 			}
 		} else {
 			let tableCell = document.createElement('td');
 			let textContent = document.createElement('headline-one-ce');
-			//textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
 			textContent.setAttribute('year', 0);
 			textContent.setAttribute('title', "");
-			textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + 0);
+			sbObj.year = 0;
+			textContent.setAttribute('sb', JSON.stringify(sbObj));
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
 			for (let j = 1; j <= Number(cells); j++) {
@@ -253,7 +204,8 @@ function normalRow(cells, sbChannel, sbSubject) {
 				textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
 				textContent.setAttribute('year', j);
 				textContent.setAttribute('title', "");
-				textContent.setAttribute('sb', sbChannel + ":" + sbSubject + "-" + j);
+				sbObj.year = j;
+				textContent.setAttribute('sb', sbElement + ':' + sbSubject + '@' + JSON.stringify(sbObj));
 				tableCell.appendChild(textContent);
 				tableRow.appendChild(tableCell);
 			}

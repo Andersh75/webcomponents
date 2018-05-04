@@ -45,8 +45,17 @@ class InputBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.capitalize$ = function (e) {
+			console.log('HERE!!!');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('inflation').behaviorobserve('rate'))
-				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.do(x => console.log('IN CAPITALIZE: ' + x))
+				.map(([e1, e2]) => {
+					try {
+						return [e1.data, e2.data];
+					} catch (error) {
+						return [e1, e2];
+					}
+				})
+				.map(([e1, e2]) => [Number(e1), Number(e2)])		
 				.subscribe((x) => {
 					let year = this.year;
 					let numYear = Number(year);
@@ -58,9 +67,9 @@ class InputBaseCE extends CustomElement3 {
 
 		this.ctrl.copy$ = function (e) {
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
+				.do(console.log)
 				.subscribe((x) => {
-					this.value = x;
-					let input = this.shadowRoot.querySelector('#input');
+					this.value = x.data;
 					let attribute = 'value';
 					view.updateView(attribute, this.value);
 				});

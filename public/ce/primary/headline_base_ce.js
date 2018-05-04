@@ -12,7 +12,7 @@ class HeadlineBaseCE extends CustomElement3 {
 	}
 
 	//Controller
-	extendCtrl(model, view) {  //eslint-disable-line
+	extendCtrl(model, view) { //eslint-disable-line
 
 		//init
 		this.ctrl.run = function () {
@@ -40,12 +40,17 @@ class HeadlineBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.capitalize$ = function (e) {
-			console.log('e.detail in head');
-			console.log(e.detail);
 			let capitalizer = e.detail[2].capitalizer;
-			console.log(capitalizer);
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(capitalizer).behaviorobserve('rate'))
-				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.map(([e1, e2]) => {
+					try {
+						return [e1.data, e2.data];
+					} catch (error) {
+						return [e1, e2];
+					}
+				})
+				.map(([e1, e2]) => [Number(e1), Number(e2)])		
+
 				.subscribe((x) => {
 					let year = this.year;
 					let numYear = Number(year);
@@ -58,11 +63,17 @@ class HeadlineBaseCE extends CustomElement3 {
 		};
 
 		this.ctrl.initial$ = function (e) {
-			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('inflation').behaviorobserve('rate'))
-				.map(([e1, e2]) => [Number(e1), Number(e2)])
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
+				.map((e1) => {
+					try {
+						return e1[0].data;
+					} catch (error) {
+						return e1[0];
+					}
+				})
+				.map((e1) => Number(e1))
 				.subscribe((x) => {
-					let year = this.year;
-					let result = x[0] * Math.pow((x[1] + 1), 0);
+					let result = x;
 					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 					if (h.boolean.isNumber(roundedResult)) {
 						this.title = Number(roundedResult).toLocaleString('sv');
@@ -70,19 +81,21 @@ class HeadlineBaseCE extends CustomElement3 {
 				});
 		};
 
-		this.ctrl.capitalizeownrepair$ = function (e) {
-			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('ownrepairpriceincrease').behaviorobserve('rate'))
-				.map(([e1, e2]) => [Number(e1), Number(e2)])
-				.subscribe((x) => {
-					let year = this.year;
-					let numYear = Number(year);
-					let result = x[0] * Math.pow((x[1] + 1), numYear);
-					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
-					if (h.boolean.isNumber(roundedResult)) {
-						this.title = Number(roundedResult).toLocaleString('sv');
-					}
-				});
-		};
+
+
+		// this.ctrl.capitalizeownrepair$ = function (e) {
+		// 	combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('ownrepairpriceincrease').behaviorobserve('rate'))
+		// 		.map(([e1, e2]) => [Number(e1.data), Number(e2.data)])
+		// 		.subscribe((x) => {
+		// 			let year = this.year;
+		// 			let numYear = Number(year);
+		// 			let result = x[0] * Math.pow((x[1] + 1), numYear);
+		// 			let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
+		// 			if (h.boolean.isNumber(roundedResult)) {
+		// 				this.title = Number(roundedResult).toLocaleString('sv');
+		// 			}
+		// 		});
+		// };
 
 		// this.ctrl.discount$ = function(e) { 
 		// 	combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('discount').behaviorobserve('rate'))					
@@ -108,9 +121,9 @@ class HeadlineBaseCE extends CustomElement3 {
 
 		this.view.updateView = function (attribute, item) {
 			switch (attribute) {
-			case 'title':
-				this.view.renderTitle.call(this, item);
-				break;
+				case 'title':
+					this.view.renderTitle.call(this, item);
+					break;
 			}
 		};
 	}
