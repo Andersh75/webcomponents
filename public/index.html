@@ -511,10 +511,35 @@
                 period 
                 title="Äga" 
                 srdispatch='[
-                    { "name":"Värme", "type":"capitalize", "sb":{"element":"owntable", "channel":"heat", "subject":"cost"}, "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-                    { "name":"Reparationer", "type":"capitalize", "sb":{"element":"owntable", "channel":"ownrepair", "subject":"cost"}, "sr":"ownrepair:cost", "local":{"function":"capitalize$", "capitalizer":"ownrepairpriceincrease"}}
+                    { 
+                        "name":"Värme", 
+                        "type":"capitalize", 
+                        "sb": {
+                            "element":"owntable", 
+                            "channel":"heat", 
+                            "subject":"cost"
+                        }, 
+                        "sr":"heat:cost", 
+                        "local": {
+                            "function":"capitalize$", 
+                            "capitalizer":"inflation"
+                        }
+                    }, 
+                    { 
+                        "name":"Reparationer", 
+                        "type":"capitalize", 
+                        "sb": {
+                            "element":"owntable", 
+                            "channel":"ownrepair", 
+                            "subject":"cost"
+                        }, 
+                        "sr":"ownrepair:cost", 
+                        "local": {
+                            "function":"capitalize$", 
+                            "capitalizer":"ownrepairpriceincrease"
+                        }
+                    }
                 ]' 
-                sbdispatch="heat:amount" 
                 slot="anytable" 
                 sr='period:length@{"function":"period$"}'>
             </table-one-ce>
@@ -524,9 +549,47 @@
             period 
             title="Hyra" 
             srdispatch='[
-                { "name":"Värme", "type":"capitalize", "sb":{"element":"renttable", "channel":"heat", "subject":"cost"}, "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-                { "name":"Etablering", "type":"initial", "sb":{"element":"renttable", "channel":"rentestablish", "subject":"cost"}, "sr":"rentestablish:cost", "local":{"function":"initial$"}}, 
-                { "name":"Hyra", "type":"capitalize", "sb":{"element":"renttable", "channel":"rentrent", "subject":"cost"}, "sr":"rentrent:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}
+                { 
+                    "name":"Värme", 
+                    "type":"capitalize", 
+                    "sb": {
+                        "element":"renttable", 
+                        "channel":"heat", 
+                        "subject":"cost"
+                    }, 
+                    "sr":"heat:cost", 
+                    "local": {
+                        "function":"capitalize$", 
+                        "capitalizer":"inflation"
+                    }
+                }, 
+                { 
+                    "name":"Etablering", 
+                    "type":"initial", 
+                    "sb": {
+                        "element":"renttable", 
+                        "channel":"rentestablish", 
+                        "subject":"cost"
+                    }, 
+                    "sr":"rentestablish:cost", 
+                    "local": {
+                        "function":"initial$"
+                    }
+                }, 
+                { 
+                    "name":"Hyra", 
+                    "type":"capitalize", 
+                    "sb": {
+                        "element":"renttable", 
+                        "channel":"rentrent", 
+                        "subject":"cost"
+                    }, 
+                    "sr":"rentrent:cost", 
+                    "local": {
+                        "function":"capitalize$", 
+                        "capitalizer":"inflation"
+                    }
+                }
             ]' 
             slot="anytable" 
             sr='period:length@{"function":"period$"}'>
@@ -538,9 +601,31 @@
             period 
             title="Summa" 
             srdispatch='[
-                { "name":"Summa Äga", "type":"sum", "sb":{"element":"renttable", "channel":"heat", "subject":"cost"}, "sr":"owntable:cost", "local":{"function":"sum$"}}, 
-                { "name":"Summa Hyra", "type":"sum", "sb":{"element":"renttable", "channel":"heat", "subject":"cost"}, "sr":"renttable:cost", "local":{"function":"sum$"}}
-            ]' 
+                { 
+                    "name":"Summa Äga", 
+                    "type":"sum", 
+                    "sb": {
+                        "element":"renttable", 
+                        "channel":"heat", 
+                        "subject":"cost"
+                    }, 
+                    "sr":"owntable:cost", 
+                    "local": {
+                        "function":"sum$"
+                    }
+                }, 
+                { 
+                    "name":"Summa Hyra", 
+                    "type":"sum", 
+                    "sb": {"element":"renttable", 
+                    "channel":"heat", 
+                    "subject":"cost"
+                }, 
+                "sr":"renttable:cost", 
+                "local": {
+                    "function":"sum$"
+                }
+            }]' 
             slot="anytable" 
             sr='period:length@{"function":"period$"}'>
         </table-one-ce>
