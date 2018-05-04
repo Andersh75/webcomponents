@@ -57,7 +57,8 @@ class HeadlineBaseCE extends CustomElement3 {
 					let result = x[0] * Math.pow((x[1] + 1), numYear);
 					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 					if (h.boolean.isNumber(roundedResult)) {
-						this.title = Number(roundedResult).toLocaleString('sv');
+						//this.title = Number(roundedResult).toLocaleString('sv');
+						this.title = Number(roundedResult)
 					}
 				});
 		};
@@ -76,11 +77,37 @@ class HeadlineBaseCE extends CustomElement3 {
 					let result = x;
 					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 					if (h.boolean.isNumber(roundedResult)) {
-						this.title = Number(roundedResult).toLocaleString('sv');
+						//this.title = Number(roundedResult).toLocaleString('sv');
+						this.title = Number(roundedResult)
 					}
 				});
 		};
 
+		this.ctrl.sum$ = function (e) {
+			let i = 0;
+			console.log('SUM HERE!!!');
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
+				// .do(x => console.log('IN SUM: ' + x))
+				// .do(x => console.log(x))
+				// .map((e1) => {
+				// 	try {
+				// 		return e1[0].data;
+				// 	} catch (error) {
+				// 		return e1[0];
+				// 	}
+				// })
+				// .map((e1) => Number(e1))		
+				.subscribe((x) => {
+					console.log('SUM SUBSCRIBE');
+					console.log(x);
+					console.log(i++);
+					// let year = this.year;
+					// let numYear = Number(year);
+					let result = x;
+					//let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					this.value = result;
+				});
+		};
 
 
 		// this.ctrl.capitalizeownrepair$ = function (e) {

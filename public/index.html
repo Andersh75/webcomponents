@@ -524,29 +524,27 @@
             period 
             title="Hyra" 
             srdispatch='[
-                { "name":"Värme", "type":"capitalize", "sb":{"element":"owntable", "channel":"heat", "subject":"cost"}, "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-                { "name":"Etablering", "type":"initial", "sb":{"element":"owntable", "channel":"rentestablish", "subject":"cost"}, "sr":"rentestablish:cost", "local":{"function":"initial$"}}, 
-                { "name":"Hyra", "type":"capitalize", "sb":{"element":"owntable", "channel":"rentrent", "subject":"cost"}, "sr":"rentrent:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}
+                { "name":"Värme", "type":"capitalize", "sb":{"element":"renttable", "channel":"heat", "subject":"cost"}, "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+                { "name":"Etablering", "type":"initial", "sb":{"element":"renttable", "channel":"rentestablish", "subject":"cost"}, "sr":"rentestablish:cost", "local":{"function":"initial$"}}, 
+                { "name":"Hyra", "type":"capitalize", "sb":{"element":"renttable", "channel":"rentrent", "subject":"cost"}, "sr":"rentrent:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}
             ]' 
-            sbdispatch="heat:amount" 
             slot="anytable" 
             sr='period:length@{"function":"period$"}'>
         </table-one-ce>
-</anykind-container-v-ce>
+    </anykind-container-v-ce>
 
-<!-- <anykind-container-v-ce slot="anycontainer">
-    <table-one-ce 
-        period 
-        title="Summa" 
-        srdispatch='[
-            { "name":"Summa Äga", "type":"sum-v", "sb":"heat:sum", "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
-            { "name":"Summa Hyra", "type":"sum-v", "sb":"rentestablish:sum", "sr":"rentestablish:cost", "local":{"function":"initial$"}}
-        ]' 
-        sbdispatch="heat:amount" 
-        slot="anytable" 
-        sr='period:length@{"function":"period$"}'>
-    </table-one-ce>
-</anykind-container-v-ce> -->
+    <anykind-container-v-ce slot="anycontainer">
+        <table-one-ce 
+            period 
+            title="Summa" 
+            srdispatch='[
+                { "name":"Summa Äga", "type":"sum", "sb":{"element":"renttable", "channel":"heat", "subject":"cost"}, "sr":"owntable:cost", "local":{"function":"sum$"}}, 
+                { "name":"Summa Hyra", "type":"sum", "sb":{"element":"renttable", "channel":"heat", "subject":"cost"}, "sr":"renttable:cost", "local":{"function":"sum$"}}
+            ]' 
+            slot="anytable" 
+            sr='period:length@{"function":"period$"}'>
+        </table-one-ce>
+    </anykind-container-v-ce>
 
     <!-- <anykind-container-one-ce slot="anycontainer">
 

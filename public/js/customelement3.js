@@ -326,10 +326,13 @@ function Ctrl(that, model, view, ctrl) {
 				console.log(that.sbChannel);
 				console.log('that.sbSubject');
 				console.log(that.sbSubject);
+				console.log('that.sbDetail');
+				console.log(that.sbDetail);
 				console.log('value');
 				console.log(value);
 				let obj = {};
 				obj.data = value;
+				obj.detail = that.sbDetail;
 				console.log('streaming!');
 				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(obj);
 			}	
