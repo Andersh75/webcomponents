@@ -307,6 +307,16 @@ function Ctrl(that, model, view, ctrl) {
 			let newVal = e.detail.newVal;
 			parent[attribute] = newVal;
 		},
+		changedAttribute: function(changedAttribute) {
+			let attribute = changedAttribute.attribute;
+
+			if (attribute === that.stream) {
+				that.ctrl.stream(that[that.stream]);	
+			}
+
+			let newVal = model.get(attribute);
+			that.view.updateView.call(that, attribute, newVal);
+		},
 
 		stream: function(value) {
 			if (!h.boolean.isEmpty(that.sb)) {
@@ -419,13 +429,26 @@ function setComponentObserver(model) {
 		let channel = channelAndSubject[0];
 		let subject = channelAndSubject[1];
 		let local = remoteAndLocal.slice(1)[0];
+		console.log('local');
+		console.log(local);
+		let localFn;
+		let localObj;
+
+		if (local !== undefined) {
+			localObj = JSON.parse(local);
+			console.log(localObj);
+			localFn = localObj.function;
+
+			this.eventTarget.dispatchEvent(new CustomEvent(localFn, {detail: [channel, subject, localObj]}));
+		}
+
 		//this.srChannel = channel;
 		//this.srSubject = subject;
 		// console.log(channel);
 		// console.log(subject);
 		// console.log(local);
 
-		this.eventTarget.dispatchEvent(new CustomEvent(local, {detail: [channel, subject]}));
+		
 	}	
 }
 
@@ -444,6 +467,7 @@ function setComponentSrdispatch() {
 	let srdispatch = this.srdispatch;
 
 	if (h.boolean.isString(srdispatch)) {
+		console.log(this.srdispatch);
 		this.srDispatchObj = JSON.parse(this.srdispatch);	
 	}
 }

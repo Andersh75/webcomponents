@@ -20,6 +20,7 @@ tpl.innerHTML = `
 class TableOneCE extends TableBaseCE {
 	constructor() {
 		super();
+		this.stream = undefined;
 		this.tpl = tpl;
 		this.extend();
 	}
@@ -37,7 +38,14 @@ class TableOneCE extends TableBaseCE {
 	}
 
 	extendBaseModel(that) {
-		
+		this.db.cells = "";
+		this.db.sb = "";
+		this.db.sr = "";
+		this.db.sbdispatch = "";
+		this.db.srdispatch = "";
+		this.db.title = "";
+		this.db.period = "";
+		this.db.type = "";
 	}	
 }
 

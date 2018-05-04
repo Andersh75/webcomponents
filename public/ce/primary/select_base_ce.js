@@ -27,6 +27,10 @@ class SelectBaseCE extends CustomElement3 {
 		this.ctrl.changedAttribute = function(changedAttribute) {
 			let attribute = changedAttribute.attribute;
 
+			if (attribute === this.stream) {
+				this.ctrl.stream(this[this.stream]);
+			}
+
 			if (attribute === "selectedindex") {
 				if (h.boolean.isEmpty(this.selectedvalue)) {	
 					this.selectedvalue = this.shadowRoot.querySelector('#select').options[this.selectedindex].value;
@@ -34,10 +38,6 @@ class SelectBaseCE extends CustomElement3 {
 
 				let newVal = model.get(attribute);
 				this.view.updateView.call(this, attribute, newVal);
-			}
-			
-			if (attribute === "selectedvalue") {
-				this.ctrl.stream(this.selectedvalue);
 			}
 		};
 
@@ -79,9 +79,7 @@ class SelectBaseCE extends CustomElement3 {
 	
 	//Model
 	extendModel() {
-		this.db.selectedindex = "0";
-		this.db.selectedvalue = "";
-		this.db.sb = "";
+
 	}
 }
 

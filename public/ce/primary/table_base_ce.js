@@ -18,104 +18,20 @@ class TableBaseCE extends CustomElement3 {
 	extendCtrl(model, view) {
 
 		//init
-		this.ctrl.run = function() {
-			console.log('HERE');
-			if (!h.boolean.isEmpty(this.srdispatch)) {
-				let attribute = 'srdispatch';
-				this[attribute] = this.srdispatch;
+		this.ctrl.run = function () {
+			if (!h.boolean.isEmpty(this.period)) {
+				let attribute = 'period';
+				this[attribute] = this.period;
 			}
-
-			// if (!h.boolean.isEmpty(this.period)) {
-			// 	let attribute = 'period';
-			// 	this[attribute] = this.period;
-			// }
-
-
-
-
-
-			// if (!h.boolean.isEmpty(this.sr)) {
-			// 	console.log('this SR');
-			// 	console.log(this.sr);
-			// 	let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', this.sr); //makes an array of [remote, local...] listener
-			// 	let channelAndSubject = h.str.stringToArrayUsingSplitter(':', remoteAndLocal[0]); //makes an array of [remote, local...] listener
-			// 	let channel = channelAndSubject[0];
-			// 	let subject = channelAndSubject[1];
-			// 	let local = remoteAndLocal.slice(1)[0];
-			// 	this.srChannel = channel;
-			// 	this.srSubject = subject;
-			// }
 		};
 
-		this.ctrl.changedAttribute = function(changedAttribute) {
-			let attribute = changedAttribute.attribute;
 
-			// if (attribute === "srdispatch") {
-			// 	// console.log('this.srdispatch');
-			// 	// console.log(this.srdispatch);
-			// 	// //let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', this.srdispatch);
-			// 	// console.log(remoteAndLocal);
-			// 	// console.log(JSON.parse(remoteAndLocal[0]));
-			// 	// //this.local = remoteAndLocal[1];
-			// 	// console.log(this.local);
-			// 	// this.remote = JSON.parse(this.srdispatch);
-			// 	// console.log(this.remote);
-			// }
-			
-			if (attribute === "period") {
-				// this.remote = JSON.parse(this.srdispatch);
-				// console.log(this.remote);
-
-				console.log('TABLE KIND');
-				console.log(this.type);
-				
-				let newVal = this.cells;
-				if (this.type === 'capitalize') {
-					console.log('to render');
-					console.log(newVal);
-					this.view.updateViewCapitalize.call(this, attribute, newVal);
-				}
-
-				if (this.type === 'match') {
-					this.view.updateViewMatch.call(this, attribute, newVal);
-				}
-				
-
-				// if (!h.boolean.isEmpty(this.srdispatch)) {
-				// 	let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', this.srdispatch); //makes an array of [remote, local...] listener
-				// 	let channelAndSubject = h.str.stringToArrayUsingSplitter(':', remoteAndLocal[0]); //makes an array of [remote, local...] listener
-				// 	let channel = channelAndSubject[0];
-				// 	let subject = channelAndSubject[1];
-				// 	let local = remoteAndLocal.slice(1)[0];
-				// 	this.tableData.channel = channel;
-				// 	this.tableData.subject = subject;
-				// 	this.tableData.local = local;
-				// }
-
-			}
-
-			// if (attribute === "srdispatch") {
-				
-			// 	let newVal = model.get(attribute);
-			// 	this.view.updateView(attribute, newVal);
-
-			// 	// if (!h.boolean.isEmpty(this.srdispatch)) {
-			// 	// 	let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', this.srdispatch); //makes an array of [remote, local...] listener
-			// 	// 	let channelAndSubject = h.str.stringToArrayUsingSplitter(':', remoteAndLocal[0]); //makes an array of [remote, local...] listener
-			// 	// 	let channel = channelAndSubject[0];
-			// 	// 	let subject = channelAndSubject[1];
-			// 	// 	let local = remoteAndLocal.slice(1)[0];
-			// 	// 	this.tableData.channel = channel;
-			// 	// 	this.tableData.subject = subject;
-			// 	// 	this.tableData.local = local;
-			// 	// }
-
-			// }	
-		};
-
-		this.ctrl.addedUserAction = function(data, attribute) {
+		this.ctrl.addedUserAction = function (data, attribute) {
 			return new Promise((resolve, reject) => {
-				resolve({data: data, attribute: attribute});
+				resolve({
+					data: data,
+					attribute: attribute
+				});
 			});
 		};
 
@@ -127,19 +43,18 @@ class TableBaseCE extends CustomElement3 {
 
 
 		//local events initiated by global stream
-		this.ctrl.period$ = function(e) {
-			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])				
-			.map((e) => Number(e))
-			.filter((e) => !isNaN(e))
-			.do(x => console.log('period: ' + x))	
-			.subscribe((x) => {
+		this.ctrl.period$ = function (e) {
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
+				.map((e) => Number(e))
+				.filter((e) => !isNaN(e))
+				.subscribe((x) => {
 					this.period = x;
-			});
+				});
 		};
 	}
 
 	extendView(model) {
-		this.view.renderCellsCapitalize = function(obj) {
+		this.view.renderCellsCapitalize = function (obj) {
 			while (this.shadowRoot.querySelector('#table').firstChild) {
 				this.shadowRoot.querySelector('#table').removeChild(this.shadowRoot.querySelector('#table').firstChild);
 			}
@@ -159,14 +74,14 @@ class TableBaseCE extends CustomElement3 {
 			let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[0].sr); //makes an array of [remote, local...] listener
 			let srChannel = srChannelAndSubject[0];
 			let srSubject = srChannelAndSubject[1];
-			
+
 
 
 
 
 			headerRow.call(this, cells, 'Kostnadsslag\\År');
 
-			normalRow.call(this, cells, rows, sbChannel, sbSubject);
+			normalRow.call(this, cells, sbChannel, sbSubject);
 
 
 
@@ -175,7 +90,7 @@ class TableBaseCE extends CustomElement3 {
 
 		};
 
-		this.view.renderCellsMatch = function(obj) {
+		this.view.renderCellsMatch = function (obj) {
 			// console.log('this.srdispatch');
 			// console.log(this.srdispatch);
 			// console.log(obj);
@@ -215,32 +130,36 @@ class TableBaseCE extends CustomElement3 {
 		};
 
 
-		this.view.updateViewCapitalize = function(attribute, data) {
-			switch(attribute) {
+		this.view.updateView = function (attribute, data) {
+			console.log('in update view - table');
+			switch (attribute) {
 				case 'period':
-				this.view.renderCellsCapitalize.call(this, data);
-				break;
+					console.log('in update view period - table');
+					if (this.type === 'capitalize') {
+
+						this.view.renderCellsCapitalize.call(this, data);
+					}
+					break;
 			}
 		};
 
-		this.view.updateViewMatch = function(attribute, data) {
-			switch(attribute) {
+		this.view.updateViewMatch = function (attribute, data) {
+			switch (attribute) {
 				case 'cells':
-				this.view.renderCellsMatch.call(this, data);
-				break;
+					this.view.renderCellsMatch.call(this, data);
+					break;
 			}
 		};
 	}
 
 	extendModel() {
-		this.db.cells = "";
-		this.db.sb = "";
-		this.db.sr = "";
-		this.db.sbdispatch = "";
-		this.db.srdispatch = "";
-		this.db.kind = "";
+
 	}
 }
+
+const combineLatest$ = function (...streams) {
+	return Rx.Observable.combineLatest(streams);
+};
 
 function headerRow(cells, title) {
 
@@ -252,7 +171,7 @@ function headerRow(cells, title) {
 	tableRow.setAttribute('slot', 'tr');
 
 	let tableCell = document.createElement('th');
-	
+
 	let textContent = document.createElement('headline-one-ce');
 	textContent.setAttribute('sr', "");
 	textContent.setAttribute('year', "");
@@ -269,29 +188,32 @@ function headerRow(cells, title) {
 		tableCell.textContent = textContent;
 		tableRow.appendChild(tableCell);
 	}
-	
+
 	tableHead.appendChild(tableRow);
 	this.shadowRoot.querySelector('#table').appendChild(tableHead);
 }
 
 
-function normalRow(cells, rows, sbChannel, sbSubject) {
+function normalRow(cells, sbChannel, sbSubject) {
+
+	let rows = this.srDispatchObj.length;
 	let tableBody = document.createElement('tbody');
-	for (let i = 1; i <= Number(rows); i++) {
-		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[i-1].sr); //makes an array of [remote, local...] listener
+	for (let i = 1; i <= rows; i++) {
+		console.log(i);
+		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[i - 1].sr); //makes an array of [remote, local...] listener
 		let srChannel = srChannelAndSubject[0];
 		let srSubject = srChannelAndSubject[1];
-		let srLocal = this.srDispatchObj[i-1]['local'];
-	
+		let srLocal = JSON.stringify(this.srDispatchObj[i - 1]['local']);
+
 		let tableRow = document.createElement('tr');
 		tableRow.setAttribute('cells', cells);
 		tableRow.setAttribute('slot', 'tr');
-	
+
 		let tableCell = document.createElement('th');
 		let textContent = document.createElement('headline-one-ce');
 		textContent.setAttribute('sr', "");
 		textContent.setAttribute('year', "");
-		textContent.setAttribute('title', this.srDispatchObj[i-1].name);
+		textContent.setAttribute('title', this.srDispatchObj[i - 1].name);
 		textContent.setAttribute('sb', "");
 		tableCell.appendChild(textContent);
 		tableRow.appendChild(tableCell);
@@ -336,7 +258,7 @@ function normalRow(cells, rows, sbChannel, sbSubject) {
 				tableRow.appendChild(tableCell);
 			}
 		}
-		
+
 		tableBody.appendChild(tableRow);
 	}
 	this.shadowRoot.querySelector('#table').appendChild(tableBody);
@@ -349,7 +271,6 @@ function normalRow(cells, rows, sbChannel, sbSubject) {
 
 window.customElements.define('table-base-ce', TableBaseCE);
 
-export { TableBaseCE };
-
-
-
+export {
+	TableBaseCE
+};

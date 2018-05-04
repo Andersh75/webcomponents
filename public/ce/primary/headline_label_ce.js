@@ -30,6 +30,7 @@ tpl.innerHTML = `
 class HeadlineLabelCE extends HeadlineBaseCE {
 	constructor() {
 		super();
+		this.stream = "title";
 		this.tpl = tpl;
 		this.extend();
 	}
@@ -47,7 +48,10 @@ class HeadlineLabelCE extends HeadlineBaseCE {
 	}
 
 	extendBaseModel(that) {
-		
+		this.db.title = "";
+		this.db.sb = "";
+		this.db.sr = "";
+		this.db.srdispatch = "";
 	}	
 	
 

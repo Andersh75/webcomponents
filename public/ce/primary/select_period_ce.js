@@ -28,6 +28,7 @@ tpl.innerHTML = `
 
 		constructor() {
 			super();
+			this.stream = "selectedvalue";
 			this.tpl = tpl;
 			this.extend();
 		}
@@ -47,7 +48,10 @@ tpl.innerHTML = `
 		}
 	
 		extendBaseModel(that) {
-			
+			this.db.selectedindex = "0";
+			this.db.selectedvalue = "";
+			this.db.sb = "";
+			this.db.sr = "";
 		}
 	}
 

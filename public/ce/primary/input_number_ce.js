@@ -60,7 +60,11 @@ class InputNumberCE extends InputBaseCE {
 	}
 
 	extendBaseModel(that) {
-		
+		this.db.placeholder = "";
+		this.db.value = "";
+		this.db.year = "";
+		this.db.sb = "";
+		this.db.sr = "";
 	}	
 }
 

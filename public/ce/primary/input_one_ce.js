@@ -14,6 +14,7 @@ tpl.innerHTML = `
 class InputOneCE extends InputBaseCE {
 	constructor() {
 		super();
+		this.stream = "value";
 		this.tpl = tpl;
 		this.extend();
 	}
@@ -31,7 +32,11 @@ class InputOneCE extends InputBaseCE {
 	}
 
 	extendBaseModel(that) {
-		
+		this.db.placeholder = "";
+		this.db.value = "";
+		this.db.year = "";
+		this.db.sb = "";
+		this.db.sr = "";
 	}	
 }
 

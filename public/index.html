@@ -480,16 +480,41 @@
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
 
     <anykind-container-v-ce slot="anycontainer">
-            <table-one-ce cells="2:10" period title="Äga" type="capitalize" srdispatch='[{ "name":"Värme", "sr":"heat:cost", "local":"capitalize$"}, { "name":"Reparationer", "sr":"ownrepair:cost", "local":"capitalizeownrepair$"}]' sbdispatch="heat:amount" slot="anytable" sr="period:length@period$"></table-one-ce>
+            <table-one-ce 
+                cells="2:10" 
+                period 
+                title="Äga" 
+                type="capitalize" 
+                srdispatch='[
+                    { "name":"Värme", "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+                    { "name":"Reparationer", "sr":"ownrepair:cost", "local":{"function":"capitalize$", "capitalizer":"ownrepairpriceincrease"}}
+                ]' 
+                sbdispatch="heat:amount" 
+                slot="anytable" 
+                sr='period:length@{"function":"period$"}'>
+            </table-one-ce>
             <!-- <divtable-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></divtable-one-ce> -->
     </anykind-container-v-ce>
 
     <anykind-container-v-ce slot="anycontainer">
-            <table-one-ce cells="3:10" period title="Hyra" type="capitalize" srdispatch='[{ "name":"Värme", "sr":"heat:cost", "local":"capitalize$"}, { "name":"Etablering", "sr":"rentestablish:cost", "local":"initial$"}, { "name":"Hyra", "sr":"rentrent:cost", "local":"capitalize$"}]' sbdispatch="heat:amount" slot="anytable" sr="period:length@period$"></table-one-ce>
+            <table-one-ce 
+                cells="3:10" 
+                period 
+                title="Hyra" 
+                type="capitalize" 
+                srdispatch='[
+                    { "name":"Värme", "sr":"heat:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+                    { "name":"Etablering", "sr":"rentestablish:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}, 
+                    { "name":"Hyra", "sr":"rentrent:cost", "local":{"function":"capitalize$", "capitalizer":"inflation"}}
+                ]' 
+                sbdispatch="heat:amount" 
+                slot="anytable" 
+                sr='period:length@{"function":"period$"}'>
+            </table-one-ce>
             <!-- <divtable-one-ce cells="3:10" type="capitalize" srdispatch='[{ "name":"heat", "sr":"heat:cost"}, { "name":"users", "sr":"users:cost"}, { "name":"users", "sr":"users:cost"}]@capitalize$' sbdispatch="heat:amount" slot="anytable"></divtable-one-ce> -->
     </anykind-container-v-ce>
 
-    <anykind-container-one-ce slot="anycontainer">
+    <!-- <anykind-container-one-ce slot="anycontainer">
 
         <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
         
@@ -528,7 +553,7 @@
     <anykind-container-one-ce slot="anycontainer">
         <headline-one-ce title="Summa Diskonterade värmekostnader" class="h5" slot="headline"></headline-one-ce>
         <headline-input-one-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-one-ce>
-    </anykind-container-one-ce>
+    </anykind-container-one-ce> -->
 </section-output-one-ce>
 
 

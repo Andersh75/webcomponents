@@ -23,6 +23,7 @@ tpl.innerHTML = `
 
 		constructor() {
 			super();
+			this.stream = "selectedvalue";
 			this.tpl = tpl;
 			this.extend();
 		}
