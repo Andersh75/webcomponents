@@ -66,7 +66,7 @@ class TableBaseCE extends CustomElement3 {
 
 	extendView(model) {
 		this.view.renderCells = function (obj) {
-			let rows = this.srDispatchObj.length;
+			let rows = this.cellDispatchObj.length;
 			let cells = this.period;
 			
 			while (this.shadowRoot.querySelector('#table').firstChild) {
@@ -134,25 +134,22 @@ function normalRow(rows, cells) {
 	let tableBody = document.createElement('tbody');
 	for (let i = 1; i <= rows; i++) {
 		
-		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[i - 1].sr); //makes an array of [remote, local...] listener
+		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.cellDispatchObj[i - 1].sr); //makes an array of [remote, local...] listener
 		let srChannel = srChannelAndSubject[0];
 		let srSubject = srChannelAndSubject[1];
 		
 
-		console.log('this.srDispatchObj[i - 1]');
-		console.log(this.srDispatchObj[i - 1]);
-		let sbObj = this.srDispatchObj[i - 1].sb;
-		let sbChannel = this.srDispatchObj[i - 1].sb.channel;
-		let sbSubject = this.srDispatchObj[i - 1].sb.subject;
-		let sbElement = this.srDispatchObj[i - 1].sb.element;
-		// let sbChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.srDispatchObj[i - 1].sb); //makes an array of [remote, local...] listener
-		// let sbChannel = sbChannelAndSubject[0];
-		// let sbSubject = sbChannelAndSubject[1];
+		console.log('this.cellDispatchObj[i - 1]');
+		console.log(this.cellDispatchObj[i - 1]);
+		let sbObj = this.cellDispatchObj[i - 1].sb;
+		let sbChannel = this.cellDispatchObj[i - 1].sb.channel;
+		let sbSubject = this.cellDispatchObj[i - 1].sb.subject;
+		let sbElement = this.cellDispatchObj[i - 1].sb.element;
 
-		let type = this.srDispatchObj[i - 1]['type'];
-		let srLocal = JSON.stringify(this.srDispatchObj[i - 1]['local']);
+		let type = this.cellDispatchObj[i - 1]['type'];
+		let srLocal = JSON.stringify(this.cellDispatchObj[i - 1]['local']);
 
-		let rowName = this.srDispatchObj[i - 1].name;
+		let rowName = this.cellDispatchObj[i - 1].name;
 
 		let tableRow = document.createElement('tr');
 		tableRow.setAttribute('cells', cells);

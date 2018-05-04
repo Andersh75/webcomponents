@@ -149,7 +149,7 @@ class CustomElement3 extends HTMLElement {
 			
 		}
 
-		setComponentSrdispatch.call(this);
+		setComponentCelldispatch.call(this);
 
 		//makes component fire local events when remote event fires. Remote event is attached in each local event.
 		setComponentListener.call(this, this.model); //this.model is an object with dispatch and eval functions
@@ -485,12 +485,12 @@ function setComponentObservable() {
 	}
 }
 
-function setComponentSrdispatch() {
-	let srdispatch = this.srdispatch;
+function setComponentCelldispatch() {
+	let celldispatch = this.celldispatch;
 
-	if (h.boolean.isString(srdispatch)) {
-		console.log(this.srdispatch);
-		this.srDispatchObj = JSON.parse(this.srdispatch);	
+	if (h.boolean.isString(celldispatch)) {
+		console.log(this.celldispatch);
+		this.cellDispatchObj = JSON.parse(this.celldispatch);	
 	}
 }
 
