@@ -76,11 +76,11 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-	myRxmq.channel('ownrepair').behaviorsubject('cost')
-		.subscribe(x => {
-			console.log('from stream: ' + x);
-			console.log(x);
-		});
+	// myRxmq.channel('ownrepair').behaviorsubject('cost')
+	// 	.subscribe(x => {
+	// 		console.log('from stream: ' + x);
+	// 		console.log(x);
+	// 	});
 
 
 

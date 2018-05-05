@@ -45,9 +45,7 @@ class InputBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.capitalize$ = function (e) {
-			console.log('HERE!!!');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel('inflation').behaviorobserve('rate'))
-				.do(x => console.log('IN CAPITALIZE: ' + x))
 				.map(([e1, e2]) => {
 					try {
 						return [e1.data, e2.data];
@@ -67,7 +65,6 @@ class InputBaseCE extends CustomElement3 {
 
 		this.ctrl.copy$ = function (e) {
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
-				.do(console.log)
 				.subscribe((x) => {
 					this.value = x.data;
 					let attribute = 'value';

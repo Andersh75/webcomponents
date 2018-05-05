@@ -320,20 +320,9 @@ function Ctrl(that, model, view, ctrl) {
 
 		stream: function(value) {
 			if (!h.boolean.isEmpty(that.sb)) {
-				console.log('that.sb');
-				console.log(that.sb);
-				console.log('that.sbChannel');
-				console.log(that.sbChannel);
-				console.log('that.sbSubject');
-				console.log(that.sbSubject);
-				console.log('that.sbDetail');
-				console.log(that.sbDetail);
-				console.log('value');
-				console.log(value);
 				let obj = {};
 				obj.data = value;
 				obj.detail = that.sbDetail;
-				console.log('streaming!');
 				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(obj);
 			}	
 		}
@@ -434,34 +423,17 @@ function setComponentDispatcher(eventName) {
 
 function setComponentObserver(model) {
 	let sr = this.sr; //string from attribute listener
-	// console.log('this.sr');
-	// console.log(this.sr);
 
 	if (h.boolean.isString(sr)) {
-		let remoteAndLocal = h.str.stringToArrayUsingSplitter('@', sr); //makes an array of [remote, local...] listener
-		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', remoteAndLocal[0]); //makes an array of [remote, local...] listener
-		let channel = channelAndSubject[0];
-		let subject = channelAndSubject[1];
-		let local = remoteAndLocal.slice(1)[0];
-		console.log('local');
-		console.log(local);
-		let localFn;
-		let localObj;
-
-		if (local !== undefined) {
-			localObj = JSON.parse(local);
-			console.log(localObj);
-			localFn = localObj.function;
-
+		if (!h.boolean.isEmptyString(sr)) {
+			let srObj = JSON.parse(sr);
+			let channel = srObj.channel;
+			let subject = srObj.subject;
+			let localObj = srObj.local;
+			let localFn = localObj.function;
+	
 			this.eventTarget.dispatchEvent(new CustomEvent(localFn, {detail: [channel, subject, localObj]}));
 		}
-
-		//this.srChannel = channel;
-		//this.srSubject = subject;
-		// console.log(channel);
-		// console.log(subject);
-		// console.log(local);
-
 		
 	}	
 }
@@ -474,14 +446,8 @@ function setComponentObservable() {
 		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sbAndDetail[0]); //makes an array of [remote, local...] listener
 		
 		this.sbChannel = channelAndSubject[0];
-		console.log('this.sbChannel');
-		console.log(this.sbChannel);
 		this.sbSubject = channelAndSubject[1];
-		console.log('this.sbSubject');
-		console.log(this.sbSubject);
 		this.sbDetail = sbAndDetail[1];	
-		console.log('this.sbDetail');
-		console.log(this.sbDetail);
 	}
 }
 
@@ -489,7 +455,6 @@ function setComponentCelldispatch() {
 	let celldispatch = this.celldispatch;
 
 	if (h.boolean.isString(celldispatch)) {
-		console.log(this.celldispatch);
 		this.cellDispatchObj = JSON.parse(this.celldispatch);	
 	}
 }

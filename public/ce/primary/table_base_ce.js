@@ -44,9 +44,7 @@ class TableBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.period$ = function (e) {
-			console.log('IN PERIOD LENGTH');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
-				.do(console.log)
 				.map((e1) => {
 					try {
 						return e1[0].data;
@@ -57,8 +55,6 @@ class TableBaseCE extends CustomElement3 {
 				.map((e1) => Number(e1))
 				.filter((e) => !isNaN(e))
 				.subscribe((x) => {
-					console.log('period');
-					console.log(x);
 					this.period = x;
 				});
 		};
@@ -133,23 +129,21 @@ function headerRow(cells, title) {
 function normalRow(rows, cells) {
 	let tableBody = document.createElement('tbody');
 	for (let i = 1; i <= rows; i++) {
+
+		let cellDispatchObj = this.cellDispatchObj[i - 1];
 		
-		let srChannelAndSubject = h.str.stringToArrayUsingSplitter(':', this.cellDispatchObj[i - 1].sr); //makes an array of [remote, local...] listener
-		let srChannel = srChannelAndSubject[0];
-		let srSubject = srChannelAndSubject[1];
-		
+		let srObj = cellDispatchObj.sr;
+		let srChannel = cellDispatchObj.sr.channel;
+		let srSubject = cellDispatchObj.sr.subject;
+		let srLocalObj = cellDispatchObj.sr.local;
 
-		console.log('this.cellDispatchObj[i - 1]');
-		console.log(this.cellDispatchObj[i - 1]);
-		let sbObj = this.cellDispatchObj[i - 1].sb;
-		let sbChannel = this.cellDispatchObj[i - 1].sb.channel;
-		let sbSubject = this.cellDispatchObj[i - 1].sb.subject;
-		let sbElement = this.cellDispatchObj[i - 1].sb.element;
+		let sbObj = cellDispatchObj.sb;
+		let sbChannel = cellDispatchObj.sb.channel;
+		let sbSubject = cellDispatchObj.sb.subject;
+		let sbElement = cellDispatchObj.sb.element;
 
-		let type = this.cellDispatchObj[i - 1]['type'];
-		let srLocal = JSON.stringify(this.cellDispatchObj[i - 1]['local']);
-
-		let rowName = this.cellDispatchObj[i - 1].name;
+		let type = cellDispatchObj.type;
+		let rowName = cellDispatchObj.name;
 
 		let tableRow = document.createElement('tr');
 		tableRow.setAttribute('cells', cells);
@@ -158,19 +152,19 @@ function normalRow(rows, cells) {
 		let tableCell = document.createElement('th');
 		
 		let textContent = document.createElement('headline-one-ce');
-		textContent.setAttribute('sr', "");
-		textContent.setAttribute('year', "");
+		textContent.setAttribute('sr', '');
+		textContent.setAttribute('year', '');
 		textContent.setAttribute('title', rowName);
-		textContent.setAttribute('sb', "");
+		textContent.setAttribute('sb', '');
 		tableCell.appendChild(textContent);
 		tableRow.appendChild(tableCell);
 
 		if (type === 'initial') {
 			let tableCell = document.createElement('td');
 			let textContent = document.createElement('headline-one-ce');
-			textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
+			textContent.setAttribute('sr', JSON.stringify(srObj));
 			textContent.setAttribute('year', 0);
-			textContent.setAttribute('title', "");
+			textContent.setAttribute('title', '');
 			sbObj.year = 0;
 			textContent.setAttribute('sb', sbElement + ':' + sbSubject + '@' + JSON.stringify(sbObj));
 			tableCell.appendChild(textContent);
@@ -179,7 +173,7 @@ function normalRow(rows, cells) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');
 				textContent.setAttribute('year', j);
-				textContent.setAttribute('title', "");
+				textContent.setAttribute('title', '');
 				
 				sbObj.year = j;
 				textContent.setAttribute('sb', JSON.stringify(sbObj));
@@ -190,7 +184,7 @@ function normalRow(rows, cells) {
 			let tableCell = document.createElement('td');
 			let textContent = document.createElement('headline-one-ce');
 			textContent.setAttribute('year', 0);
-			textContent.setAttribute('title', "");
+			textContent.setAttribute('title', '');
 			sbObj.year = 0;
 			textContent.setAttribute('sb', JSON.stringify(sbObj));
 			tableCell.appendChild(textContent);
@@ -198,9 +192,9 @@ function normalRow(rows, cells) {
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');
-				textContent.setAttribute('sr', srChannel + ':' + srSubject + '@' + srLocal);
+				textContent.setAttribute('sr', JSON.stringify(srObj));
 				textContent.setAttribute('year', j);
-				textContent.setAttribute('title', "");
+				textContent.setAttribute('title', '');
 				sbObj.year = j;
 				textContent.setAttribute('sb', sbElement + ':' + sbSubject + '@' + JSON.stringify(sbObj));
 				tableCell.appendChild(textContent);

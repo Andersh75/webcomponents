@@ -85,7 +85,6 @@ class HeadlineBaseCE extends CustomElement3 {
 
 		this.ctrl.sum$ = function (e) {
 			let i = 0;
-			console.log('SUM HERE!!!');
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
 				// .do(x => console.log('IN SUM: ' + x))
 				// .do(x => console.log(x))
@@ -98,9 +97,6 @@ class HeadlineBaseCE extends CustomElement3 {
 				// })
 				// .map((e1) => Number(e1))		
 				.subscribe((x) => {
-					console.log('SUM SUBSCRIBE');
-					console.log(x);
-					console.log(i++);
 					// let year = this.year;
 					// let numYear = Number(year);
 					let result = x;

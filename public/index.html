@@ -376,7 +376,7 @@
                 <headline-one-ce title="Reparationer och löpande underhåll" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kr/kvm" slot="anyform">
-                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb="ownrepair:price@{}" sr=""></input-number-ce>
+                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb="ownrepair:price@{}" sr></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyselect-ce title="Kostnadsutveckling" slot="anyform">
@@ -419,7 +419,7 @@
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb="rentkvm:amount@{}" sr=""></input-number-ce>
+                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb="rentkvm:amount@{}" sr></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -429,7 +429,7 @@
                 <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Kostnad per kvm" slot="anyform">
-                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb="rentrent:price@{}" sr=""></input-number-ce>
+                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb="rentrent:price@{}" sr></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce> 
@@ -439,15 +439,15 @@
                 <headline-one-ce title="Uppförande- och avvecklingskostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Etableringskostnad per kvm" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb="rentestablish:price@{}" sr=""></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb="rentestablish:price@{}" sr></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyinput-ce title="Expansionskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr=""></input-number-ce>
+                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyinput-ce title="Avvecklingskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr=""></input-number-ce>
+                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr></input-number-ce>
                 </headline-anyinput-ce>
   
             </anykind-container-one-ce>  
@@ -519,10 +519,13 @@
                             "channel":"heat", 
                             "subject":"cost"
                         }, 
-                        "sr":"heat:cost", 
-                        "local": {
-                            "function":"capitalize$", 
-                            "capitalizer":"inflation"
+                        "sr": {
+                            "channel":"heat",
+                            "subject":"cost", 
+                            "local": {
+                                "function":"capitalize$", 
+                                "capitalizer":"inflation"
+                            }
                         }
                     }, 
                     { 
@@ -533,15 +536,24 @@
                             "channel":"ownrepair", 
                             "subject":"cost"
                         }, 
-                        "sr":"ownrepair:cost", 
-                        "local": {
-                            "function":"capitalize$", 
-                            "capitalizer":"ownrepairpriceincrease"
+                        "sr": {
+                            "channel":"ownrepair",
+                            "subject":"cost", 
+                            "local": {
+                                "function":"capitalize$", 
+                                "capitalizer":"ownrepairpriceincrease"
+                            }
                         }
                     }
                 ]' 
                 slot="anytable" 
-                sr='period:length@{"function":"period$"}'>
+                sr='{
+                    "channel": "period", 
+                    "subject": "length", 
+                    "local": {
+                        "function":"period$"
+                    }
+                }'>
             </table-one-ce>
     </anykind-container-v-ce>
     <anykind-container-v-ce slot="anycontainer">
@@ -557,10 +569,13 @@
                         "channel":"heat", 
                         "subject":"cost"
                     }, 
-                    "sr":"heat:cost", 
-                    "local": {
-                        "function":"capitalize$", 
-                        "capitalizer":"inflation"
+                    "sr": {
+                        "channel":"heat",
+                        "subject":"cost", 
+                        "local": {
+                            "function":"capitalize$", 
+                            "capitalizer":"inflation"
+                        }
                     }
                 }, 
                 { 
@@ -571,9 +586,12 @@
                         "channel":"rentestablish", 
                         "subject":"cost"
                     }, 
-                    "sr":"rentestablish:cost", 
-                    "local": {
-                        "function":"initial$"
+                    "sr": {
+                        "channel":"rentestablish",
+                        "subject":"cost", 
+                        "local": {
+                            "function":"initial$"
+                        }
                     }
                 }, 
                 { 
@@ -584,15 +602,24 @@
                         "channel":"rentrent", 
                         "subject":"cost"
                     }, 
-                    "sr":"rentrent:cost", 
-                    "local": {
-                        "function":"capitalize$", 
-                        "capitalizer":"inflation"
+                    "sr": {
+                        "channel":"rentrent",
+                        "subject":"cost", 
+                        "local": {
+                            "function":"capitalize$", 
+                            "capitalizer":"inflation"
+                        }
                     }
                 }
             ]' 
             slot="anytable" 
-            sr='period:length@{"function":"period$"}'>
+            sr='{
+                    "channel": "period", 
+                    "subject": "length", 
+                    "local": {
+                        "function":"period$"
+                    }
+                }'>
         </table-one-ce>
     </anykind-container-v-ce>
 
@@ -609,25 +636,39 @@
                         "channel":"heat", 
                         "subject":"cost"
                     }, 
-                    "sr":"owntable:cost", 
-                    "local": {
-                        "function":"sum$"
+                    "sr": {
+                        "channel":"owntable",
+                        "subject":"cost", 
+                        "local": {
+                            "function":"sum$"
+                        }
                     }
                 }, 
                 { 
                     "name":"Summa Hyra", 
                     "type":"sum", 
-                    "sb": {"element":"renttable", 
-                    "channel":"heat", 
-                    "subject":"cost"
-                }, 
-                "sr":"renttable:cost", 
-                "local": {
-                    "function":"sum$"
+                    "sb": {
+                        "element":"renttable", 
+                        "channel":"heat", 
+                        "subject":"cost"
+                    }, 
+                    "sr": {
+                        "channel":"renttable",
+                        "subject":"cost", 
+                        "local": {
+                            "function":"sum$"
+                        }
+                    }
                 }
-            }]' 
+            ]' 
             slot="anytable" 
-            sr='period:length@{"function":"period$"}'>
+            sr='{
+                "channel": "period", 
+                "subject": "length", 
+                "local": {
+                    "function":"period$"
+                }
+            }'>
         </table-one-ce>
     </anykind-container-v-ce>
 
