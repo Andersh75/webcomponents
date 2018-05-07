@@ -1,3 +1,5 @@
+import { HeadlineOneCE } from '/ce/primary/headline_one_ce.js';
+
 class TableBaseCE extends CustomElement3 {
 
 	constructor() {
@@ -128,6 +130,8 @@ function headerRow(cells, title) {
 
 function normalRow(rows, cells) {
 	let tableBody = document.createElement('tbody');
+	let testArray = [];
+	
 	for (let i = 1; i <= rows; i++) {
 
 		let cellDispatchObj = this.cellDispatchObj[i - 1];
@@ -152,6 +156,8 @@ function normalRow(rows, cells) {
 		let tableCell = document.createElement('th');
 		
 		let textContent = document.createElement('headline-one-ce');
+
+
 		textContent.setAttribute('sr', '');
 		textContent.setAttribute('year', '');
 		textContent.setAttribute('title', rowName);
@@ -161,8 +167,13 @@ function normalRow(rows, cells) {
 
 		if (type === 'initial') {
 			let tableCell = document.createElement('td');
-			let textContent = document.createElement('headline-one-ce');
-			//textContent.setAttribute('sr', JSON.stringify(srObj));
+			let textContent = document.createElement('headline-one-ce'); 
+			let textContent2 = new HeadlineOneCE();
+			textContent.theparent = this;
+			console.log(textContent2.theparent);
+			document.querySelector('body').appendChild(textContent2);
+			console.log('textContent2.test');
+			console.log(textContent2.test);
 			textContent.setAttribute('year', 0);
 			textContent.setAttribute('title', '');
 			sbObj.year = 0;
@@ -215,6 +226,7 @@ function normalRow(rows, cells) {
 				tableRow.appendChild(tableCell);
 			}
 		} else {
+			let innerArray = [];
 			let tableCell = document.createElement('td');
 			let textContent = document.createElement('headline-one-ce');
 			textContent.setAttribute('year', 0);
@@ -238,13 +250,12 @@ function normalRow(rows, cells) {
 			}
 			textContent.setAttribute('sr', JSON.stringify(srObj2));
 
-
+			innerArray.push(sbObj2);
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');
-				//textContent.setAttribute('sr', JSON.stringify(srObj));
 				textContent.setAttribute('year', j);
 				textContent.setAttribute('title', '');
 				sbObj.year = j;
@@ -254,6 +265,7 @@ function normalRow(rows, cells) {
 				let sbObj2 = JSON.parse(JSON.stringify(sbObj));
 				sbObj2.channel = channel;
 				textContent.setAttribute('sb', JSON.stringify(sbObj2));
+				innerArray.push(sbObj2);
 
 
 				srObj.year = j;
@@ -270,11 +282,17 @@ function normalRow(rows, cells) {
 				tableCell.appendChild(textContent);
 				tableRow.appendChild(tableCell);
 			}
+			testArray.push(innerArray);
+			
 		}
 
 		tableBody.appendChild(tableRow);
+		
 	}
 	this.shadowRoot.querySelector('#table').appendChild(tableBody);
+	this.updated = testArray;
+	console.log('testArray');
+	console.log(this.updated);
 }
 
 

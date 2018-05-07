@@ -76,7 +76,7 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-	myRxmq.channel('owntable-year-1').behaviorsubject('own-repair-cost')
+	myRxmq.channel('owntable-year-10').behaviorsubject('*')
 		.subscribe(x => {
 			console.log('from stream: ' + x);
 			console.log(x);

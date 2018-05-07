@@ -281,6 +281,9 @@ function Ctrl(that, model, view, ctrl) {
 				that[attribute] = newVal;
 			}	
 		},
+		parentFromParent: function(e) {
+			that.parent = e.detail.parent;	
+		},
 		updatedModel: function(e) { //local events initiated by users
 			let parent = e.detail.parent;
 			let attribute = e.detail.attribute;
@@ -323,6 +326,12 @@ function Ctrl(that, model, view, ctrl) {
 				let obj = {};
 				obj.data = value;
 				obj.detail = that.sbDetail;
+				console.log('that.sbChannel');
+				console.log(that.sbChannel);
+				console.log('that.sbSubject');
+				console.log(that.sbSubject);
+				console.log('value');
+				console.log(value);
 				myRxmq.channel(that.sbChannel).behaviorsubject(that.sbSubject).next(obj);
 			}	
 		}

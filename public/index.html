@@ -414,6 +414,56 @@
   <section-output-one-ce>
     
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+    <anykind-container-v-ce slot="anycontainer">
+        <table-one-ce 
+            period 
+            title="Summa" 
+            celldispatch='[
+                { 
+                    "name":"Summa Äga", 
+                    "type":"sum", 
+                    "sb": {
+                        "element":"owntable", 
+                        "channel":"owntable-sum-year", 
+                        "subject":"sum"
+                    }, 
+                    "sr": {
+                        "extend":"year",
+                        "channel":"owntable-year",
+                        "subject":"own-heat-cost", 
+                        "local": {
+                            "function":"sum$"
+                        }
+                    }
+                }, 
+                { 
+                    "name":"Summa Hyra", 
+                    "type":"sum", 
+                    "sb": {
+                        "element":"renttable", 
+                        "channel":"renttable-sum-year", 
+                        "subject":"sum"
+                    }, 
+                    "sr": {
+                        "extend":"year",
+                        "channel":"renttable-year",
+                        "subject":"rent-heat-cost", 
+                        "local": {
+                            "function":"sum$"
+                        }
+                    }
+                }
+            ]' 
+            slot="anytable" 
+            sr='{
+                "channel": "period", 
+                "subject": "length", 
+                "local": {
+                    "function":"period$"
+                }
+            }'>
+        </table-one-ce>
+    </anykind-container-v-ce>
 
     <anykind-container-v-ce slot="anycontainer">
             <table-one-ce 
@@ -480,7 +530,8 @@
             </table-one-ce>
     </anykind-container-v-ce>
     <anykind-container-v-ce slot="anycontainer">
-        <table-one-ce 
+        <table-one-ce
+            updated 
             period 
             title="Hyra" 
             celldispatch='[
@@ -556,7 +607,8 @@
                     }
                 }
             ]' 
-            slot="anytable" 
+            slot="anytable"
+            sb='{"channel":"renttable", "subject":"renttable"}' 
             sr='{
                     "channel": "period", 
                     "subject": "length", 
@@ -566,56 +618,7 @@
                 }'>
         </table-one-ce>
     </anykind-container-v-ce>
-    <anykind-container-v-ce slot="anycontainer">
-        <table-one-ce 
-            period 
-            title="Summa" 
-            celldispatch='[
-                { 
-                    "name":"Summa Äga", 
-                    "type":"sum", 
-                    "sb": {
-                        "element":"owntable", 
-                        "channel":"owntable-sum-year", 
-                        "subject":"sum"
-                    }, 
-                    "sr": {
-                        "extend":"year",
-                        "channel":"owntable-year",
-                        "subject":"*", 
-                        "local": {
-                            "function":"sum$"
-                        }
-                    }
-                }, 
-                { 
-                    "name":"Summa Hyra", 
-                    "type":"sum", 
-                    "sb": {
-                        "element":"renttable", 
-                        "channel":"renttable-sum-year", 
-                        "subject":"sum"
-                    }, 
-                    "sr": {
-                        "extend":"year",
-                        "channel":"renttable-year",
-                        "subject":"*", 
-                        "local": {
-                            "function":"sum$"
-                        }
-                    }
-                }
-            ]' 
-            slot="anytable" 
-            sr='{
-                "channel": "period", 
-                "subject": "length", 
-                "local": {
-                    "function":"period$"
-                }
-            }'>
-        </table-one-ce>
-    </anykind-container-v-ce>
+    
    
 
 </section-output-one-ce> 

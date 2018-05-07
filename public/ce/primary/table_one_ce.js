@@ -20,13 +20,13 @@ tpl.innerHTML = `
 class TableOneCE extends TableBaseCE {
 	constructor() {
 		super();
-		this.stream = undefined;
+		this.stream = 'updated';
 		this.tpl = tpl;
 		this.extend();
 	}
 
 	static get observedAttributes() {
-		return ['cells', 'sb', 'sr', 'celldispatch', 'type', 'title', 'period'];
+		return ['cells', 'sb', 'sr', 'celldispatch', 'type', 'title', 'period', 'updated'];
 	}
 
 	extendBaseCtrl(that, model, view) {
@@ -44,6 +44,7 @@ class TableOneCE extends TableBaseCE {
 		this.db.title = "";
 		this.db.period = "";
 		this.db.type = "";
+		this.db.updated = "";
 	}	
 }
 

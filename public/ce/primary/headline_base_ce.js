@@ -20,6 +20,8 @@ class HeadlineBaseCE extends CustomElement3 {
 				let attribute = 'title';
 				this[attribute] = this.title;
 			}
+			console.log('THE PARENT');
+			console.log(this.parent);
 		};
 
 		this.ctrl.addedUserAction = function (data, attribute) {
@@ -104,6 +106,9 @@ class HeadlineBaseCE extends CustomElement3 {
 					})
 					.map((x1) => Number(x1))
 					.subscribe((x) => {
+						console.log('this.parent');
+						console.log(this.parent);
+						this.parent.updated = 'updatefromchild';
 						let result = x;
 						let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
 						if (h.boolean.isNumber(roundedResult)) {
@@ -120,45 +125,46 @@ class HeadlineBaseCE extends CustomElement3 {
 			console.log(e);
 			let testObj = {};
 			myRxmq.channel(e.detail[0]).behaviorobserve('*')
-				.do(x => console.log('IN SUM: ' + x))
+				.do(x => console.log('SIN SUM: ' + x))
 				.do(x => console.log(x))
 				// .do(x => {
 				// 	if (!testObj.hasOwnProperty(x[0].detail.subject)) {
 				// 		testObj[x[0].detail.subject] = x[0].data;
 				// 	}
 				// })
-				.map((x) => {
-					try {
-						return x.map(item => item.data);
-					} catch (error) {
-						return x;
-					}
-				})
-				.map((x) => {
-					try {
-						return x.map(item => Number(item));
-					} catch (error) {
-						return x;
-					}
-				})
-				.map((x) => {
-					try {
-						return x.reduce((acc, item) => acc + item);
-					} catch (error) {
-						return x;
-					}
-				})	
+				// .map((x) => {
+				// 	try {
+				// 		return x.map(item => item.data);
+				// 	} catch (error) {
+				// 		return x;
+				// 	}
+				// })
+				// .map((x) => {
+				// 	try {
+				// 		return x.map(item => Number(item));
+				// 	} catch (error) {
+				// 		return x;
+				// 	}
+				// })
+				// .map((x) => {
+				// 	try {
+				// 		return x.reduce((acc, item) => acc + item);
+				// 	} catch (error) {
+				// 		return x;
+				// 	}
+				// })	
 				.subscribe((x) => {
-					// let year = this.year;
-					// let numYear = Number(year);
+					// // let year = this.year;
+					// // let numYear = Number(year);
 					console.log('x in sum');
 					console.log(x);
 
 
-					console.log(testObj);
-					let result = x;
-					//let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
-					this.title = result;
+
+					// console.log(testObj);
+					// let result = x;
+					// // //let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
+					// this.title = result;
 				});
 		};
 

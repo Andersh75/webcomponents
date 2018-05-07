@@ -26,13 +26,21 @@ tpl.innerHTML = `
 class HeadlineOneCE extends HeadlineBaseCE {
 	constructor() {
 		super();
-		this.stream = "title";
+		this.stream = 'title';
 		this.tpl = tpl;
 		this.extend();
 	}
 
 	static get observedAttributes() {
 		return ['title', 'sb', 'sr', 'srdispatch'];
+	}
+
+	set theparent(item) {
+		this.parent = item;
+	}
+
+	get theparent() {
+		return this.parent;
 	}
 	
 	extendBaseCtrl(that, model, view) {
@@ -54,3 +62,7 @@ class HeadlineOneCE extends HeadlineBaseCE {
 }
 
 window.customElements.define('headline-one-ce', HeadlineOneCE);
+
+export {
+	HeadlineOneCE
+};
