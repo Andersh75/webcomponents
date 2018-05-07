@@ -36,7 +36,7 @@ class TableBaseCE extends CustomElement3 {
 		};
 
 
-		//local events initiated by parent
+		//local events initiated by parent!
 
 
 		//local events initiated by model
