@@ -266,7 +266,7 @@
                 </headline-anyselect-ce>
 
                 <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
-                    <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb="period:length@{}"></select-period-ce>
+                    <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb='{"channel":"period", "subject":"length", "element":"initial"}'></select-period-ce>
                 </headline-anyselect-ce>
                 
             </anykind-container-one-ce>
@@ -276,7 +276,7 @@
                 <headline-one-ce title="Inflation" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyselect-ce title="Inflation" slot="anyform" datatarget="inflation">
-                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="inflation:rate@{}"></select-inflation-ce>
+                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"inflation", "subject":"rate", "element":"initial"}'></select-inflation-ce>
                 </headline-anyselect-ce> 
 
             </anykind-container-one-ce> 
@@ -286,7 +286,7 @@
                 <headline-one-ce title="Kalkylränta" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyselect-ce title="Kalkylränta" slot="anyform">
-                    <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb="discount:rate@{}"></select-discount-ce>
+                    <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"discount", "subject":"rate", "element":"initial"}'></select-discount-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce> 
@@ -296,11 +296,11 @@
                 <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kWh/kvm/år" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb="heat:kwh@{}"></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb='{"channel":"heat", "subject":"kwh", "element":"initial"}'></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyselect-ce title="Kostnad per kWh" slot="anyform">
-                    <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb="heat:price@{}"></select-kwhprice-ce>
+                    <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"heat", "subject":"price", "element":"initial"}'></select-kwhprice-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce>
@@ -320,6 +320,10 @@
                 .map(([e1, e2]) => {
                     let obj = {};
                     obj.data = e1 * e2;
+                    obj.detail = {};
+                    obj.detail.channel = 'heat';
+                    obj.detail.subject = 'cost;'
+                    obj.detail.element = 'initial';
                     return obj;
                 })
                 .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
@@ -330,7 +334,7 @@
                 <headline-one-ce title="Brukare" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal brukare" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb="users:cost@{}"></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb='{"channel":"users", "subject":"cost", "element":"initial"}'></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce>
@@ -348,7 +352,7 @@
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb="ownkvm:amount@{}"></input-number-ce>
+                    <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb='{"channel":"ownkvm", "subject":"amount", "element":"initial"}'></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -376,11 +380,11 @@
                 <headline-one-ce title="Reparationer och löpande underhåll" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kr/kvm" slot="anyform">
-                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb="ownrepair:price@{}" sr></input-number-ce>
+                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"ownrepair", "subject":"price", "element":"initial"}' sr></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyselect-ce title="Kostnadsutveckling" slot="anyform">
-                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb="ownrepairpriceincrease:rate@{}"></select-kwhprice-ce>
+                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"ownrepairpriceincrease", "subject":"rate", "element":"initial"}'></select-kwhprice-ce>
                 </headline-anyselect-ce>
 
             </anykind-container-one-ce>  
@@ -401,6 +405,10 @@
                 .map(([e1, e2]) => {
                     let obj = {};
                     obj.data = e1 * e2;
+                    obj.detail = {};
+                    obj.detail.channel = 'ownrepair';
+                    obj.detail.subject = 'cost;'
+                    obj.detail.element = 'initial';
                     return obj;
                 })
                 .subscribe(myRxmq.channel('ownrepair').behaviorsubject('cost'));
@@ -419,7 +427,7 @@
                 <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb="rentkvm:amount@{}" sr></input-number-ce>
+                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb='{"channel":"rentkvm", "subject":"amount"}' sr></input-number-ce>
                 </headline-anyinput-ce>
     
             </anykind-container-one-ce>
@@ -429,7 +437,7 @@
                 <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Kostnad per kvm" slot="anyform">
-                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb="rentrent:price@{}" sr></input-number-ce>
+                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"rentrent", "subject":"price"}' sr></input-number-ce>
                 </headline-anyinput-ce>
 
             </anykind-container-one-ce> 
@@ -439,7 +447,7 @@
                 <headline-one-ce title="Uppförande- och avvecklingskostnader" class="h5" slot="headline"></headline-one-ce>
 
                 <headline-anyinput-ce title="Etableringskostnad per kvm" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb="rentestablish:price@{}" sr></input-number-ce>
+                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"rentestablish", "subject":"price"}' sr></input-number-ce>
                 </headline-anyinput-ce>
 
                 <headline-anyinput-ce title="Expansionskostnad per kvm" slot="anyform">
@@ -456,7 +464,11 @@
                 const combineLatestRentRent$ = function(...streams) {
                 return Rx.Observable.combineLatest(streams);
                 };
-                combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentrent').behaviorobserve('price'))					
+                combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentrent').behaviorobserve('price'))
+                .do(x => {
+                    console.log('script');
+                    console.log(x);
+                })				
                 .map(([e1, e2]) => {
                     try {
                         return [e1.data, e2.data];
@@ -468,6 +480,10 @@
                 .map(([e1, e2]) => {
                     let obj = {};
                     obj.data = e1 * e2;
+                    obj.detail = {};
+                    obj.detail.channel = 'rentrent';
+                    obj.detail.subject = 'cost;'
+                    obj.detail.element = 'initial';
                     return obj;
                 })
                 .subscribe(myRxmq.channel('rentrent').behaviorsubject('cost'));
@@ -489,6 +505,10 @@
                 .map(([e1, e2]) => {
                     let obj = {};
                     obj.data = e1 * e2;
+                    obj.detail = {};
+                    obj.detail.channel = 'rentestablish';
+                    obj.detail.subject = 'cost;'
+                    obj.detail.element = 'initial';
                     return obj;
                 })
                 .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
@@ -516,12 +536,19 @@
                         "type":"capitalize", 
                         "sb": {
                             "element":"owntable", 
-                            "channel":"heat", 
-                            "subject":"cost"
+                            "channel":"owntable-year", 
+                            "subject":"own-heat-cost"
                         }, 
                         "sr": {
+                            "extend":"",
                             "channel":"heat",
-                            "subject":"cost", 
+                            "subject":"cost",
+                            "blacklist": {
+                                "element": [
+                                "renttable",
+                                "owntable"
+                                ]
+                            },
                             "local": {
                                 "function":"capitalize$", 
                                 "capitalizer":"inflation"
@@ -533,12 +560,19 @@
                         "type":"capitalize", 
                         "sb": {
                             "element":"owntable", 
-                            "channel":"ownrepair", 
-                            "subject":"cost"
-                        }, 
+                            "channel":"owntable-year", 
+                            "subject":"own-repair-cost"
+                        },
                         "sr": {
+                            "extend":"",
                             "channel":"ownrepair",
-                            "subject":"cost", 
+                            "subject":"cost",
+                            "blacklist": {
+                                "element": [
+                                "renttable",
+                                "owntable"
+                                ]
+                            },
                             "local": {
                                 "function":"capitalize$", 
                                 "capitalizer":"ownrepairpriceincrease"
@@ -566,12 +600,19 @@
                     "type":"capitalize", 
                     "sb": {
                         "element":"renttable", 
-                        "channel":"heat", 
-                        "subject":"cost"
+                        "channel":"renttable-year", 
+                        "subject":"rent-heat-cost"
                     }, 
                     "sr": {
+                        "extend":"",
                         "channel":"heat",
-                        "subject":"cost", 
+                        "subject":"cost",
+                        "blacklist": {
+                            "element": [
+                            "renttable",
+                            "owntable"
+                            ]
+                        },
                         "local": {
                             "function":"capitalize$", 
                             "capitalizer":"inflation"
@@ -583,12 +624,19 @@
                     "type":"initial", 
                     "sb": {
                         "element":"renttable", 
-                        "channel":"rentestablish", 
-                        "subject":"cost"
+                        "channel":"renttable-year", 
+                        "subject":"rent-establish-cost"
                     }, 
                     "sr": {
+                        "extend":"",
                         "channel":"rentestablish",
-                        "subject":"cost", 
+                        "subject":"cost",
+                        "blacklist": {
+                            "element": [
+                            "renttable",
+                            "owntable"
+                            ]
+                        },
                         "local": {
                             "function":"initial$"
                         }
@@ -599,12 +647,19 @@
                     "type":"capitalize", 
                     "sb": {
                         "element":"renttable", 
-                        "channel":"rentrent", 
-                        "subject":"cost"
+                        "channel":"renttable-year", 
+                        "subject":"rent-rent-cost"
                     }, 
                     "sr": {
+                        "extend":"",
                         "channel":"rentrent",
-                        "subject":"cost", 
+                        "subject":"cost",
+                        "blacklist": {
+                            "element": [
+                                "renttable",
+                                "owntable"
+                                ]
+                        },
                         "local": {
                             "function":"capitalize$", 
                             "capitalizer":"inflation"
@@ -632,13 +687,14 @@
                     "name":"Summa Äga", 
                     "type":"sum", 
                     "sb": {
-                        "element":"renttable", 
-                        "channel":"heat", 
-                        "subject":"cost"
+                        "element":"owntable", 
+                        "channel":"owntable-sum-year", 
+                        "subject":"sum"
                     }, 
                     "sr": {
-                        "channel":"owntable",
-                        "subject":"cost", 
+                        "extend":"year",
+                        "channel":"owntable-year",
+                        "subject":"*", 
                         "local": {
                             "function":"sum$"
                         }
@@ -649,12 +705,13 @@
                     "type":"sum", 
                     "sb": {
                         "element":"renttable", 
-                        "channel":"heat", 
-                        "subject":"cost"
+                        "channel":"renttable-sum-year", 
+                        "subject":"sum"
                     }, 
                     "sr": {
-                        "channel":"renttable",
-                        "subject":"cost", 
+                        "extend":"year",
+                        "channel":"renttable-year",
+                        "subject":"*", 
                         "local": {
                             "function":"sum$"
                         }

@@ -432,7 +432,7 @@ function setComponentObserver(model) {
 			let localObj = srObj.local;
 			let localFn = localObj.function;
 	
-			this.eventTarget.dispatchEvent(new CustomEvent(localFn, {detail: [channel, subject, localObj]}));
+			this.eventTarget.dispatchEvent(new CustomEvent(localFn, {detail: [channel, subject, srObj]}));
 		}
 		
 	}	
@@ -442,12 +442,17 @@ function setComponentObservable() {
 	let sb = this.sb; //string from attribute listener
 
 	if (h.boolean.isString(sb)) {
-		let sbAndDetail = h.str.stringToArrayUsingSplitter('@', sb);
-		let channelAndSubject = h.str.stringToArrayUsingSplitter(':', sbAndDetail[0]); //makes an array of [remote, local...] listener
-		
-		this.sbChannel = channelAndSubject[0];
-		this.sbSubject = channelAndSubject[1];
-		this.sbDetail = sbAndDetail[1];	
+		if (!h.boolean.isEmptyString(sb)) {
+			console.log(sb);
+			let sbObj = JSON.parse(sb);
+			let sbChannel = sbObj.channel;
+			let sbSubject = sbObj.subject;
+			let sbDetail = sbObj;
+
+			this.sbChannel = sbChannel;
+			this.sbSubject = sbSubject;
+			this.sbDetail = sbDetail;	
+		}
 	}
 }
 

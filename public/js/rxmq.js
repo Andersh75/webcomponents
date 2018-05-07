@@ -43,6 +43,7 @@ class EndlessBehaviorSubject extends Rx.BehaviorSubject {
 			s.name = name;
 			this.subjects.push(s);
 			}
+
 			return s;
 		}
 		
@@ -55,9 +56,23 @@ class EndlessBehaviorSubject extends Rx.BehaviorSubject {
 		}
 		
 		findSubjectByName(subjects, name) {
-			const res = subjects.filter(s => s.name === name);
+			let res; 
+			if (name === '*') {
+				console.log('A STAR');
+				 res = subjects.filter(s => true);
+				 console.log(res);
+			} else {
+				res = subjects.filter(s => s.name === name);
+			}
+			
 			if (!res || res.length < 1) {
 			return undefined;
+			}
+
+			if (res.length > 1) {
+				console.log('Array');
+				console.log(res);
+				return Rx.Observable.combineLatest(res);
 			}
 			return res[0];
 		}
