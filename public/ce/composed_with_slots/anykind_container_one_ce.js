@@ -8,45 +8,75 @@ tpl.innerHTML = `
 <style>
 		:host {
 			display: grid;
-			grid-template-columns: auto;
-			  grid-template-rows: auto;
-			grid-gap: 20px;
+			//width: max-content;
 			padding-top: 20px;
 			padding-bottom: 20px;
 			padding-left: 40px;
 			padding-right: 40px;
-			background-color: 
+
+			grid-column-gap: 20px;
+			grid-row-gap: 20px;	
+
+			grid-template-areas: 
+			'header'
+			'body';
+
+			// grid-template-columns: auto;
+			// grid-template-rows: auto;
+
+
+			//width: minmax(min-content, 300px);
+			//width: 300px;
+			//grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+		}
+
+		#container {
+			display: grid;
+			//padding: 100px;
+			// padding-top: 60px;
+			// padding-bottom: 20px;
+			background-color: var(--main-bg-color, azure);
+
+			grid-area: body;
+			grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+			grid-column-gap: 20px;
+			grid-row-gap: 20px;	
 		}
 					
 		#headline::slotted(*) {
 			color: green;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 1;
-			  grid-row-end: 1;
+			// grid-column-start: auto;
+			// grid-column-end: auto;
+			// grid-row-start: 1;
+			// grid-row-end: 1;
+			grid-area: header;
 		}
 
 		#anyform::slotted(*) {
 			color: green;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
+			
+			//grid-column-start: auto;
+			// grid-column-end: auto;
+			// grid-row-start: 2;
+			// grid-row-end: 2;
 		}
 
 		#anytable::slotted(*) {
 			color: green;
 			//background-color: white;
 			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
+			grid-column-end: auto;
+			grid-row-start: 2;
+			grid-row-end: 2;
 		}
 
 		</style>
 		<slot name="headline" id="headline"></slot>
 		<slot name="anytable" id="anytable"></slot>
-		<slot name="anyform" id="anyform"></slot>
+		<div id="container">
+			<slot name="anyform" id="anyform"></slot>
+		</div>
 `;
 
 class AnykindContainerOneCE extends AnykindContainerBaseCE {

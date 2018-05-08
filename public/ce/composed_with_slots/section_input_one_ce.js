@@ -12,11 +12,48 @@ tpl.innerHTML = `
 			padding: 100px;
 			padding-top: 60px;
 			padding-bottom: 20px;
-			grid-template-columns: auto;
-			  grid-template-rows: auto;
+			background-color: var(--main-bg-color, azure);
+
+
+			grid-template-areas: 
+			'header'
+			'body';
+			grid-template-columns: 1fr;
+			grid-template-rows: auto;
 			grid-column-gap: 20px;
 			grid-row-gap: 20px;
+			
+		}
+
+		#container {
+			display: grid;
+			//padding: 100px;
+			// padding-top: 60px;
+			// padding-bottom: 20px;
 			background-color: var(--main-bg-color, azure);
+
+			grid-area: body;
+			grid-template-columns: repeat(2, minmax(300px, 1fr));
+
+			grid-column-gap: 20px;
+			grid-row-gap: 20px;	
+		}
+
+		/* For large screens */
+		@media (min-width: 1200px) {
+			#container {
+				display: grid;
+				//padding: 100px;
+				// padding-top: 60px;
+				// padding-bottom: 20px;
+				background-color: var(--main-bg-color, azure);
+
+				grid-area: body;
+				grid-template-columns: repeat(3, minmax(300px, 1fr));
+
+				grid-column-gap: 20px;
+				grid-row-gap: 20px;	
+			}
 		}
 		
 		/* :host([color="blue"]) ::slotted(h1) {
@@ -34,56 +71,42 @@ tpl.innerHTML = `
 		#anyheadline::slotted(*) {
 			padding-left:40px;
 			color: green;
-			grid-column-start: 1;
-			  grid-column-end: 1;
-			  grid-row-start: 1;
-			  grid-row-end: 1;
+
+			// grid-column-start: 1;
+			//   grid-column-end: 1;
+			//grid-row-start: 1;
+			//   grid-row-end: 1;
+
+			grid-area: header;
 		}
 
-		#anybutton::slotted(*) {
-			justify-self:end;
-			grid-column: 5;
-			  grid-row-start: 1;
-			  grid-row-end: 1;
-		}
-
-		#inflationcontainer::slotted(*) {
-			color: green;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
-		}
-
-		#periodcontainer::slotted(*) {
-			color: green;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
-		}
-
-		#heatcontainer::slotted(*) {
-			color: green;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
-		}
+		// #anybutton::slotted(*) {
+		// 	justify-self:end;
+		// 	grid-column: 5;
+		// 	  grid-row-start: 1;
+		// 	  grid-row-end: 1;
+		// }
 
 		#anycontainer::slotted(*) {
 			color: green;
-			grid-column-start: auto;
-			  grid-column-end: auto;
-			  grid-row-start: 2;
-			  grid-row-end: 2;
+			// grid-column-start: auto;
+			//   grid-column-end: auto;
+			//grid-row-start: 2;
+			//   grid-row-end: 2;
+			grid-row-start: > 1;
 		}
 
 		</style>
 
+
+
+		
 		<slot id="anyheadline" name="anyheadline"></slot>
+		<div id="container">
+			<slot id="anycontainer" name="anycontainer"></slot>
+		</div>
 		<slot id="anybutton" name="anybutton"></slot>
-		<slot id="anycontainer" name="anycontainer"></slot>
+
 
 		
 `;

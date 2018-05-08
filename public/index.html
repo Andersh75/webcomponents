@@ -341,6 +341,73 @@
             </anykind-container-one-ce>
 
         </section-input-one-ce>
+        <section-output-one-ce>
+            <anykind-container-v-ce slot="anycontainer">
+                <table-one-ce 
+                    period 
+                    title="Summa" 
+                    celldispatch='[
+                        { 
+                            "name":"Summa Äga", 
+                            "type":"sum", 
+                            "sb": {
+                                "element":"owntable", 
+                                "channel":"owntable-sum-year", 
+                                "subject":"sum"
+                            }, 
+                            "sr": {
+                                "extend":"year",
+                                "channel":"owntable-year",
+                                "subject":"*", 
+                                "local": {
+                                    "function":"sum$"
+                                }
+                            }
+                        }, 
+                        { 
+                            "name":"Summa Hyra", 
+                            "type":"sum", 
+                            "sb": {
+                                "element":"renttable", 
+                                "channel":"renttable-sum-year", 
+                                "subject":"sum"
+                            }, 
+                            "sr": {
+                                "extend":"year",
+                                "channel":"renttable-year",
+                                "subject":"*", 
+                                "local": {
+                                    "function":"sum$"
+                                }
+                            }
+                        }
+                    ]' 
+                    slot="anytable"
+                    sb='{"channel":"tablesum", "subject":"tablesum"}' 
+                    sr='{
+                        "channel": "period", 
+                        "subject": "length", 
+                        "local": {
+                            "function":"period$"
+                        }
+                    }'>
+                </table-one-ce>
+            </anykind-container-v-ce>
+            <anykind-container-one-ce slot="anycontainer">
+                <chart-one-ce
+                    slot="anyform"
+                    chartdata  
+                    sr='{
+                        "channel": "tablesum", 
+                        "subject": "tablesum", 
+                        "local": {
+                            "function":"renderchart$"
+                        }
+                    }'>
+                </chart-one-ce>
+                
+            </anykind-container-one-ce>
+        </section-output-one-ce>
     </div>
 
 
@@ -416,6 +483,88 @@
             </script>
 
         </section-input-one-ce>
+        <section-output-one-ce>
+            <anykind-container-v-ce slot="anycontainer">
+                <table-one-ce 
+                    period 
+                    title="Äga" 
+                    celldispatch='[
+                        { 
+                            "name":"Värme", 
+                            "type":"capitalize", 
+                            "sb": {
+                                "element":"owntable", 
+                                "channel":"owntable-year", 
+                                "subject":"own-heat-cost"
+                            }, 
+                            "sr": {
+                                "extend":"",
+                                "channel":"heat",
+                                "subject":"cost",
+                                "blacklist": {
+                                    "element": [
+                                    "renttable",
+                                    "owntable"
+                                    ]
+                                },
+                                "local": {
+                                    "function":"capitalize$", 
+                                    "capitalizer":"inflation"
+                                }
+                            }
+                        }, 
+                        { 
+                            "name":"Reparationer", 
+                            "type":"capitalize", 
+                            "sb": {
+                                "element":"owntable", 
+                                "channel":"owntable-year", 
+                                "subject":"own-repair-cost"
+                            },
+                            "sr": {
+                                "extend":"",
+                                "channel":"ownrepair",
+                                "subject":"cost",
+                                "blacklist": {
+                                    "element": [
+                                    "renttable",
+                                    "owntable"
+                                    ]
+                                },
+                                "local": {
+                                    "function":"capitalize$", 
+                                    "capitalizer":"ownrepairpriceincrease"
+                                }
+                            }
+                        }
+                    ]' 
+                    slot="anytable"
+                    sb='{"channel":"tableown", "subject":"tableown"}' 
+                    sr='{
+                        "channel": "period", 
+                        "subject": "length", 
+                        "local": {
+                            "function":"period$"
+                        }
+                    }'>
+                </table-one-ce>
+        </anykind-container-v-ce>
+        <anykind-container-one-ce slot="anycontainer">
+            <chart-one-ce
+                slot="anyform"
+                chartdata  
+                sr='{
+                    "channel": "tableown", 
+                    "subject": "tableown", 
+                    "local": {
+                        "function":"renderchart$"
+                    }
+                }'>
+            </chart-one-ce>
+            
+        </anykind-container-one-ce>
+        
+        </section-output-one-ce> 
     </div>
 
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -514,7 +663,113 @@
                 })
                 .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
             </script>
-        </section-input-one-ce>  
+        </section-input-one-ce>
+        <section-output-one-ce>
+            
+        <anykind-container-v-ce slot="anycontainer">
+            <table-one-ce 
+                period 
+                title="Hyra" 
+                celldispatch='[
+                    { 
+                        "name":"Värme", 
+                        "type":"capitalize", 
+                        "sb": {
+                            "element":"renttable", 
+                            "channel":"renttable-year", 
+                            "subject":"rent-heat-cost"
+                        }, 
+                        "sr": {
+                            "extend":"",
+                            "channel":"heat",
+                            "subject":"cost",
+                            "blacklist": {
+                                "element": [
+                                "renttable",
+                                "owntable"
+                                ]
+                            },
+                            "local": {
+                                "function":"capitalize$", 
+                                "capitalizer":"inflation"
+                            }
+                        }
+                    }, 
+                    { 
+                        "name":"Etablering", 
+                        "type":"initial", 
+                        "sb": {
+                            "element":"renttable", 
+                            "channel":"renttable-year", 
+                            "subject":"rent-establish-cost"
+                        }, 
+                        "sr": {
+                            "extend":"",
+                            "channel":"rentestablish",
+                            "subject":"cost",
+                            "blacklist": {
+                                "element": [
+                                "renttable",
+                                "owntable"
+                                ]
+                            },
+                            "local": {
+                                "function":"initial$"
+                            }
+                        }
+                    }, 
+                    { 
+                        "name":"Hyra", 
+                        "type":"capitalize", 
+                        "sb": {
+                            "element":"renttable", 
+                            "channel":"renttable-year", 
+                            "subject":"rent-rent-cost"
+                        }, 
+                        "sr": {
+                            "extend":"",
+                            "channel":"rentrent",
+                            "subject":"cost",
+                            "blacklist": {
+                                "element": [
+                                    "renttable",
+                                    "owntable"
+                                    ]
+                            },
+                            "local": {
+                                "function":"capitalize$", 
+                                "capitalizer":"inflation"
+                            }
+                        }
+                    }
+                ]' 
+                slot="anytable" 
+                sb='{"channel":"tablerent", "subject":"tablerent"}' 
+                sr='{
+                        "channel": "period", 
+                        "subject": "length", 
+                        "local": {
+                            "function":"period$"
+                        }
+                    }'>
+            </table-one-ce>
+        </anykind-container-v-ce>
+        <anykind-container-one-ce slot="anycontainer">
+            <chart-one-ce
+                slot="anyform"
+                chartdata  
+                sr='{
+                    "channel": "tablerent", 
+                    "subject": "tablerent", 
+                    "local": {
+                        "function":"renderchart$"
+                    }
+                }'>
+            </chart-one-ce>
+            
+        </anykind-container-one-ce>
+        </section-output-one-ce> 
+        
     </div>
   </div>
 
@@ -527,7 +782,7 @@
     
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
 
-    <anykind-container-v-ce slot="anycontainer">
+    <!-- <anykind-container-v-ce slot="anycontainer">
             <table-one-ce 
                 period 
                 title="Äga" 
@@ -707,9 +962,9 @@
             }'>
         </chart-one-ce>
         
-    </anykind-container-one-ce>
+    </anykind-container-one-ce> -->
 
-    <anykind-container-v-ce slot="anycontainer">
+    <!-- <anykind-container-v-ce slot="anycontainer">
         <table-one-ce 
             period 
             title="Summa" 
@@ -773,9 +1028,29 @@
             }'>
         </chart-one-ce>
         
-    </anykind-container-one-ce>
+    </anykind-container-one-ce> -->
 
-    <!-- <anykind-container-one-ce slot="anycontainer">
+    
+    
+    
+</section-output-one-ce>
+
+
+<anykind-container-one-ce slot="anycontainer">
+
+    <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
+
+    <headline-anyselect-ce title="Startår" slot="anyform">
+        <select-year-ce slot="anyselect" selectedindex="1" selectedvalue></select-inflation-ce>
+    </headline-anyselect-ce>
+
+    <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
+        <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb='{"channel":"period", "subject":"length", "element":"initial"}'></select-period-ce>
+    </headline-anyselect-ce>
+    
+</anykind-container-one-ce>
+
+<!-- <anykind-container-one-ce slot="anycontainer">
 
         <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
         
@@ -829,11 +1104,6 @@
         </chart-one-ce>
         
     </anykind-container-one-ce> -->
-
-
-    
-    
-</section-output-one-ce>
 
 
 

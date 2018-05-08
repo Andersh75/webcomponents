@@ -10,12 +10,14 @@ tpl.innerHTML = `
 	<style>
 			:host {
 				display: inline-grid;
+				//width: minmax(max-content, 1fr);
 				grid-template-columns: auto;
   				grid-template-rows: 20px auto 20px auto 20px;
 				background-color: 
 			}
 			
 			#headline {
+				white-space:nowrap;
 				color: green;
 				grid-column-start: 1;
   				grid-column-end: 1;
