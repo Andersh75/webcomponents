@@ -128,7 +128,9 @@ function headerRow(cells, title) {
 
 function normalRow(rows, cells) {
 	let tableBody = document.createElement('tbody');
+	let tableArray = [];
 	for (let i = 1; i <= rows; i++) {
+		let rowArray = [];
 
 		let cellDispatchObj = this.cellDispatchObj[i - 1];
 		
@@ -213,6 +215,8 @@ function normalRow(rows, cells) {
 
 				tableCell.appendChild(textContent);
 				tableRow.appendChild(tableCell);
+
+				rowArray.push(sbObj2);
 			}
 		} else {
 			let tableCell = document.createElement('td');
@@ -269,12 +273,17 @@ function normalRow(rows, cells) {
 				textContent.setAttribute('sr', JSON.stringify(srObj2));
 				tableCell.appendChild(textContent);
 				tableRow.appendChild(tableCell);
+				rowArray.push(sbObj2);
 			}
 		}
 
 		tableBody.appendChild(tableRow);
+		tableArray.push(rowArray);
 	}
 	this.shadowRoot.querySelector('#table').appendChild(tableBody);
+	console.log('tableArray');
+	console.log(tableArray);
+	this.ctrl.stream(tableArray);
 }
 
 

@@ -76,11 +76,24 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-	myRxmq.channel('owntable-year-1').behaviorsubject('own-repair-cost')
+	myRxmq.channel('tablesum').behaviorsubject('tablesum')
+		.do(console.log)
+		.map(x => x.data)
+		.do(console.log)
+		// .map(((doubleArray) => {
+		// 	try {
+		// 		console.log(doubleArray);
+		// 	}
+		// 	catch (error) {
+		// 		return doubleArray;
+		// 	}
+			
+		// })
+		.map(x => x.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject))))
 		.subscribe(x => {
 			console.log('from stream: ' + x);
 			console.log(x);
-		});
+		})
 
 
 
