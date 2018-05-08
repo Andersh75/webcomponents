@@ -169,8 +169,6 @@ function normalRow(rows, cells) {
 			textContent.setAttribute('title', '');
 			sbObj.year = 0;
 			let channel = h.str.adder(sbObj.channel, '-' + 0);
-			console.log('channel!');
-			console.log(channel);
 			let sbObj2 = JSON.parse(JSON.stringify(sbObj));
 			sbObj2.channel = channel;
 			textContent.setAttribute('sb', JSON.stringify(sbObj2));
@@ -180,8 +178,6 @@ function normalRow(rows, cells) {
 
 			if (srObj.extend === 'year') {
 				channel = h.str.adder(srObj.channel, '-' + 0);
-				console.log('channel!');
-				console.log(channel);
 				srObj2.channel = channel;
 			}
 			textContent.setAttribute('sr', JSON.stringify(srObj2));
@@ -197,8 +193,6 @@ function normalRow(rows, cells) {
 				textContent.setAttribute('title', '');
 				sbObj.year = j;
 				let channel = h.str.adder(sbObj.channel, '-' + j);
-				console.log('channel!');
-				console.log(channel);
 				let sbObj2 = JSON.parse(JSON.stringify(sbObj));
 				sbObj2.channel = channel;
 				textContent.setAttribute('sb', JSON.stringify(sbObj2));
@@ -209,8 +203,6 @@ function normalRow(rows, cells) {
 
 				if (srObj.extend === 'year') {
 					channel = h.str.adder(srObj.channel, '-' + j);
-					console.log('channel!');
-					console.log(channel);
 					srObj2.channel = channel;
 				}
 				textContent.setAttribute('sr', JSON.stringify(srObj2));
@@ -227,8 +219,6 @@ function normalRow(rows, cells) {
 			textContent.setAttribute('title', '');
 			sbObj.year = 0;
 			let channel = h.str.adder(sbObj.channel, '-' + 0);
-			console.log('channel!');
-			console.log(channel);
 			let sbObj2 = JSON.parse(JSON.stringify(sbObj));
 			sbObj2.channel = channel;
 			textContent.setAttribute('sb', JSON.stringify(sbObj2));
@@ -238,8 +228,6 @@ function normalRow(rows, cells) {
 
 			if (srObj.extend === 'year') {
 				channel = h.str.adder(srObj.channel, '-' + 0);
-				console.log('channel!');
-				console.log(channel);
 				srObj2.channel = channel;
 			}
 			textContent.setAttribute('sr', JSON.stringify(srObj2));
@@ -248,7 +236,7 @@ function normalRow(rows, cells) {
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
 			rowArray.push(sbObj2);
-			
+
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');
@@ -257,8 +245,6 @@ function normalRow(rows, cells) {
 				textContent.setAttribute('title', '');
 				sbObj.year = j;
 				let channel = h.str.adder(sbObj.channel, '-' + j);
-				console.log('channel!');
-				console.log(channel);
 				let sbObj2 = JSON.parse(JSON.stringify(sbObj));
 				sbObj2.channel = channel;
 				textContent.setAttribute('sb', JSON.stringify(sbObj2));
@@ -269,8 +255,6 @@ function normalRow(rows, cells) {
 
 				if (srObj.extend === 'year') {
 					channel = h.str.adder(srObj.channel, '-' + j);
-					console.log('channel!');
-					console.log(channel);
 					srObj2.channel = channel;
 				}
 
@@ -285,8 +269,6 @@ function normalRow(rows, cells) {
 		tableArray.push(rowArray);
 	}
 	this.shadowRoot.querySelector('#table').appendChild(tableBody);
-	console.log('tableArray');
-	console.log(tableArray);
 	this.ctrl.stream(tableArray);
 }
 

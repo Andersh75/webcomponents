@@ -19,6 +19,7 @@
   <script src="js/customelement3.js" type="text/javascript"></script>
   <script src="ce/primary/input_one_ce.js" type="module"></script>
   <script src="ce/primary/table_one_ce.js" type="module"></script>
+  <script src="ce/primary/chart_one_ce.js" type="module"></script>
   <!-- <script src="ce/primary/divtable_one_ce.js" type="module"></script>
   <script src="ce/primary/tr_one_ce.js" type="module"></script>
   <script src="ce/primary/td_one_ce.js" type="module"></script> -->
@@ -591,6 +592,20 @@
                 }'>
             </table-one-ce>
     </anykind-container-v-ce>
+    <anykind-container-one-ce slot="anycontainer">
+        <chart-one-ce
+            slot="anyform"
+            chartdata  
+            sr='{
+                "channel": "tableown", 
+                "subject": "tableown", 
+                "local": {
+                    "function":"renderchart$"
+                }
+            }'>
+        </chart-one-ce>
+        
+    </anykind-container-one-ce>
     <anykind-container-v-ce slot="anycontainer">
         <table-one-ce 
             period 
@@ -679,6 +694,20 @@
                 }'>
         </table-one-ce>
     </anykind-container-v-ce>
+    <anykind-container-one-ce slot="anycontainer">
+        <chart-one-ce
+            slot="anyform"
+            chartdata  
+            sr='{
+                "channel": "tablerent", 
+                "subject": "tablerent", 
+                "local": {
+                    "function":"renderchart$"
+                }
+            }'>
+        </chart-one-ce>
+        
+    </anykind-container-one-ce>
 
     <anykind-container-v-ce slot="anycontainer">
         <table-one-ce 
@@ -731,6 +760,20 @@
             }'>
         </table-one-ce>
     </anykind-container-v-ce>
+    <anykind-container-one-ce slot="anycontainer">
+        <chart-one-ce
+            slot="anyform"
+            chartdata  
+            sr='{
+                "channel": "tablesum", 
+                "subject": "tablesum", 
+                "local": {
+                    "function":"renderchart$"
+                }
+            }'>
+        </chart-one-ce>
+        
+    </anykind-container-one-ce>
 
     <!-- <anykind-container-one-ce slot="anycontainer">
 
@@ -772,15 +815,25 @@
         <headline-one-ce title="Summa Diskonterade värmekostnader" class="h5" slot="headline"></headline-one-ce>
         <headline-input-one-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-one-ce>
     </anykind-container-one-ce> -->
-    <anykind-container-one-ce slot="anycontainer">
-        <div class="ct-chart" slot="anyform"></div>
-    </anykind-container-one-ce>
+    <!-- <anykind-container-one-ce slot="anycontainer">
+        <chart-one-ce
+            slot="anyform"
+            chartdata  
+            sr='{
+                "channel": "tablesum", 
+                "subject": "tablesum", 
+                "local": {
+                    "function":"renderchart$"
+                }
+            }'>
+        </chart-one-ce>
+        
+    </anykind-container-one-ce> -->
+
 
     
     
 </section-output-one-ce>
-
-
 
 
 
