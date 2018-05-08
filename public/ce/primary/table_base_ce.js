@@ -188,6 +188,8 @@ function normalRow(rows, cells) {
 			
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
+			rowArray.push(sbObj2);
+
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');
@@ -245,6 +247,8 @@ function normalRow(rows, cells) {
 
 			tableCell.appendChild(textContent);
 			tableRow.appendChild(tableCell);
+			rowArray.push(sbObj2);
+			
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-one-ce');

@@ -111,6 +111,8 @@ class HeadlineBaseCE extends CustomElement3 {
 							this.title = Number(roundedResult);
 						}
 					});
+			} else {
+				this.title = 0;
 			}
 			
 		};

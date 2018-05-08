@@ -47,13 +47,13 @@
   <script src="ce/composed_with_slots/anykind_container_v_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/section_input_one_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/section_output_one_ce.js" type="module"></script>
-  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
   
 
   <!--<link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/parmaco-5cd88a.webflow.css" rel="stylesheet" type="text/css"> 
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">-->
+  -->
   <!-- <script src="ce/infosection.js"></script> -->
   <!-- <script src="ce/sectioncontainer.js"></script>--><!--
   
@@ -772,7 +772,15 @@
         <headline-one-ce title="Summa Diskonterade värmekostnader" class="h5" slot="headline"></headline-one-ce>
         <headline-input-one-ce title="År 0" year="0" placeholder="Antal kr/kvm..." value="" slot="anyform" sr="heat:@discountsum$"></headline-input-one-ce>
     </anykind-container-one-ce> -->
+    <anykind-container-one-ce slot="anycontainer">
+        <div class="ct-chart" slot="anyform"></div>
+    </anykind-container-one-ce>
+
+    
+    
 </section-output-one-ce>
+
+
 
 
 
@@ -906,7 +914,7 @@
 <div id="myTest"></div> -->
 
 
-
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 <script type="text/javascript" src="/js/test.js"></script>
 
 
