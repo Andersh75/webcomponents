@@ -76,10 +76,13 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
+	const combineLatest$ = function (...streams) {
+		return Rx.Observable.combineLatest(streams);
+	};
 	myRxmq.channel('tablesum').behaviorsubject('tablesum')
-		.do(console.log)
+		//.do(console.log)
 		.map(x => x.data)
-		.do(console.log)
+		// .do(console.log)
 		// .map(((doubleArray) => {
 		// 	try {
 		// 		console.log(doubleArray);
@@ -89,11 +92,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		// 	}
 			
 		// })
-		.map(x => x.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject))))
+		//.mergeMap(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+		.map(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+		.mergeMap(x => Rx.Observable.combineLatest(x))
+		.do(console.log)
+		// .mergeAll()
+		// .do(console.log)
+
+		// .map(x => x.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject))))
 		.subscribe(x => {
 			console.log('from stream: ' + x);
 			console.log(x);
-		})
+			// x.subscribe(console.log);
+
+		});
 
 
 
