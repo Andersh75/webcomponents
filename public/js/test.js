@@ -93,19 +93,51 @@ document.addEventListener('DOMContentLoaded', function () {
 			
 		// })
 		//.mergeMap(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
-		.map(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+		.map(x => x.map(item => Rx.Observable.combineLatest(item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))))
 		.mergeMap(x => Rx.Observable.combineLatest(x))
+		//.map(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+		// .mergeMap(x => Rx.Observable.combineLatest(x))
+		// .mergeMap(x => Rx.Observable.combineLatest(x))
 		.do(console.log)
 		// .mergeAll()
 		// .do(console.log)
 
-		// .map(x => x.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject))))
+		
 		.subscribe(x => {
 			console.log('from stream: ' + x);
 			console.log(x);
-			// x.subscribe(console.log);
+			//x.subscribe(console.log);
 
 		});
+
+
+		// myRxmq.channel('tablesum').behaviorsubject('tablesum')
+		// //.do(console.log)
+		// .map(x => x.data)
+		// // .do(console.log)
+		// // .map(((doubleArray) => {
+		// // 	try {
+		// // 		console.log(doubleArray);
+		// // 	}
+		// // 	catch (error) {
+		// // 		return doubleArray;
+		// // 	}
+			
+		// // })
+		// //.mergeMap(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+		// .map(x => x[0].map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+		// .mergeMap(x => Rx.Observable.combineLatest(x))
+		// .do(console.log)
+		// // .mergeAll()
+		// // .do(console.log)
+
+		// // .map(x => x.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject))))
+		// .subscribe(x => {
+		// 	console.log('from stream: ' + x);
+		// 	console.log(x);
+		// 	// x.subscribe(console.log);
+
+		// });
 
 
 
