@@ -103,6 +103,14 @@
        color: #495057;
     }
 
+    body {
+        display: grid;
+        grid-template-columns: 1fr minmax(0px, 1480px) 1fr;
+        grid-template-areas:
+		'. input .'
+        '. output .';
+    }
+
 
 
 </style>
@@ -127,121 +135,233 @@
 
   
 </head>
-<body id="body">
-<!-- <div id="buttonbox">
-    <button id="knappen">Dubbelklicka!</button>
-    <button id="knappen2">Dubbelklicka!</button>
-    <input id="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
-    <input id="sender1" value="3" placeholder="hå" style="outline:none" year="1"></input>
-    <input id="sender2" value="3" placeholder="hå" style="outline:none" year="2"></input>
-    <input id="sender3" value="3" placeholder="hå" style="outline:none" year="3"></input>
-    <input id="sender4" value="3" placeholder="hå" style="outline:none" year="4"></input>
-    <input id="sender5" value="3" placeholder="hå" style="outline:none" year="5"></input>
-    <input id="sender6" value="3" placeholder="hå" style="outline:none" year="6"></input>
-</div> -->
+<body>
 
-<!-- <div id="row0">
-    <input class="receiver" value="" placeholder="" style="outline:none" year="0"></input>
-    <input class="sender" value="Year 1" placeholder="hå" style="outline:none" year="1"></input>
-    <input class="sender" value="Year 2" placeholder="hå" style="outline:none" year="2"></input>
-    <input class="sender" value="Year 3" placeholder="hå" style="outline:none" year="3"></input>
-    <input class="sender" value="Year 4" placeholder="hå" style="outline:none" year="4"></input>
-    <input class="sender" value="Year 5" placeholder="hå" style="outline:none" year="5"></input>
-    <input class="sender" value="Year 6" placeholder="hå" style="outline:none" year="6"></input>
-</div>
-
-<div id="row1">
-    <input class="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="1"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="2"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="3"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="4"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="5"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="6"></input>
-</div>
-
-<div id="row2">
-    <input class="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="1"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="2"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="3"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="4"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="5"></input>
-    <input class="sender" value="3" placeholder="hå" style="outline:none" year="6"></input>
-</div> -->
-
-
-
-<!-- <div id="water">
-        <headline-input-ce class="sender1" title="Initial amount" value="10" placeholder="hej" style="outline:none" year="0" sb="water:amount-0"></headline-input-ce>
-        <headline-input-ce class="sender2" title="Increase" value="0.05" placeholder="hej" style="outline:none" year="0" sb="water:increase"></headline-input-ce>
-        <headline-input-ce class="sender3" title="Discount" value="0.10" placeholder="hej" style="outline:none" year="0" sb="water:discount"></headline-input-ce>
+        <section-input-one-ce id="common" listener="cleargeneralinputsection@clearanykindcontainers">
         
-</div>
+                <headline-one-ce title="Allmänt" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+    
+                <anykind-container-one-ce slot="anycontainer">
+    
+                    <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
+    
+                    <headline-anyselect-ce title="Startår" slot="anyform">
+                        <select-year-ce slot="anyselect" selectedindex="1" selectedvalue></select-inflation-ce>
+                    </headline-anyselect-ce>
+    
+                    <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
+                        <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb='{"channel":"period", "subject":"length", "element":"initial"}'></select-period-ce>
+                    </headline-anyselect-ce>
+                    
+                </anykind-container-one-ce>
+    
+                <anykind-container-one-ce slot="anycontainer">
+    
+                    <headline-one-ce title="Inflation" class="h5" slot="headline"></headline-one-ce>
+    
+                    <headline-anyselect-ce title="Inflation" slot="anyform" datatarget="inflation">
+                        <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"inflation", "subject":"rate", "element":"initial"}'></select-inflation-ce>
+                    </headline-anyselect-ce> 
+    
+                </anykind-container-one-ce> 
+            
+                <anykind-container-one-ce slot="anycontainer">
+    
+                    <headline-one-ce title="Kalkylränta" class="h5" slot="headline"></headline-one-ce>
+    
+                    <headline-anyselect-ce title="Kalkylränta" slot="anyform">
+                        <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"discount", "subject":"rate", "element":"initial"}'></select-discount-ce>
+                    </headline-anyselect-ce>
+    
+                </anykind-container-one-ce> 
+            
+                <anykind-container-one-ce slot="anycontainer">
+    
+                    <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
+    
+                    <headline-anyinput-ce title="Antal kWh/kvm/år" slot="anyform">
+                        <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb='{"channel":"heat", "subject":"kwh", "element":"initial"}'></input-number-ce>
+                    </headline-anyinput-ce>
+    
+                    <headline-anyselect-ce title="Kostnad per kWh" slot="anyform">
+                        <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"heat", "subject":"price", "element":"initial"}'></select-kwhprice-ce>
+                    </headline-anyselect-ce>
+    
+                </anykind-container-one-ce>
+                <script>
+                    const combineLatestHeat$ = function(...streams) {
+                    return Rx.Observable.combineLatest(streams);
+                    };
+                    combineLatestHeat$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))
+                    .map(([e1, e2]) => {
+                        try {
+                            return [e1.data, e2.data];
+                        } catch (error) {
+                            return [e1, e2];
+                        }
+                    })
+                    .map(([e1, e2]) => [Number(e1), Number(e2)])		
+                    .map(([e1, e2]) => {
+                        let obj = {};
+                        obj.data = e1 * e2;
+                        obj.detail = {};
+                        obj.detail.channel = 'heat';
+                        obj.detail.subject = 'cost;'
+                        obj.detail.element = 'initial';
+                        return obj;
+                    })
+                    .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
+                </script>
+                
+                <anykind-container-one-ce slot="anycontainer">
+    
+                    <headline-one-ce title="Brukare" class="h5" slot="headline"></headline-one-ce>
+    
+                    <headline-anyinput-ce title="Antal brukare" slot="anyform">
+                        <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb='{"channel":"users", "subject":"cost", "element":"initial"}'></input-number-ce>
+                    </headline-anyinput-ce>
+    
+                </anykind-container-one-ce>
+    
+            </section-input-one-ce>
+            <!-- <section-output-one-ce>
+                <anykind-container-v-ce slot="anycontainer">
+                    <table-one-ce 
+                        period 
+                        title="Summa" 
+                        celldispatch='[
+                            { 
+                                "name":"Summa Äga", 
+                                "type":"sum", 
+                                "sb": {
+                                    "element":"owntable", 
+                                    "channel":"owntable-sum-year", 
+                                    "subject":"sum"
+                                }, 
+                                "sr": {
+                                    "extend":"year",
+                                    "channel":"owntable-year",
+                                    "subject":"*", 
+                                    "local": {
+                                        "function":"sum$"
+                                    }
+                                }
+                            }, 
+                            { 
+                                "name":"Summa Hyra", 
+                                "type":"sum", 
+                                "sb": {
+                                    "element":"renttable", 
+                                    "channel":"renttable-sum-year", 
+                                    "subject":"sum"
+                                }, 
+                                "sr": {
+                                    "extend":"year",
+                                    "channel":"renttable-year",
+                                    "subject":"*", 
+                                    "local": {
+                                        "function":"sum$"
+                                    }
+                                }
+                            }
+                        ]' 
+                        slot="anytable"
+                        sb='{"channel":"tablesum", "subject":"tablesum"}' 
+                        sr='{
+                            "channel": "period", 
+                            "subject": "length", 
+                            "local": {
+                                "function":"period$"
+                            }
+                        }'>
+                    </table-one-ce>
+                </anykind-container-v-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <chart-one-ce
+                        slot="anyform"
+                        chartdata  
+                        sr='{
+                            "channel": "tablesum", 
+                            "subject": "tablesum", 
+                            "local": {
+                                "function":"renderchart$"
+                            }
+                        }'>
+                    </chart-one-ce>
+                    
+                </anykind-container-one-ce>
+            </section-output-one-ce> -->
+<!-- 
+<section-input-one-ce>
 
-<div id="row3">
-        <headline-input-ce class="receiver" title="Year 1" value="" placeholder="hå" style="outline:none" year="1"></headline-input-ce>
-        <headline-input-ce class="receiver" title="Year 2" value="" placeholder="hå" style="outline:none" year="2"></headline-input-ce>
-        <headline-input-ce class="receiver" title="Year 3" value="" placeholder="hå" style="outline:none" year="3"></headline-input-ce>
-        <headline-input-ce class="receiver" title="Year 4" value="" placeholder="hå" style="outline:none" year="4"></headline-input-ce> 
-</div>
+        
+    <anykind-container-one-ce slot="anycontainer">
+    
+        <input slot="anyform">1</input>
+        <input slot="anyform">2</input>
+        <input slot="anyform">3</input>
+        
+    </anykind-container-one-ce> 
 
-<div id="row3">
-    <headline-input-ce class="receiver" title="Amount Year 1" value="" placeholder="hå" style="outline:none" year="1" sr="water:amount-0@capitalize$" sb="water:amount-1"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Amount Year 2" value="" placeholder="hå" style="outline:none" year="2" sr="water:amount-0@capitalize$" sb="water:amount-2"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Amount Year 3" value="" placeholder="hå" style="outline:none" year="3" sr="water:amount-0@capitalize$" sb="water:amount-3"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Amount Year 4" value="" placeholder="hå" style="outline:none" year="4" sr="water:amount-0@capitalize$" sb="water:amount-4"></headline-input-ce> 
-</div>
+    <anykind-container-one-ce slot="anycontainer">
+    
+            <input slot="anyform">1</input>
+            <input slot="anyform">2</input>
+            <input slot="anyform">3</input>
+            
+        </anykind-container-one-ce> 
 
+        <anykind-container-one-ce slot="anycontainer">
+    
+                <input slot="anyform">1</input>
+                <input slot="anyform">2</input>
+                <input slot="anyform">3</input>
+                
+            </anykind-container-one-ce>
+            <anykind-container-one-ce slot="anycontainer">
+    
+                    <input slot="anyform">1</input>
+                    <input slot="anyform">2</input>
+                    <input slot="anyform">3</input>
+                    
+                </anykind-container-one-ce> 
 
-
-<div id="discountedRow3">
-    <headline-input-ce class="receiver" title="Discount year 1" value="" placeholder="hå" style="outline:none" year="1" sr="water:amount-1@discount$" sb="water:discount-1"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Discount year 2" value="" placeholder="hå" style="outline:none" year="2" sr="water:amount-2@discount$" sb="water:discount-2"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Discount year 3" value="" placeholder="hå" style="outline:none" year="3" sr="water:amount-3@discount$" sb="water:discount-3"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Discount year 4" value="" placeholder="hå" style="outline:none" year="4" sr="water:amount-4@discount$" sb="water:discount-4"></headline-input-ce>
-    <headline-input-ce class="receiver" title="Discount sum" value="" placeholder="hå" style="outline:none" year="4" sr="water:@discountsum$"></headline-input-ce> 
-</div>
- -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <!-- <headline-input-one-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb=""></headline-input-base-ce> -->
- <!-- <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce> -->
-
+                <anykind-container-one-ce slot="anycontainer">
+    
+                        <input slot="anyform">1</input>
+                        <input slot="anyform">2</input>
+                        <input slot="anyform">3</input>
+                        
+                    </anykind-container-one-ce>
+                    <anykind-container-one-ce slot="anycontainer">
+            
+                            <input slot="anyform">1</input>
+                            <input slot="anyform">2</input>
+                            <input slot="anyform">3</input>
+                            
+                        </anykind-container-one-ce> 
 
 
 
 
-
-
- <!-- <anykind-container-ce>
-    <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
-    <headline-input-base-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-base-ce>
-</anykind-container-ce>   -->
+</section-input-one-ce> -->
 
 
 
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+
+
+
+
+
+
+
+
+
+<!-- STARTS HERE -->
+
+
+<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="allmänt" aria-selected="true">Allmänt</a>
     </li>
@@ -251,7 +371,7 @@
     <li class="nav-item">
       <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="hyra" aria-selected="false">Hyra</a>
     </li>
-  </ul>
+  </ul> 
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
         <section-input-one-ce id="common" listener="cleargeneralinputsection@clearanykindcontainers">
@@ -774,13 +894,40 @@
   </div>
 
         
-  
+  -->
 
 
 
+  <!-- ENDS HERE -->
+
+<!-- 
 <section-output-one-ce>
+
+
+
+
+
     
     <headline-one-ce title="Summering" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+
+
+
+
+<anykind-container-one-ce slot="anycontainer">
+
+    <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
+
+    <headline-anyselect-ce title="Startår" slot="anyform">
+        <select-year-ce slot="anyselect" selectedindex="1" selectedvalue></select-inflation-ce>
+    </headline-anyselect-ce>
+
+    <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
+        <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb='{"channel":"period", "subject":"length", "element":"initial"}'></select-period-ce>
+    </headline-anyselect-ce>
+    
+</anykind-container-one-ce>
+
+</section-output-one-ce> -->
 
     <!-- <anykind-container-v-ce slot="anycontainer">
             <table-one-ce 
@@ -1033,22 +1180,7 @@
     
     
     
-</section-output-one-ce>
 
-
-<anykind-container-one-ce slot="anycontainer">
-
-    <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
-
-    <headline-anyselect-ce title="Startår" slot="anyform">
-        <select-year-ce slot="anyselect" selectedindex="1" selectedvalue></select-inflation-ce>
-    </headline-anyselect-ce>
-
-    <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
-        <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb='{"channel":"period", "subject":"length", "element":"initial"}'></select-period-ce>
-    </headline-anyselect-ce>
-    
-</anykind-container-one-ce>
 
 <!-- <anykind-container-one-ce slot="anycontainer">
 
@@ -1235,6 +1367,120 @@
 </section-ce>
 
 <div id="myTest"></div> -->
+
+
+<!-- <div id="buttonbox">
+    <button id="knappen">Dubbelklicka!</button>
+    <button id="knappen2">Dubbelklicka!</button>
+    <input id="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
+    <input id="sender1" value="3" placeholder="hå" style="outline:none" year="1"></input>
+    <input id="sender2" value="3" placeholder="hå" style="outline:none" year="2"></input>
+    <input id="sender3" value="3" placeholder="hå" style="outline:none" year="3"></input>
+    <input id="sender4" value="3" placeholder="hå" style="outline:none" year="4"></input>
+    <input id="sender5" value="3" placeholder="hå" style="outline:none" year="5"></input>
+    <input id="sender6" value="3" placeholder="hå" style="outline:none" year="6"></input>
+</div> -->
+
+<!-- <div id="row0">
+    <input class="receiver" value="" placeholder="" style="outline:none" year="0"></input>
+    <input class="sender" value="Year 1" placeholder="hå" style="outline:none" year="1"></input>
+    <input class="sender" value="Year 2" placeholder="hå" style="outline:none" year="2"></input>
+    <input class="sender" value="Year 3" placeholder="hå" style="outline:none" year="3"></input>
+    <input class="sender" value="Year 4" placeholder="hå" style="outline:none" year="4"></input>
+    <input class="sender" value="Year 5" placeholder="hå" style="outline:none" year="5"></input>
+    <input class="sender" value="Year 6" placeholder="hå" style="outline:none" year="6"></input>
+</div>
+
+<div id="row1">
+    <input class="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="1"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="2"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="3"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="4"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="5"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="6"></input>
+</div>
+
+<div id="row2">
+    <input class="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="1"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="2"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="3"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="4"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="5"></input>
+    <input class="sender" value="3" placeholder="hå" style="outline:none" year="6"></input>
+</div> -->
+
+
+
+<!-- <div id="water">
+        <headline-input-ce class="sender1" title="Initial amount" value="10" placeholder="hej" style="outline:none" year="0" sb="water:amount-0"></headline-input-ce>
+        <headline-input-ce class="sender2" title="Increase" value="0.05" placeholder="hej" style="outline:none" year="0" sb="water:increase"></headline-input-ce>
+        <headline-input-ce class="sender3" title="Discount" value="0.10" placeholder="hej" style="outline:none" year="0" sb="water:discount"></headline-input-ce>
+        
+</div>
+
+<div id="row3">
+        <headline-input-ce class="receiver" title="Year 1" value="" placeholder="hå" style="outline:none" year="1"></headline-input-ce>
+        <headline-input-ce class="receiver" title="Year 2" value="" placeholder="hå" style="outline:none" year="2"></headline-input-ce>
+        <headline-input-ce class="receiver" title="Year 3" value="" placeholder="hå" style="outline:none" year="3"></headline-input-ce>
+        <headline-input-ce class="receiver" title="Year 4" value="" placeholder="hå" style="outline:none" year="4"></headline-input-ce> 
+</div>
+
+<div id="row3">
+    <headline-input-ce class="receiver" title="Amount Year 1" value="" placeholder="hå" style="outline:none" year="1" sr="water:amount-0@capitalize$" sb="water:amount-1"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Amount Year 2" value="" placeholder="hå" style="outline:none" year="2" sr="water:amount-0@capitalize$" sb="water:amount-2"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Amount Year 3" value="" placeholder="hå" style="outline:none" year="3" sr="water:amount-0@capitalize$" sb="water:amount-3"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Amount Year 4" value="" placeholder="hå" style="outline:none" year="4" sr="water:amount-0@capitalize$" sb="water:amount-4"></headline-input-ce> 
+</div>
+
+
+
+<div id="discountedRow3">
+    <headline-input-ce class="receiver" title="Discount year 1" value="" placeholder="hå" style="outline:none" year="1" sr="water:amount-1@discount$" sb="water:discount-1"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Discount year 2" value="" placeholder="hå" style="outline:none" year="2" sr="water:amount-2@discount$" sb="water:discount-2"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Discount year 3" value="" placeholder="hå" style="outline:none" year="3" sr="water:amount-3@discount$" sb="water:discount-3"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Discount year 4" value="" placeholder="hå" style="outline:none" year="4" sr="water:amount-4@discount$" sb="water:discount-4"></headline-input-ce>
+    <headline-input-ce class="receiver" title="Discount sum" value="" placeholder="hå" style="outline:none" year="4" sr="water:@discountsum$"></headline-input-ce> 
+</div>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- <headline-input-one-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb=""></headline-input-base-ce> -->
+ <!-- <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce> -->
+
+
+
+
+
+
+
+ <!-- <anykind-container-ce>
+    <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
+    <headline-input-base-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-base-ce>
+</anykind-container-ce>   -->
+
+
+
 
 
 <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>

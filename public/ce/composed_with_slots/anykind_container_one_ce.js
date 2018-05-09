@@ -5,17 +5,19 @@ tpl.innerHTML = `
 <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+
 <style>
 		:host {
 			display: grid;
-			//width: max-content;
 			padding-top: 20px;
 			padding-bottom: 20px;
-			padding-left: 40px;
-			padding-right: 40px;
-
-			grid-column-gap: 20px;
-			grid-row-gap: 20px;	
+			// padding-left: 40px;
+			// padding-right: 40px;
+			//max-width: 400px;
+			//grid-template-columns: minmax(200px, 400px));
+			grid-template-rows: 48px 1fr;
+			// grid-column-gap: 20px;
+			// grid-row-gap: 20px;	
 
 			grid-template-areas: 
 			'header'
@@ -27,34 +29,34 @@ tpl.innerHTML = `
 
 			//width: minmax(min-content, 300px);
 			//width: 300px;
-			//grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+			
+		}
+		#headline::slotted(*) {
+			color: green;
+			grid-area: header;
+			height: 24px;
+			
 		}
 
 		#container {
-			display: grid;
+			//display: grid;
 			//padding: 100px;
 			// padding-top: 60px;
 			// padding-bottom: 20px;
 			background-color: var(--main-bg-color, azure);
 
 			grid-area: body;
-			grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+			//grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 
-			grid-column-gap: 20px;
-			grid-row-gap: 20px;	
+			// grid-column-gap: 20px;
+			// grid-row-gap: 20px;	
 		}
-					
-		#headline::slotted(*) {
-			color: green;
-			// grid-column-start: auto;
-			// grid-column-end: auto;
-			// grid-row-start: 1;
-			// grid-row-end: 1;
-			grid-area: header;
-		}
+
 
 		#anyform::slotted(*) {
 			color: green;
+			display: block;
+
 			
 			//grid-column-start: auto;
 			// grid-column-end: auto;
@@ -62,14 +64,24 @@ tpl.innerHTML = `
 			// grid-row-end: 2;
 		}
 
-		#anytable::slotted(*) {
-			color: green;
-			//background-color: white;
-			grid-column-start: auto;
-			grid-column-end: auto;
-			grid-row-start: 2;
-			grid-row-end: 2;
-		}
+
+
+
+
+
+					
+		
+
+
+
+		// #anytable::slotted(*) {
+		// 	color: green;
+		// 	//background-color: white;
+		// 	grid-column-start: auto;
+		// 	grid-column-end: auto;
+		// 	grid-row-start: 2;
+		// 	grid-row-end: 2;
+		// }
 
 		</style>
 		<slot name="headline" id="headline"></slot>
@@ -77,7 +89,13 @@ tpl.innerHTML = `
 		<div id="container">
 			<slot name="anyform" id="anyform"></slot>
 		</div>
+		
+
 `;
+
+{/* <div id="container">
+			
+</div> */}
 
 class AnykindContainerOneCE extends AnykindContainerBaseCE {
 
