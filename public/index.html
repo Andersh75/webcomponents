@@ -47,7 +47,8 @@
   <script src="ce/composed_with_slots/anykind_container_one_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/anykind_container_v_ce.js" type="module"></script>
   <script src="ce/composed_with_slots/section_input_one_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/section_output_one_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/section_one_column_ce.js" type="module"></script>
+  <script src="ce/composed_with_slots/section_two_column_ce.js" type="module"></script>
   <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
   
@@ -102,13 +103,64 @@
         a, a:hover {
        color: #495057;
     }
-
-    body {
+    /* window smaller than 600px */
+    #wrapper {
         display: grid;
-        grid-template-columns: 1fr minmax(0px, 1480px) 1fr;
+        grid-template-columns: 1fr minmax(0px, 280px) 1fr;
         grid-template-areas:
-		'. input .'
-        '. output .';
+        '. main .';
+    }
+
+    /* window larger than 760px */
+	@media (min-width: 760px) {
+        #wrapper {
+            display: grid;
+            grid-template-columns: 1fr minmax(0px, 760px) 1fr;
+            grid-template-areas:
+            '. main .';
+        }
+    }
+    /* large screen larger than 1480px */
+	@media (min-width: 1480px) {
+        #wrapper {
+            display: grid;
+            grid-template-columns: 1fr minmax(0px, 1480px) 1fr;
+            grid-template-areas:
+            '. main .';
+        }
+    }
+
+    #main {
+        display: grid;
+        background-color: azure;
+        grid-area: main;
+        grid-row-gap: 40px;
+        grid-template-areas:
+        'input'
+        'onecolumn'
+        'twocolumn';
+    }
+
+    @media (min-width: 1480px) {
+        #main {
+            display: grid;
+            background-color: azure;
+            grid-area: main;
+            grid-row-gap: 40px;
+            grid-template-areas:
+            'input'
+            'onecolumn'
+            'twocolumn';
+        }
+    }
+
+    #header {
+        grid-area: header;
+    }
+    
+
+    #footer {
+        grid-area: footer;
     }
 
 
@@ -136,7 +188,9 @@
   
 </head>
 <body>
-
+        <div id="wrapper">
+                <div id="header"></div>
+                <div id="main">
         <section-input-one-ce id="common" listener="cleargeneralinputsection@clearanykindcontainers">
         
                 <headline-one-ce title="Allmänt" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
@@ -224,8 +278,11 @@
                 </anykind-container-one-ce>
     
             </section-input-one-ce>
-            <!-- <section-output-one-ce>
+
+                <section-one-column-ce>
+                        <headline-one-ce title="Tabell" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
                 <anykind-container-v-ce slot="anycontainer">
+                        <headline-one-ce title="Tabellrubrik" class="h5" slot="headline"></headline-one-ce>
                     <table-one-ce 
                         period 
                         title="Summa" 
@@ -275,8 +332,15 @@
                             }
                         }'>
                     </table-one-ce>
+                    
                 </anykind-container-v-ce>
+                
+            </section-one-column-ce>
+
+            <section-two-column-ce>
+                    <headline-one-ce title="Diagram" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
                 <anykind-container-one-ce slot="anycontainer">
+                        <headline-one-ce title="Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
                     <chart-one-ce
                         slot="anyform"
                         chartdata  
@@ -290,7 +354,27 @@
                     </chart-one-ce>
                     
                 </anykind-container-one-ce>
-            </section-output-one-ce> -->
+                <anykind-container-one-ce slot="anycontainer">
+                        <chart-one-ce
+                            slot="anyform"
+                            chartdata  
+                            sr='{
+                                "channel": "tablesum", 
+                                "subject": "tablesum", 
+                                "local": {
+                                    "function":"renderchart$"
+                                }
+                            }'>
+                        </chart-one-ce>
+                        
+                    </anykind-container-one-ce>
+            </section-two-column-ce>
+
+        
+
+        </div>
+        <div id="footer"></div>
+        </div>
 <!-- 
 <section-input-one-ce>
 
@@ -461,7 +545,7 @@
             </anykind-container-one-ce>
 
         </section-input-one-ce>
-        <section-output-one-ce>
+        <section-one-column-ce>
             <anykind-container-v-ce slot="anycontainer">
                 <table-one-ce 
                     period 
@@ -527,7 +611,7 @@
                 </chart-one-ce>
                 
             </anykind-container-one-ce>
-        </section-output-one-ce>
+        </section-one-column-ce>
     </div>
 
 
@@ -603,7 +687,7 @@
             </script>
 
         </section-input-one-ce>
-        <section-output-one-ce>
+        <section-one-column-ce>
             <anykind-container-v-ce slot="anycontainer">
                 <table-one-ce 
                     period 
@@ -684,7 +768,7 @@
             
         </anykind-container-one-ce>
         
-        </section-output-one-ce> 
+        </section-one-column-ce> 
     </div>
 
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -784,7 +868,7 @@
                 .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
             </script>
         </section-input-one-ce>
-        <section-output-one-ce>
+        <section-one-column-ce>
             
         <anykind-container-v-ce slot="anycontainer">
             <table-one-ce 
@@ -888,7 +972,7 @@
             </chart-one-ce>
             
         </anykind-container-one-ce>
-        </section-output-one-ce> 
+        </section-one-column-ce> 
         
     </div>
   </div>
@@ -901,7 +985,7 @@
   <!-- ENDS HERE -->
 
 <!-- 
-<section-output-one-ce>
+<section-one-column-ce>
 
 
 
@@ -927,7 +1011,7 @@
     
 </anykind-container-one-ce>
 
-</section-output-one-ce> -->
+</section-one-column-ce> -->
 
     <!-- <anykind-container-v-ce slot="anycontainer">
             <table-one-ce 
