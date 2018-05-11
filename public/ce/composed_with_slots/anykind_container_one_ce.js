@@ -24,6 +24,7 @@ tpl.innerHTML = `
 
 		#container {
 			background-color: var(--main-bg-color, azure);
+			overflow: scroll;
 			grid-area: body;
 		}
 		
@@ -37,6 +38,7 @@ tpl.innerHTML = `
 		<slot name="headline" id="headline"></slot>
 		<div id="container">
 			<slot name="anyform" id="anyform"></slot>
+			<slot name="anytable" id="anytable"></slot>
 		</div>
 `;
 

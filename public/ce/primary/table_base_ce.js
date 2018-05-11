@@ -43,7 +43,7 @@ class TableBaseCE extends CustomElement3 {
 
 
 		//local events initiated by global stream
-		this.ctrl.period$ = function (e) {
+		this.ctrl.rendertable$ = function (e) {
 			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
 				.map((e1) => {
 					try {

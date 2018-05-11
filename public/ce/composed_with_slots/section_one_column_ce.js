@@ -7,7 +7,6 @@ tpl.innerHTML = `
 
 	<style>
 	:host {
-		grid-area: onecolumn;
 		background-color: var(--main-bg-color, azure);
 		display: none;
 		grid-template-columns: minmax(0px, 280px);

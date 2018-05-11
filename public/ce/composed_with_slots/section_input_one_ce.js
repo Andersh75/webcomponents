@@ -9,7 +9,6 @@ tpl.innerHTML = `
 <style>
 	:host {
 		padding-top: 40px;
-		grid-area: input;
 		background-color: var(--main-bg-color, azure);
 		display: grid;
 		grid-template-columns: minmax(0px, 280px);

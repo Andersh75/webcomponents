@@ -2,37 +2,38 @@
 <!--  This site was created in Webflow. http://www.webflow.com  -->
 <!--  Last Published: Tue Jan 09 2018 15:12:51 GMT+0000 (UTC)  -->
 <html data-wf-page="5a53e8f702eb7600018da9b7" data-wf-site="5a53e8f702eb7600018da9b6">
+
 <head>
-  <meta charset="utf-8">
-  <title>Parmaco</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport">
-  <meta content="Webflow" name="generator">
-  <link href="css/normalize.css" rel="stylesheet" type="text/css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.10/Rx.min.js"></script>
-  <script src="js/rxmq.js" type="text/javascript"></script>
-  <script src="js/curry.js" type="text/javascript"></script>
-  <script type="module" src="js/inputce2.js"></script>
-  <!-- <script src="js/inputce.js"></script> -->
-  <script src="js/helper.js" type="text/javascript"></script>
-  <!-- <script src="js/customelement.js" type="text/javascript"></script>
+    <meta charset="utf-8">
+    <title>Parmaco</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Webflow" name="generator">
+    <link href="css/normalize.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.10/Rx.min.js"></script>
+    <script src="js/rxmq.js" type="text/javascript"></script>
+    <script src="js/curry.js" type="text/javascript"></script>
+    <script type="module" src="js/inputce2.js"></script>
+    <!-- <script src="js/inputce.js"></script> -->
+    <script src="js/helper.js" type="text/javascript"></script>
+    <!-- <script src="js/customelement.js" type="text/javascript"></script>
   <script src="js/customelement2.js" type="text/javascript"></script> -->
-  <script src="js/customelement3.js" type="text/javascript"></script>
-  <script src="ce/primary/input_one_ce.js" type="module"></script>
-  <script src="ce/primary/table_one_ce.js" type="module"></script>
-  <script src="ce/primary/chart_one_ce.js" type="module"></script>
-  <!-- <script src="ce/primary/divtable_one_ce.js" type="module"></script>
+    <script src="js/customelement3.js" type="text/javascript"></script>
+    <script src="ce/primary/input_one_ce.js" type="module"></script>
+    <script src="ce/primary/table_one_ce.js" type="module"></script>
+    <script src="ce/primary/chart_one_ce.js" type="module"></script>
+    <!-- <script src="ce/primary/divtable_one_ce.js" type="module"></script>
   <script src="ce/primary/tr_one_ce.js" type="module"></script>
   <script src="ce/primary/td_one_ce.js" type="module"></script> -->
-  <script src="ce/primary/input_number_ce.js" type="module"></script>
-  <script src="ce/primary/select_one_ce.js" type="module"></script>
-  <script src="ce/primary/select_year_ce.js" type="module"></script>
-  <script src="ce/primary/select_period_ce.js" type="module"></script>
-  <script src="ce/primary/select_inflation_ce.js" type="module"></script>
-  <script src="ce/primary/select_discount_ce.js" type="module"></script>
-  <script src="ce/primary/select_kwhprice_ce.js" type="module"></script>
-  <script src="ce/primary/headline_one_ce.js" type="module"></script>
-  <script src="ce/primary/headline_label_ce.js" type="module"></script>
-  <!-- <script src="ce/primary/button_one_ce.js" type="module"></script>
+    <script src="ce/primary/input_number_ce.js" type="module"></script>
+    <script src="ce/primary/select_one_ce.js" type="module"></script>
+    <script src="ce/primary/select_year_ce.js" type="module"></script>
+    <script src="ce/primary/select_period_ce.js" type="module"></script>
+    <script src="ce/primary/select_inflation_ce.js" type="module"></script>
+    <script src="ce/primary/select_discount_ce.js" type="module"></script>
+    <script src="ce/primary/select_kwhprice_ce.js" type="module"></script>
+    <script src="ce/primary/headline_one_ce.js" type="module"></script>
+    <script src="ce/primary/headline_label_ce.js" type="module"></script>
+    <!-- <script src="ce/primary/button_one_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_input_base_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_input_one_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_input_number_ce.js" type="module"></script>
@@ -42,251 +43,462 @@
   <script src="ce/composed_without_slots/headline_select_inflation_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_select_discount_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_select_kwhprice_ce.js" type="module"></script> -->
-  <script src="ce/composed_with_slots/headline_anyselect_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/headline_anyinput_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/anykind_container_one_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/anykind_container_v_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/section_input_one_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/section_one_column_ce.js" type="module"></script>
-  <script src="ce/composed_with_slots/section_two_column_ce.js" type="module"></script>
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
-  
+    <script src="ce/composed_with_slots/headline_anyselect_ce.js" type="module"></script>
+    <script src="ce/composed_with_slots/headline_anyinput_ce.js" type="module"></script>
+    <script src="ce/composed_with_slots/anykind_container_one_ce.js" type="module"></script>
+    <script src="ce/composed_with_slots/anykind_container_v_ce.js" type="module"></script>
+    <script src="ce/composed_with_slots/section_input_one_ce.js" type="module"></script>
+    <script src="ce/composed_with_slots/section_one_column_ce.js" type="module"></script>
+    <script src="ce/composed_with_slots/section_two_column_ce.js" type="module"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
 
-  <!--<link href="css/webflow.css" rel="stylesheet" type="text/css">
+
+    <!--<link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/parmaco-5cd88a.webflow.css" rel="stylesheet" type="text/css"> 
   -->
-  <!-- <script src="ce/infosection.js"></script> -->
-  <!-- <script src="ce/sectioncontainer.js"></script>--><!--
+    <!-- <script src="ce/infosection.js"></script> -->
+    <!-- <script src="ce/sectioncontainer.js"></script>-->
+    <!--
   
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
-  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
-  <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
-  <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<script>
-    // import { PI } from 'js/inputce.js';
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        ! function (o, c) {
+            var n = c.documentElement,
+                t = " w-mod-";
+            n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className +=
+                t + "touch")
+        }(window, document);
+    </script>
+    <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+        crossorigin="anonymous"></script>
+    <script>
+        // import { PI } from 'js/inputce.js';
 
-    // alert(PI);
-
-    
-    function getSlot(name, that) {
-		return that.shadowRoot.querySelector("slot[name=" + name + "]");
-    }
-
-    //NOT DONE
-    function defineElement(theClass, className) {
-		console.log('hej');
-		console.log(theClass.name);
-		window.customElements.define(className, theClass);
-    }
+        // alert(PI);
 
 
-    var startyear = "hej";
+        function getSlot(name, that) {
+            return that.shadowRoot.querySelector("slot[name=" + name + "]");
+        }
 
-    
+        //NOT DONE
+        function defineElement(theClass, className) {
+            console.log('hej');
+            console.log(theClass.name);
+            window.customElements.define(className, theClass);
+        }
 
-</script>
+
+        var startyear = "hej";
+    </script>
 
 
-<style>
-    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-        background-color: azure;
-    }
+    <style>
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            background-color: azure;
+        }
 
-    #myTab {
-        padding-left: 100px;
-    }
+        #myTab {
+            padding-left: 100px;
+        }
 
-        a, a:hover {
-       color: #495057;
-    }
-    /* window smaller than 600px */
-    #wrapper {
-        display: grid;
-        grid-template-columns: 1fr minmax(0px, 280px) 1fr;
-        grid-template-areas:
-        '. main .';
-    }
+        a,
+        a:hover {
+            color: #495057;
+        }
 
-    /* window larger than 760px */
-	@media (min-width: 760px) {
+        #common-input {
+            grid-area: common-input;
+        }
+
+        #own-input {
+            grid-area: own-input;
+        }
+
+        #rent-input {
+            grid-area: rent-input;
+        }
+
+        #sum-table {
+            grid-area: sum-table;
+        }
+
+        #own-table {
+            grid-area: own-table;
+        }
+
+        #rent-table {
+            grid-area: rent-table;
+        }
+
+        #sum-diagram {
+            grid-area: sum-diagram;
+        }
+
+        #own-diagram {
+            grid-area: own-diagram;
+        }
+
+        #rent-diagram {
+            grid-area: rent-diagram;
+        }
+
+        /* window smaller than 600px */
+
         #wrapper {
             display: grid;
-            grid-template-columns: 1fr minmax(0px, 760px) 1fr;
-            grid-template-areas:
-            '. main .';
+            grid-template-columns: 1fr minmax(0px, 280px) 1fr;
+            grid-template-areas: '. main .';
         }
-    }
-    /* large screen larger than 1480px */
-	@media (min-width: 1480px) {
-        #wrapper {
-            display: grid;
-            grid-template-columns: 1fr minmax(0px, 1480px) 1fr;
-            grid-template-areas:
-            '. main .';
+
+        /* window larger than 760px */
+
+        @media (min-width: 760px) {
+            #wrapper {
+                display: grid;
+                grid-template-columns: 1fr minmax(0px, 760px) 1fr;
+                grid-template-areas: '. main .';
+            }
         }
-    }
 
-    #main {
-        display: grid;
-        background-color: azure;
-        grid-area: main;
-        grid-row-gap: 40px;
-        grid-template-areas:
-        'input'
-        'onecolumn'
-        'twocolumn';
-    }
+        /* large screen larger than 1480px */
 
-    @media (min-width: 1480px) {
+        @media (min-width: 1480px) {
+            #wrapper {
+                display: grid;
+                grid-template-columns: 1fr minmax(0px, 1480px) 1fr;
+                grid-template-areas: '. main .';
+            }
+        }
+
         #main {
             display: grid;
             background-color: azure;
             grid-area: main;
             grid-row-gap: 40px;
-            grid-template-areas:
-            'input'
-            'onecolumn'
-            'twocolumn';
+            grid-template-areas: 'common-input' 'own-input' 'rent-input' 'sum-table' 'own-table' 'rent-table' 'sum-diagram' 'own-diagram' 'rent-diagram';
         }
-    }
 
-    #header {
-        grid-area: header;
-    }
-    
+        @media (min-width: 1480px) {
+            #main {
+                display: grid;
+                background-color: azure;
+                grid-area: main;
+                grid-row-gap: 40px;
+                grid-template-areas: 'common-input' 'own-input' 'rent-input' 'sum-table' 'own-table''rent-table' 'sum-diagram' 'own-diagram' 'rent-diagram';
+            }
+        }
 
-    #footer {
-        grid-area: footer;
-    }
+        #header {
+            grid-area: header;
+        }
 
 
+        #footer {
+            grid-area: footer;
+        }
+    </style>
 
-</style>
-
-<!-- <script type="module">
+    <!-- <script type="module">
         import { PI } from '../js/inputce.js';
 
         alert(PI);
 </script> -->
 
 
-  <!-- <link rel="import" href="ce/primary/input_ce.html"> -->
-  <!-- <link rel="import" href="ce/primary/input4_ce.html"> -->
-  <!-- <link rel="import" href="ce/primary/headline_ce.html">
+    <!-- <link rel="import" href="ce/primary/input_ce.html"> -->
+    <!-- <link rel="import" href="ce/primary/input4_ce.html"> -->
+    <!-- <link rel="import" href="ce/primary/headline_ce.html">
   <link rel="import" href="ce/primary/button_ce.html">
   <link rel="import" href="ce/primary/select_ce.html">
   <link rel="import" href="ce/composed_without_slots/headline_input_ce.html">
   <link rel="import" href="ce/composed_without_slots/headline_select_ce.html"> -->
-  <!-- <link rel="import" href="ce/composed_with_slots/anykind_container_ce.html"> -->
-  <!-- <link rel="import" href="ce/composed_with_slots/section_input_ce.html"> -->
-  <!-- <link rel="import" href="ce/composed_with_slots/section_output_ce.html"> -->
+    <!-- <link rel="import" href="ce/composed_with_slots/anykind_container_ce.html"> -->
+    <!-- <link rel="import" href="ce/composed_with_slots/section_input_ce.html"> -->
+    <!-- <link rel="import" href="ce/composed_with_slots/section_output_ce.html"> -->
 
-  
+
 </head>
+
 <body>
-        <div id="wrapper">
-                <div id="header"></div>
-                <div id="main">
-        <section-input-one-ce id="common" listener="cleargeneralinputsection@clearanykindcontainers">
-        
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="main">
+            <section-input-one-ce id="common-input" listener="cleargeneralinputsection@clearanykindcontainers">
+
                 <headline-one-ce title="Allmänt" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-    
+
                 <anykind-container-one-ce slot="anycontainer">
-    
+
                     <headline-one-ce title="Kalkylperiod" class="h5" slot="headline"></headline-one-ce>
-    
+
                     <headline-anyselect-ce title="Startår" slot="anyform">
                         <select-year-ce slot="anyselect" selectedindex="1" selectedvalue></select-inflation-ce>
                     </headline-anyselect-ce>
-    
+
                     <headline-anyselect-ce title="Kalkyllängd" slot="anyform">
                         <select-period-ce slot="anyselect" selectedindex="10" selectedvalue sb='{"channel":"period", "subject":"length", "element":"initial"}'></select-period-ce>
                     </headline-anyselect-ce>
-                    
+
                 </anykind-container-one-ce>
-    
+
                 <anykind-container-one-ce slot="anycontainer">
-    
+
                     <headline-one-ce title="Inflation" class="h5" slot="headline"></headline-one-ce>
-    
+
                     <headline-anyselect-ce title="Inflation" slot="anyform" datatarget="inflation">
                         <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"inflation", "subject":"rate", "element":"initial"}'></select-inflation-ce>
-                    </headline-anyselect-ce> 
-    
-                </anykind-container-one-ce> 
-            
+                    </headline-anyselect-ce>
+
+                </anykind-container-one-ce>
+
                 <anykind-container-one-ce slot="anycontainer">
-    
+
                     <headline-one-ce title="Kalkylränta" class="h5" slot="headline"></headline-one-ce>
-    
+
                     <headline-anyselect-ce title="Kalkylränta" slot="anyform">
                         <select-discount-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"discount", "subject":"rate", "element":"initial"}'></select-discount-ce>
                     </headline-anyselect-ce>
-    
-                </anykind-container-one-ce> 
-            
+
+                </anykind-container-one-ce>
+
                 <anykind-container-one-ce slot="anycontainer">
-    
+
                     <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
-    
+
                     <headline-anyinput-ce title="Antal kWh/kvm/år" slot="anyform">
                         <input-number-ce value="1000" placeholder="Antal kWh..." slot="anyinput" sb='{"channel":"heat", "subject":"kwh", "element":"initial"}'></input-number-ce>
                     </headline-anyinput-ce>
-    
+
                     <headline-anyselect-ce title="Kostnad per kWh" slot="anyform">
                         <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"heat", "subject":"price", "element":"initial"}'></select-kwhprice-ce>
                     </headline-anyselect-ce>
-    
+
                 </anykind-container-one-ce>
                 <script>
-                    const combineLatestHeat$ = function(...streams) {
-                    return Rx.Observable.combineLatest(streams);
+                    const combineLatestHeat$ = function (...streams) {
+                        return Rx.Observable.combineLatest(streams);
                     };
-                    combineLatestHeat$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve('price'))
-                    .map(([e1, e2]) => {
-                        try {
-                            return [e1.data, e2.data];
-                        } catch (error) {
-                            return [e1, e2];
-                        }
-                    })
-                    .map(([e1, e2]) => [Number(e1), Number(e2)])		
-                    .map(([e1, e2]) => {
-                        let obj = {};
-                        obj.data = e1 * e2;
-                        obj.detail = {};
-                        obj.detail.channel = 'heat';
-                        obj.detail.subject = 'cost;'
-                        obj.detail.element = 'initial';
-                        return obj;
-                    })
-                    .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
+                    combineLatestHeat$(myRxmq.channel('heat').behaviorobserve('kwh'), myRxmq.channel('heat').behaviorobserve(
+                            'price'))
+                        .map(([e1, e2]) => {
+                            try {
+                                return [e1.data, e2.data];
+                            } catch (error) {
+                                return [e1, e2];
+                            }
+                        })
+                        .map(([e1, e2]) => [Number(e1), Number(e2)])
+                        .map(([e1, e2]) => {
+                            let obj = {};
+                            obj.data = e1 * e2;
+                            obj.detail = {};
+                            obj.detail.channel = 'heat';
+                            obj.detail.subject = 'cost;'
+                            obj.detail.element = 'initial';
+                            return obj;
+                        })
+                        .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
                 </script>
-                
+
                 <anykind-container-one-ce slot="anycontainer">
-    
+
                     <headline-one-ce title="Brukare" class="h5" slot="headline"></headline-one-ce>
-    
+
                     <headline-anyinput-ce title="Antal brukare" slot="anyform">
                         <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb='{"channel":"users", "subject":"cost", "element":"initial"}'></input-number-ce>
                     </headline-anyinput-ce>
-    
+
                 </anykind-container-one-ce>
-    
+
+            </section-input-one-ce>
+            <section-input-one-ce id="own-input" listener="cleargeneralinputsection@clearanykindcontainers">
+
+                <headline-one-ce title="Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
+                        <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb='{"channel":"ownkvm", "subject":"amount", "element":"initial"}'></input-number-ce>
+                    </headline-anyinput-ce>
+
+                </anykind-container-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+
+                    <headline-one-ce title="Uppförandekostnader" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Uppförandekostnad" slot="anyform">
+                        <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb></input-number-ce>
+                    </headline-anyinput-ce>
+
+                </anykind-container-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Livslängd" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Livslängd" slot="anyform">
+                        <input-number-ce value="" placeholder="Antal år..." slot="anyinput" sb></input-number-ce>
+                    </headline-anyinput-ce>
+
+                </anykind-container-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Reparationer och löpande underhåll" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Antal kr/kvm" slot="anyform">
+                        <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"ownrepair", "subject":"price", "element":"initial"}'
+                            sr></input-number-ce>
+                    </headline-anyinput-ce>
+
+                    <headline-anyselect-ce title="Kostnadsutveckling" slot="anyform">
+                        <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"ownrepairpriceincrease", "subject":"rate", "element":"initial"}'></select-kwhprice-ce>
+                    </headline-anyselect-ce>
+
+                </anykind-container-one-ce>
+
+                <script>
+                    const combineLatestOwnRepair$ = function (...streams) {
+                        return Rx.Observable.combineLatest(streams);
+                    };
+                    combineLatestOwnRepair$(myRxmq.channel('ownkvm').behaviorobserve('amount'), myRxmq.channel(
+                            'ownrepair').behaviorobserve('price'))
+                        .map(([e1, e2]) => {
+                            try {
+                                return [e1.data, e2.data];
+                            } catch (error) {
+                                return [e1, e2];
+                            }
+                        })
+                        .map(([e1, e2]) => [Number(e1), Number(e2)])
+                        .map(([e1, e2]) => {
+                            let obj = {};
+                            obj.data = e1 * e2;
+                            obj.detail = {};
+                            obj.detail.channel = 'ownrepair';
+                            obj.detail.subject = 'cost;'
+                            obj.detail.element = 'initial';
+                            return obj;
+                        })
+                        .subscribe(myRxmq.channel('ownrepair').behaviorsubject('cost'));
+                </script>
+
             </section-input-one-ce>
 
-                <section-one-column-ce>
-                        <headline-one-ce title="Tabell" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-                <anykind-container-v-ce slot="anycontainer">
-                        <headline-one-ce title="Tabellrubrik" class="h5" slot="headline"></headline-one-ce>
-                    <table-one-ce 
-                        period 
-                        title="Summa" 
-                        celldispatch='[
+            <section-input-one-ce id="rent-input" listener="cleargeneralinputsection@clearanykindcontainers">
+
+                <headline-one-ce title="Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+
+                    <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
+                        <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb='{"channel":"rentkvm", "subject":"amount"}' sr></input-number-ce>
+                    </headline-anyinput-ce>
+
+                </anykind-container-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+
+                    <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Kostnad per kvm" slot="anyform">
+                        <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"rentrent", "subject":"price"}' sr></input-number-ce>
+                    </headline-anyinput-ce>
+
+                </anykind-container-one-ce>
+
+                <anykind-container-one-ce slot="anycontainer">
+
+                    <headline-one-ce title="Uppförande- och avvecklingskostnader" class="h5" slot="headline"></headline-one-ce>
+
+                    <headline-anyinput-ce title="Etableringskostnad per kvm" slot="anyform">
+                        <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"rentestablish", "subject":"price"}'
+                            sr></input-number-ce>
+                    </headline-anyinput-ce>
+
+                    <headline-anyinput-ce title="Expansionskostnad per kvm" slot="anyform">
+                        <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr></input-number-ce>
+                    </headline-anyinput-ce>
+
+                    <headline-anyinput-ce title="Avvecklingskostnad per kvm" slot="anyform">
+                        <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr></input-number-ce>
+                    </headline-anyinput-ce>
+
+                </anykind-container-one-ce>
+
+                <script>
+                    const combineLatestRentRent$ = function (...streams) {
+                        return Rx.Observable.combineLatest(streams);
+                    };
+                    combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel(
+                            'rentrent').behaviorobserve('price'))
+                        .do(x => {
+                            console.log('script');
+                            console.log(x);
+                        })
+                        .map(([e1, e2]) => {
+                            try {
+                                return [e1.data, e2.data];
+                            } catch (error) {
+                                return [e1, e2];
+                            }
+                        })
+                        .map(([e1, e2]) => [Number(e1), Number(e2)])
+                        .map(([e1, e2]) => {
+                            let obj = {};
+                            obj.data = e1 * e2;
+                            obj.detail = {};
+                            obj.detail.channel = 'rentrent';
+                            obj.detail.subject = 'cost;'
+                            obj.detail.element = 'initial';
+                            return obj;
+                        })
+                        .subscribe(myRxmq.channel('rentrent').behaviorsubject('cost'));
+                </script>
+
+                <script>
+                    const combineLatestRentEstablish$ = function (...streams) {
+                        return Rx.Observable.combineLatest(streams);
+                    };
+                    combineLatestRentEstablish$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel(
+                            'rentestablish').behaviorobserve('price'))
+                        .map(([e1, e2]) => {
+                            try {
+                                return [e1.data, e2.data];
+                            } catch (error) {
+                                return [e1, e2];
+                            }
+                        })
+                        .map(([e1, e2]) => [Number(e1), Number(e2)])
+                        .map(([e1, e2]) => {
+                            let obj = {};
+                            obj.data = e1 * e2;
+                            obj.detail = {};
+                            obj.detail.channel = 'rentestablish';
+                            obj.detail.subject = 'cost;'
+                            obj.detail.element = 'initial';
+                            return obj;
+                        })
+                        .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
+                </script>
+            </section-input-one-ce>
+
+
+            <section-one-column-ce id="sum-table">
+                <headline-one-ce title="Tabell Summa" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Tabellrubrik Summa" class="h5" slot="headline"></headline-one-ce>
+                    <table-one-ce period title="Summa" celldispatch='[
                             { 
                                 "name":"Summa Äga", 
                                 "type":"sum", 
@@ -321,61 +533,278 @@
                                     }
                                 }
                             }
+                        ]' slot="anytable" sb='{"channel":"tablesum", "subject":"tablesum"}' sr='{
+                            "channel": "period", 
+                            "subject": "length", 
+                            "local": {
+                                "function":"rendertable$"
+                            }
+                        }'>
+                    </table-one-ce>
+
+                </anykind-container-one-ce>
+
+            </section-one-column-ce>
+
+            <section-one-column-ce id="own-table">
+                <headline-one-ce title="Tabell Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Tabellrubrik Äga" class="h5" slot="headline"></headline-one-ce>
+                    <table-one-ce period title="Äga" celldispatch='[
+                                    { 
+                                        "name":"Värme", 
+                                        "type":"capitalize", 
+                                        "sb": {
+                                            "element":"owntable", 
+                                            "channel":"owntable-year", 
+                                            "subject":"own-heat-cost"
+                                        }, 
+                                        "sr": {
+                                            "extend":"",
+                                            "channel":"heat",
+                                            "subject":"cost",
+                                            "blacklist": {
+                                                "element": [
+                                                "renttable",
+                                                "owntable"
+                                                ]
+                                            },
+                                            "local": {
+                                                "function":"capitalize$", 
+                                                "capitalizer":"inflation"
+                                            }
+                                        }
+                                    }, 
+                                    { 
+                                        "name":"Reparationer", 
+                                        "type":"capitalize", 
+                                        "sb": {
+                                            "element":"owntable", 
+                                            "channel":"owntable-year", 
+                                            "subject":"own-repair-cost"
+                                        },
+                                        "sr": {
+                                            "extend":"",
+                                            "channel":"ownrepair",
+                                            "subject":"cost",
+                                            "blacklist": {
+                                                "element": [
+                                                "renttable",
+                                                "owntable"
+                                                ]
+                                            },
+                                            "local": {
+                                                "function":"capitalize$", 
+                                                "capitalizer":"ownrepairpriceincrease"
+                                            }
+                                        }
+                                    }
+                                ]' slot="anytable" sb='{"channel":"tableown", "subject":"tableown"}' sr='{
+                                    "channel": "period", 
+                                    "subject": "length", 
+                                    "local": {
+                                        "function":"rendertable$"
+                                    }
+                                }'>
+                    </table-one-ce>
+
+                </anykind-container-one-ce>
+
+            </section-one-column-ce>
+
+
+
+
+
+
+            <section-two-column-ce id="rent-table">
+                <headline-one-ce title="Tabell Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Tabellrubrik Hyra" class="h5" slot="headline"></headline-one-ce>
+                    <table-one-ce period title="Hyra" celldispatch='[
+                            { 
+                                "name":"Värme", 
+                                "type":"capitalize", 
+                                "sb": {
+                                    "element":"renttable", 
+                                    "channel":"renttable-year", 
+                                    "subject":"rent-heat-cost"
+                                }, 
+                                "sr": {
+                                    "extend":"",
+                                    "channel":"heat",
+                                    "subject":"cost",
+                                    "blacklist": {
+                                        "element": [
+                                        "renttable",
+                                        "owntable"
+                                        ]
+                                    },
+                                    "local": {
+                                        "function":"capitalize$", 
+                                        "capitalizer":"inflation"
+                                    }
+                                }
+                            }, 
+                            { 
+                                "name":"Etablering", 
+                                "type":"initial", 
+                                "sb": {
+                                    "element":"renttable", 
+                                    "channel":"renttable-year", 
+                                    "subject":"rent-establish-cost"
+                                }, 
+                                "sr": {
+                                    "extend":"",
+                                    "channel":"rentestablish",
+                                    "subject":"cost",
+                                    "blacklist": {
+                                        "element": [
+                                        "renttable",
+                                        "owntable"
+                                        ]
+                                    },
+                                    "local": {
+                                        "function":"initial$"
+                                    }
+                                }
+                            }, 
+                            { 
+                                "name":"Hyra", 
+                                "type":"capitalize", 
+                                "sb": {
+                                    "element":"renttable", 
+                                    "channel":"renttable-year", 
+                                    "subject":"rent-rent-cost"
+                                }, 
+                                "sr": {
+                                    "extend":"",
+                                    "channel":"rentrent",
+                                    "subject":"cost",
+                                    "blacklist": {
+                                        "element": [
+                                            "renttable",
+                                            "owntable"
+                                            ]
+                                    },
+                                    "local": {
+                                        "function":"capitalize$", 
+                                        "capitalizer":"inflation"
+                                    }
+                                }
+                            }
                         ]' 
-                        slot="anytable"
-                        sb='{"channel":"tablesum", "subject":"tablesum"}' 
+                        slot="anytable" 
+                        sb='{"channel":"tablerent", "subject":"tablerent"}' 
                         sr='{
                             "channel": "period", 
                             "subject": "length", 
                             "local": {
-                                "function":"period$"
+                                "function":"rendertable$"
                             }
                         }'>
                     </table-one-ce>
-                    
-                </anykind-container-v-ce>
-                
-            </section-one-column-ce>
-
-            <section-two-column-ce>
-                    <headline-one-ce title="Diagram" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-                <anykind-container-one-ce slot="anycontainer">
-                        <headline-one-ce title="Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
-                    <chart-one-ce
-                        slot="anyform"
-                        chartdata  
-                        sr='{
-                            "channel": "tablesum", 
-                            "subject": "tablesum", 
-                            "local": {
-                                "function":"renderchart$"
-                            }
-                        }'>
-                    </chart-one-ce>
-                    
                 </anykind-container-one-ce>
+
+
                 <anykind-container-one-ce slot="anycontainer">
-                        <chart-one-ce
-                            slot="anyform"
-                            chartdata  
-                            sr='{
+                    <headline-one-ce title="Hyra Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
+                                        "channel": "tablerent", 
+                                        "subject": "tablerent", 
+                                        "local": {
+                                            "function":"renderchart$"
+                                        }
+                                    }'>
+                    </chart-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
+                    "channel": "tableown", 
+                    "subject": "tableown", 
+                    "local": {
+                        "function":"renderchart$"
+                    }
+                }'>
+                    </chart-one-ce>
+                </anykind-container-one-ce>
+            </section-two-column-ce>
+
+
+            <section-two-column-ce id="sum-diagram">
+                <headline-one-ce title="Diagram - 2 kolumner" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Summa Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
                                 "channel": "tablesum", 
                                 "subject": "tablesum", 
                                 "local": {
                                     "function":"renderchart$"
                                 }
                             }'>
-                        </chart-one-ce>
-                        
-                    </anykind-container-one-ce>
+                    </chart-one-ce>
+
+                </anykind-container-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Summa Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
+                                    "channel": "tablesum", 
+                                    "subject": "tablesum", 
+                                    "local": {
+                                        "function":"renderchart$"
+                                    }
+                                }'>
+                    </chart-one-ce>
+                </anykind-container-one-ce>
             </section-two-column-ce>
 
-        
 
+            <section-one-column-ce id="own-diagram">
+                <headline-one-ce title="Diagram - 1 kolumn" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Äga Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
+                                    "channel": "tableown", 
+                                    "subject": "tableown", 
+                                    "local": {
+                                        "function":"renderchart$"
+                                    }
+                                }'>
+                    </chart-one-ce>
+
+                </anykind-container-one-ce>
+            </section-one-column-ce>
+
+
+            <section-two-column-ce id="rent-diagram">
+                <headline-one-ce title="Diagram - 2 kolumner" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Hyra Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
+                                        "channel": "tablerent", 
+                                        "subject": "tablerent", 
+                                        "local": {
+                                            "function":"renderchart$"
+                                        }
+                                    }'>
+                    </chart-one-ce>
+
+                </anykind-container-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Hyra Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                    <chart-one-ce slot="anyform" chartdata sr='{
+                                            "channel": "tablerent", 
+                                            "subject": "tablerent", 
+                                            "local": {
+                                                "function":"renderchart$"
+                                            }
+                                        }'>
+                    </chart-one-ce>
+
+                </anykind-container-one-ce>
+            </section-two-column-ce>
         </div>
         <div id="footer"></div>
-        </div>
-<!-- 
+    </div>
+    <!-- 
 <section-input-one-ce>
 
         
@@ -442,10 +871,10 @@
 
 
 
-<!-- STARTS HERE -->
+    <!-- STARTS HERE -->
 
 
-<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="allmänt" aria-selected="true">Allmänt</a>
     </li>
@@ -592,7 +1021,7 @@
                         "channel": "period", 
                         "subject": "length", 
                         "local": {
-                            "function":"period$"
+                            "function":"rendertable$"
                         }
                     }'>
                 </table-one-ce>
@@ -616,363 +1045,13 @@
 
 
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <section-input-one-ce id="own" listener="cleargeneralinputsection@clearanykindcontainers">
+       
         
-            <headline-one-ce title="Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-            
-            <anykind-container-one-ce slot="anycontainer">
-                <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="2000" placeholder="Antal kvm..." slot="anyinput" sb='{"channel":"ownkvm", "subject":"amount", "element":"initial"}'></input-number-ce>
-                </headline-anyinput-ce>
-    
-            </anykind-container-one-ce>
-        
-            <anykind-container-one-ce slot="anycontainer">
-
-                <headline-one-ce title="Uppförandekostnader" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Uppförandekostnad" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb></input-number-ce>
-                </headline-anyinput-ce>
-
-            </anykind-container-one-ce> 
-        
-            <anykind-container-one-ce slot="anycontainer">
-                <headline-one-ce title="Livslängd" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Livslängd" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal år..." slot="anyinput" sb></input-number-ce>
-                </headline-anyinput-ce>
-
-            </anykind-container-one-ce> 
-        
-            <anykind-container-one-ce slot="anycontainer">
-                <headline-one-ce title="Reparationer och löpande underhåll" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Antal kr/kvm" slot="anyform">
-                    <input-number-ce value="50" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"ownrepair", "subject":"price", "element":"initial"}' sr></input-number-ce>
-                </headline-anyinput-ce>
-
-                <headline-anyselect-ce title="Kostnadsutveckling" slot="anyform">
-                    <select-inflation-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"ownrepairpriceincrease", "subject":"rate", "element":"initial"}'></select-kwhprice-ce>
-                </headline-anyselect-ce>
-
-            </anykind-container-one-ce>  
-
-            <script>
-                const combineLatestOwnRepair$ = function(...streams) {
-                return Rx.Observable.combineLatest(streams);
-                };
-                combineLatestOwnRepair$(myRxmq.channel('ownkvm').behaviorobserve('amount'), myRxmq.channel('ownrepair').behaviorobserve('price'))
-                .map(([e1, e2]) => {
-                    try {
-                        return [e1.data, e2.data];
-                    } catch (error) {
-                        return [e1, e2];
-                    }
-                })
-                .map(([e1, e2]) => [Number(e1), Number(e2)])		
-                .map(([e1, e2]) => {
-                    let obj = {};
-                    obj.data = e1 * e2;
-                    obj.detail = {};
-                    obj.detail.channel = 'ownrepair';
-                    obj.detail.subject = 'cost;'
-                    obj.detail.element = 'initial';
-                    return obj;
-                })
-                .subscribe(myRxmq.channel('ownrepair').behaviorsubject('cost'));
-            </script>
-
-        </section-input-one-ce>
-        <section-one-column-ce>
-            <anykind-container-v-ce slot="anycontainer">
-                <table-one-ce 
-                    period 
-                    title="Äga" 
-                    celldispatch='[
-                        { 
-                            "name":"Värme", 
-                            "type":"capitalize", 
-                            "sb": {
-                                "element":"owntable", 
-                                "channel":"owntable-year", 
-                                "subject":"own-heat-cost"
-                            }, 
-                            "sr": {
-                                "extend":"",
-                                "channel":"heat",
-                                "subject":"cost",
-                                "blacklist": {
-                                    "element": [
-                                    "renttable",
-                                    "owntable"
-                                    ]
-                                },
-                                "local": {
-                                    "function":"capitalize$", 
-                                    "capitalizer":"inflation"
-                                }
-                            }
-                        }, 
-                        { 
-                            "name":"Reparationer", 
-                            "type":"capitalize", 
-                            "sb": {
-                                "element":"owntable", 
-                                "channel":"owntable-year", 
-                                "subject":"own-repair-cost"
-                            },
-                            "sr": {
-                                "extend":"",
-                                "channel":"ownrepair",
-                                "subject":"cost",
-                                "blacklist": {
-                                    "element": [
-                                    "renttable",
-                                    "owntable"
-                                    ]
-                                },
-                                "local": {
-                                    "function":"capitalize$", 
-                                    "capitalizer":"ownrepairpriceincrease"
-                                }
-                            }
-                        }
-                    ]' 
-                    slot="anytable"
-                    sb='{"channel":"tableown", "subject":"tableown"}' 
-                    sr='{
-                        "channel": "period", 
-                        "subject": "length", 
-                        "local": {
-                            "function":"period$"
-                        }
-                    }'>
-                </table-one-ce>
-        </anykind-container-v-ce>
-        <anykind-container-one-ce slot="anycontainer">
-            <chart-one-ce
-                slot="anyform"
-                chartdata  
-                sr='{
-                    "channel": "tableown", 
-                    "subject": "tableown", 
-                    "local": {
-                        "function":"renderchart$"
-                    }
-                }'>
-            </chart-one-ce>
-            
-        </anykind-container-one-ce>
-        
-        </section-one-column-ce> 
     </div>
 
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        <section-input-one-ce id="rent" listener="cleargeneralinputsection@clearanykindcontainers">
+       
         
-            <headline-one-ce title="Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-            
-            <anykind-container-one-ce slot="anycontainer">
-
-                <headline-one-ce title="Initial ytstorlek" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Antal kvadratmeter" slot="anyform">
-                    <input-number-ce value="3000" placeholder="Antal kvm..." slot="anyinput" sb='{"channel":"rentkvm", "subject":"amount"}' sr></input-number-ce>
-                </headline-anyinput-ce>
-    
-            </anykind-container-one-ce>
-        
-            <anykind-container-one-ce slot="anycontainer">
-
-                <headline-one-ce title="Hyresnivå och hyresutveckling" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Kostnad per kvm" slot="anyform">
-                    <input-number-ce value="1200" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"rentrent", "subject":"price"}' sr></input-number-ce>
-                </headline-anyinput-ce>
-
-            </anykind-container-one-ce> 
-        
-            <anykind-container-one-ce slot="anycontainer">
-
-                <headline-one-ce title="Uppförande- och avvecklingskostnader" class="h5" slot="headline"></headline-one-ce>
-
-                <headline-anyinput-ce title="Etableringskostnad per kvm" slot="anyform">
-                    <input-number-ce value="1000" placeholder="Antal kr..." slot="anyinput" sb='{"channel":"rentestablish", "subject":"price"}' sr></input-number-ce>
-                </headline-anyinput-ce>
-
-                <headline-anyinput-ce title="Expansionskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr></input-number-ce>
-                </headline-anyinput-ce>
-
-                <headline-anyinput-ce title="Avvecklingskostnad per kvm" slot="anyform">
-                    <input-number-ce value="" placeholder="Antal kr..." slot="anyinput" sb sr></input-number-ce>
-                </headline-anyinput-ce>
-  
-            </anykind-container-one-ce>  
-
-            <script>
-                const combineLatestRentRent$ = function(...streams) {
-                return Rx.Observable.combineLatest(streams);
-                };
-                combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentrent').behaviorobserve('price'))
-                .do(x => {
-                    console.log('script');
-                    console.log(x);
-                })				
-                .map(([e1, e2]) => {
-                    try {
-                        return [e1.data, e2.data];
-                    } catch (error) {
-                        return [e1, e2];
-                    }
-                })
-                .map(([e1, e2]) => [Number(e1), Number(e2)])		
-                .map(([e1, e2]) => {
-                    let obj = {};
-                    obj.data = e1 * e2;
-                    obj.detail = {};
-                    obj.detail.channel = 'rentrent';
-                    obj.detail.subject = 'cost;'
-                    obj.detail.element = 'initial';
-                    return obj;
-                })
-                .subscribe(myRxmq.channel('rentrent').behaviorsubject('cost'));
-            </script>
-
-            <script>
-                const combineLatestRentEstablish$ = function(...streams) {
-                return Rx.Observable.combineLatest(streams);
-                };
-                combineLatestRentEstablish$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel('rentestablish').behaviorobserve('price'))					
-                .map(([e1, e2]) => {
-                    try {
-                        return [e1.data, e2.data];
-                    } catch (error) {
-                        return [e1, e2];
-                    }
-                })
-                .map(([e1, e2]) => [Number(e1), Number(e2)])		
-                .map(([e1, e2]) => {
-                    let obj = {};
-                    obj.data = e1 * e2;
-                    obj.detail = {};
-                    obj.detail.channel = 'rentestablish';
-                    obj.detail.subject = 'cost;'
-                    obj.detail.element = 'initial';
-                    return obj;
-                })
-                .subscribe(myRxmq.channel('rentestablish').behaviorsubject('cost'));
-            </script>
-        </section-input-one-ce>
-        <section-one-column-ce>
-            
-        <anykind-container-v-ce slot="anycontainer">
-            <table-one-ce 
-                period 
-                title="Hyra" 
-                celldispatch='[
-                    { 
-                        "name":"Värme", 
-                        "type":"capitalize", 
-                        "sb": {
-                            "element":"renttable", 
-                            "channel":"renttable-year", 
-                            "subject":"rent-heat-cost"
-                        }, 
-                        "sr": {
-                            "extend":"",
-                            "channel":"heat",
-                            "subject":"cost",
-                            "blacklist": {
-                                "element": [
-                                "renttable",
-                                "owntable"
-                                ]
-                            },
-                            "local": {
-                                "function":"capitalize$", 
-                                "capitalizer":"inflation"
-                            }
-                        }
-                    }, 
-                    { 
-                        "name":"Etablering", 
-                        "type":"initial", 
-                        "sb": {
-                            "element":"renttable", 
-                            "channel":"renttable-year", 
-                            "subject":"rent-establish-cost"
-                        }, 
-                        "sr": {
-                            "extend":"",
-                            "channel":"rentestablish",
-                            "subject":"cost",
-                            "blacklist": {
-                                "element": [
-                                "renttable",
-                                "owntable"
-                                ]
-                            },
-                            "local": {
-                                "function":"initial$"
-                            }
-                        }
-                    }, 
-                    { 
-                        "name":"Hyra", 
-                        "type":"capitalize", 
-                        "sb": {
-                            "element":"renttable", 
-                            "channel":"renttable-year", 
-                            "subject":"rent-rent-cost"
-                        }, 
-                        "sr": {
-                            "extend":"",
-                            "channel":"rentrent",
-                            "subject":"cost",
-                            "blacklist": {
-                                "element": [
-                                    "renttable",
-                                    "owntable"
-                                    ]
-                            },
-                            "local": {
-                                "function":"capitalize$", 
-                                "capitalizer":"inflation"
-                            }
-                        }
-                    }
-                ]' 
-                slot="anytable" 
-                sb='{"channel":"tablerent", "subject":"tablerent"}' 
-                sr='{
-                        "channel": "period", 
-                        "subject": "length", 
-                        "local": {
-                            "function":"period$"
-                        }
-                    }'>
-            </table-one-ce>
-        </anykind-container-v-ce>
-        <anykind-container-one-ce slot="anycontainer">
-            <chart-one-ce
-                slot="anyform"
-                chartdata  
-                sr='{
-                    "channel": "tablerent", 
-                    "subject": "tablerent", 
-                    "local": {
-                        "function":"renderchart$"
-                    }
-                }'>
-            </chart-one-ce>
-            
-        </anykind-container-one-ce>
-        </section-one-column-ce> 
         
     </div>
   </div>
@@ -982,9 +1061,9 @@
 
 
 
-  <!-- ENDS HERE -->
+    <!-- ENDS HERE -->
 
-<!-- 
+    <!-- 
 <section-one-column-ce>
 
 
@@ -1073,7 +1152,7 @@
                     "channel": "period", 
                     "subject": "length", 
                     "local": {
-                        "function":"period$"
+                        "function":"rendertable$"
                     }
                 }'>
             </table-one-ce>
@@ -1175,7 +1254,7 @@
                     "channel": "period", 
                     "subject": "length", 
                     "local": {
-                        "function":"period$"
+                        "function":"rendertable$"
                     }
                 }'>
         </table-one-ce>
@@ -1241,7 +1320,7 @@
                 "channel": "period", 
                 "subject": "length", 
                 "local": {
-                    "function":"period$"
+                    "function":"rendertable$"
                 }
             }'>
         </table-one-ce>
@@ -1261,12 +1340,12 @@
         
     </anykind-container-one-ce> -->
 
-    
-    
-    
 
 
-<!-- <anykind-container-one-ce slot="anycontainer">
+
+
+
+    <!-- <anykind-container-one-ce slot="anycontainer">
 
         <headline-one-ce title="Värmekostnader" class="h5" slot="headline"></headline-one-ce>
         
@@ -1323,7 +1402,7 @@
 
 
 
-<!-- 
+    <!-- 
 <section-input-ce listener="clearowninputsection@clearsection">
     <headline-ce title="Äga" class="h1 text-info" slot="anyheadline"></headline-ce>
     <button-ce value="Rensa" toggle class="btn btn-secondary" dispatch="clearowninputsection" slot="anybutton" sb="clearbutton2:click"></button-ce>
@@ -1358,14 +1437,14 @@
 
 
 
-<!-- <div id="dragtarget" style="display: inline-block; background-color: blue; padding: 10px">
+    <!-- <div id="dragtarget" style="display: inline-block; background-color: blue; padding: 10px">
     <p id="oslo"></p>
     <p id="stockholm"></p>
 </div>
 
 <select-ce selectedindex></select-ce> -->
-    
-<!-- 
+
+    <!-- 
     <section-input-ce listener="clearrentinputsection@clearsection">
             <headline-ce title="Hyra" id="mainheadline" class="h1 text-info" slot="anyheadline"></headline-ce>
             <button-ce value="Rensa" id="clearbutton" class="btn btn-secondary" dispatch="clearrentinputsection" slot="anybutton"></button-ce>
@@ -1390,7 +1469,7 @@
         </section-input-ce> -->
 
 
-<!-- <section-ce color="blue">
+    <!-- <section-ce color="blue">
     <headline-ce dispatch="newheadline" listener="newinput-fire@changeheadline" value="whatcolor" slot="headline"></headline-ce>
     <h1 slot="myslot" class="testclass">Eric Bidelman</h1>
     <span slot="first" class="title"  data-test="hej">
@@ -1403,7 +1482,7 @@
 
 
 
-<!-- <toggle-button2 dispatch="newtoggle" toggle="on" effect="display" >TOGGLE HEAT SECTION VISIBILITY</toggle-button2>
+    <!-- <toggle-button2 dispatch="newtoggle" toggle="on" effect="display" >TOGGLE HEAT SECTION VISIBILITY</toggle-button2>
 <toggle-button2 style="--main-bg-color: brown" slot="b1" toggle="on" effect="display" dispatch="newtoggle">TOGGLE HEAT SECTION VISIBILITY</toggle-button2>
 <info-headline2 listener="newinput@changeheadline">
     <span slot="text">Default</span>
@@ -1427,7 +1506,7 @@
     <info-select2 dispatch="newselect" slot="select1" selectedindex="1"></info-select2>
 </info-container> -->
 
-<!-- <script>
+    <!-- <script>
         let el = document.getElementById('myTest');
         let newel = document.createElement('input-ce');
         el.appendChild(newel);
@@ -1437,7 +1516,7 @@
 </script> -->
 
 
-<!-- 
+    <!-- 
 <input-ce dispatch="newinput" value="hej" placeholder="Enter value..."></input-ce>
 <togglebutton-ce dispatch="newtoggle" toggle="on" value="TOGGLE HEAT SECTION VISIBILITY"></togglebutton-ce>
 <headline-ce dispatch="newheadline" listener="newinput@changeheadline" value="testvalue"></headline-ce>
@@ -1453,7 +1532,7 @@
 <div id="myTest"></div> -->
 
 
-<!-- <div id="buttonbox">
+    <!-- <div id="buttonbox">
     <button id="knappen">Dubbelklicka!</button>
     <button id="knappen2">Dubbelklicka!</button>
     <input id="receiver" value="" placeholder="hej" style="outline:none" year="0"></input>
@@ -1465,7 +1544,7 @@
     <input id="sender6" value="3" placeholder="hå" style="outline:none" year="6"></input>
 </div> -->
 
-<!-- <div id="row0">
+    <!-- <div id="row0">
     <input class="receiver" value="" placeholder="" style="outline:none" year="0"></input>
     <input class="sender" value="Year 1" placeholder="hå" style="outline:none" year="1"></input>
     <input class="sender" value="Year 2" placeholder="hå" style="outline:none" year="2"></input>
@@ -1497,7 +1576,7 @@
 
 
 
-<!-- <div id="water">
+    <!-- <div id="water">
         <headline-input-ce class="sender1" title="Initial amount" value="10" placeholder="hej" style="outline:none" year="0" sb="water:amount-0"></headline-input-ce>
         <headline-input-ce class="sender2" title="Increase" value="0.05" placeholder="hej" style="outline:none" year="0" sb="water:increase"></headline-input-ce>
         <headline-input-ce class="sender3" title="Discount" value="0.10" placeholder="hej" style="outline:none" year="0" sb="water:discount"></headline-input-ce>
@@ -1549,8 +1628,8 @@
 
 
 
- <!-- <headline-input-one-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb=""></headline-input-base-ce> -->
- <!-- <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce> -->
+    <!-- <headline-input-one-ce title="thetitle" value="hej" placeholder="Antal brukare..." sb=""></headline-input-base-ce> -->
+    <!-- <headline-base-ce title="Test" sr="test:test@copy$"></headline-base-ce> -->
 
 
 
@@ -1558,7 +1637,7 @@
 
 
 
- <!-- <anykind-container-ce>
+    <!-- <anykind-container-ce>
     <headline-ce title="Brukare" class="h4" slot="headline"></headline-ce>
     <headline-input-base-ce title="Antal brukare" value="" placeholder="Antal brukare..." slot="anyform"></headline-input-base-ce>
 </anykind-container-ce>   -->
@@ -1567,14 +1646,14 @@
 
 
 
-<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-<script type="text/javascript" src="/js/test.js"></script>
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script type="text/javascript" src="/js/test.js"></script>
 
 
-<!-- <script type="text/javascript" src="/ifServiceWorker.js"></script> -->
+    <!-- <script type="text/javascript" src="/ifServiceWorker.js"></script> -->
 
 
-<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
 <script type="text/javascript" src="/js/pouchdb-6.4.1.js"></script>
 <script type="text/javascript" src="/js/pouchdb.find.js"></script> 
 <script type="text/javascript" src="/js/curry.js"></script>
@@ -1584,7 +1663,8 @@
  
 
 <script src="js/webflow.js" type="text/javascript"></script> -->
-<!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+    <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
 
 </body>
+
 </html>
