@@ -1,3 +1,5 @@
+import { CustomElement3 } from '/js/customelement3.js';
+
 class HeadlineAnyinputBaseCE extends CustomElement3 {
 
 	constructor() {
@@ -21,7 +23,7 @@ class HeadlineAnyinputBaseCE extends CustomElement3 {
 
 			if (headline !== null) {
 				if (!h.boolean.isEmpty(this.title)) {
-					eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: this, attribute: 'title', newVal: this.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
+					this.eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: this, attribute: 'title', newVal: this.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
 			}
 

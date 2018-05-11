@@ -1,3 +1,5 @@
+import { CustomElement3 } from '/js/customelement3.js';
+
 class AnykindContainerBaseCE extends CustomElement3 {
 
 	constructor() {

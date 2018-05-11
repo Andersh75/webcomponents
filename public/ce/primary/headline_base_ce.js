@@ -1,3 +1,5 @@
+import { CustomElement3 } from '/js/customelement3.js';
+
 class HeadlineBaseCE extends CustomElement3 {
 
 	constructor() {
@@ -126,7 +128,16 @@ class HeadlineBaseCE extends CustomElement3 {
 	//always passive
 	extendView(model) {
 		this.view.renderTitle = function (obj) {
-			this.shadowRoot.querySelector('#headline').textContent = obj;
+			//this.shadowRoot.querySelector('#headline').textContent = obj;
+
+			let headline = this.shadowRoot.querySelector('#headline');
+
+			const helloTemplate = (name) => this.html`${name}`;
+ 
+			// Call the function with some data, and pass the result to render()
+			
+			// This renders <div>Hello Steve!</div> to the document body
+			this.render(helloTemplate(obj), headline);
 		};
 
 		this.view.updateView = function (attribute, item) {

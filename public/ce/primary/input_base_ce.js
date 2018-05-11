@@ -1,3 +1,5 @@
+import { CustomElement3 } from '/js/customelement3.js';
+
 class InputBaseCE extends CustomElement3 {
 
 	constructor() {

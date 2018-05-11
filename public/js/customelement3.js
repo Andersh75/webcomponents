@@ -9,6 +9,7 @@
 
 // For instance, a focus event does not bubble. There are other examples too, we’ll meet them. But still it’s an exception, rather than a rule, most events do bubble.
 
+import {html, render} from 'https://unpkg.com/lit-html/lib/lit-extended.js?module';
 
 class CustomElement3 extends HTMLElement {
 
@@ -24,6 +25,9 @@ class CustomElement3 extends HTMLElement {
 		this.acc = {};
 		this.local = undefined;
 		this.remote = undefined;
+		this.eventDispatcher = eventDispatcherMaker();
+		this.html = html;
+		this.render = render;
 	}
 
 	//-----------
@@ -56,7 +60,7 @@ class CustomElement3 extends HTMLElement {
 			data.selectedvalue = e.composedPath()[0].value;
 			
 			let attribute = 'selectedindex';
-			eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
+			this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); //this.eventTarget dispatches a new customEvent named useraction and attaches original event to its details.
 			});
 
 			//button
@@ -66,7 +70,7 @@ class CustomElement3 extends HTMLElement {
 				e.preventDefault;
 				let data = false;
 				let attribute = 'toggle';
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); 
+				this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this}); 
 			});
 
 			//input
@@ -78,7 +82,7 @@ class CustomElement3 extends HTMLElement {
 					let data = {};
 					data.value = e.composedPath()[0].value;
 					let attribute = 'value';
-					eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
+					this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
 					document.activeElement.blur();
 				}
 			});
@@ -88,7 +92,7 @@ class CustomElement3 extends HTMLElement {
 				let data = {};
 				data.value = e.composedPath()[0].value;
 				let attribute = 'value';
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
+				this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
 			});
 		} else {
 			
@@ -106,7 +110,7 @@ class CustomElement3 extends HTMLElement {
 			this.addEventListener('click', e => {
 				e.stopPropagation;
 				e.preventDefault;
-				eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined, who: this});
+				this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined, who: this});
 			});
 		}	
 	}
@@ -127,7 +131,7 @@ class CustomElement3 extends HTMLElement {
 
 			let details = {};
 			details.changedAttribute = changedAttribute;
-			eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
+			this.eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
 		}	
 	}
 
@@ -192,7 +196,7 @@ function Model(that) {
 			let newVal = changedAttribute.newVal;
 			oldVal = that.db[attribute];
 			that.db[attribute] = newVal;
-			eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, attribute: attribute, oldVal: oldVal, newVal: newVal});
+			that.eventDispatcher(that.eventTarget, 'updatedmodel', {parent: that.parent, child: that, attribute: attribute, oldVal: oldVal, newVal: newVal});
 		},
 		get: function(attribute) {
 			return that.db[attribute];
@@ -290,7 +294,7 @@ function Ctrl(that, model, view, ctrl) {
 			
 			if (attribute !== undefined) {
 				if (parent !== undefined) {
-					eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {parent: parent, child: child, attribute: attribute, oldVal: oldVal, newVal: newVal});
+					that.eventDispatcher(parent.eventTarget, 'updatedattributefromchild', {parent: parent, child: child, attribute: attribute, oldVal: oldVal, newVal: newVal});
 				} else {
 					//console.log('No parent...');
 				}
@@ -474,8 +478,22 @@ function eventDispatcher(element, eventName, details) {
 	}));
 }
 
+function eventDispatcherMaker() {
+	return function eventDispatcher(element, eventName, details) {
+		element.dispatchEvent(new CustomEvent(eventName, {
+			bubbles: true,
+			cancelable: true,
+			composed: true,
+			detail: details
+		}));
+	};
+}
 
 
+
+export {
+	CustomElement3
+};
 
 
 

@@ -1,3 +1,5 @@
+import { CustomElement3 } from '/js/customelement3.js';
+
 class SectionOutputBaseCE extends CustomElement3 {
 
 	constructor() {
