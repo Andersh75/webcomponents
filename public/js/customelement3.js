@@ -462,6 +462,7 @@ function setComponentObservable() {
 
 	if (h.boolean.isString(sb)) {
 		if (!h.boolean.isEmptyString(sb)) {
+			//console.log(sb);
 			let sbObj = JSON.parse(sb);
 			let sbChannel = sbObj.channel;
 			let sbSubject = sbObj.subject;

@@ -34,6 +34,7 @@
     <script src="ce/primary/select_kwhprice_ce.js" type="module"></script>
     <script src="ce/primary/headline_one_ce.js" type="module"></script>
     <script src="ce/primary/headline_thousand_ce.js" type="module"></script>
+    <script src="ce/primary/headline_year_ce.js" type="module"></script>
     <script src="ce/primary/headline_label_ce.js" type="module"></script>
     <!-- <script src="ce/primary/button_one_ce.js" type="module"></script>
   <script src="ce/composed_without_slots/headline_input_base_ce.js" type="module"></script>
@@ -522,7 +523,7 @@
                 <headline-one-ce title="Tabell Summa" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
                 <anykind-container-one-ce slot="anycontainer">
                     <headline-one-ce title="Tabellrubrik Summa" class="h5" slot="headline"></headline-one-ce>
-                    <table-one-ce period title="Summa" celldispatch='[
+                    <!-- <table-one-ce period title="Summa" celldispatch='[
                             { 
                                 "name":"Summa Äga", 
                                 "type":"sum", 
@@ -535,7 +536,7 @@
                                 "sr": {
                                     "extend":"year",
                                     "channel":"owntable-year",
-                                    "subject":"*", 
+                                    "subject":"sum", 
                                     "local": {
                                         "function":"sum$"
                                     }
@@ -554,6 +555,51 @@
                                     "extend":"year",
                                     "channel":"renttable-year",
                                     "subject":"*", 
+                                    "local": {
+                                        "function":"sum$"
+                                    }
+                                }
+                            }
+                        ]' slot="anytable" sb='{"channel":"tablesum", "subject":"tablesum"}' sr='{
+                            "channel": "period", 
+                            "subject": "lengthandstart", 
+                            "local": {
+                                "function":"rendertable2$"
+                            }
+                        }'>
+                    </table-one-ce> -->
+                    <table-one-ce period title="Summa" celldispatch='[
+                            { 
+                                "name":"Summa Äga", 
+                                "type":"sum", 
+                                "sb": {
+                                    "element":"owntable", 
+                                    "channel":"owntable-sum-year", 
+                                    "subject":"*",
+                                    "label":"Totalkostnad Äga"
+                                }, 
+                                "sr": {
+                                    "extend":"year",
+                                    "channel":"owntable-year",
+                                    "subject":"sum", 
+                                    "local": {
+                                        "function":"sum$"
+                                    }
+                                }
+                            },
+                            { 
+                                "name":"Summa Hyra", 
+                                "type":"sum", 
+                                "sb": {
+                                    "element":"renttable", 
+                                    "channel":"renttable-sum-year", 
+                                    "subject":"*",
+                                    "label":"Totalkostnad Hyra"
+                                }, 
+                                "sr": {
+                                    "extend":"year",
+                                    "channel":"renttable-year",
+                                    "subject":"sum", 
                                     "local": {
                                         "function":"sum$"
                                     }
@@ -628,7 +674,8 @@
                                         }
                                     }
                                 ]' 
-                                slot="anytable" 
+                                slot="anytable"
+                                tablekind="owntable" 
                                 sb='{"channel":"tableown", "subject":"tableown"}' 
                                 sr='{
                                     "channel": "period", 
@@ -643,9 +690,106 @@
 
             </section-one-column-ce>
 
+            <section-one-column-ce id="own-table">
+                    <headline-one-ce title="Tabell Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                    <anykind-container-one-ce slot="anycontainer">
+                            <headline-one-ce title="Tabellrubrik Hyra" class="h5" slot="headline"></headline-one-ce>
+                            <table-one-ce period title="Hyra" celldispatch='[
+                                    { 
+                                        "name":"Värme", 
+                                        "type":"capitalize", 
+                                        "sb": {
+                                            "element":"renttable", 
+                                            "channel":"renttable-year", 
+                                            "subject":"rent-heat-cost",
+                                            "label":"Värmekostnad"
+                                        }, 
+                                        "sr": {
+                                            "extend":"",
+                                            "channel":"heat",
+                                            "subject":"cost",
+                                            "blacklist": {
+                                                "element": [
+                                                "renttable",
+                                                "owntable"
+                                                ]
+                                            },
+                                            "local": {
+                                                "function":"capitalize$", 
+                                                "capitalizer":"inflation"
+                                            }
+                                        }
+                                    }, 
+                                    { 
+                                        "name":"Etablering", 
+                                        "type":"initial", 
+                                        "sb": {
+                                            "element":"renttable", 
+                                            "channel":"renttable-year", 
+                                            "subject":"rent-establish-cost",
+                                            "label":"Etableringskostnad"
+                                        }, 
+                                        "sr": {
+                                            "extend":"",
+                                            "channel":"rentestablish",
+                                            "subject":"cost",
+                                            "blacklist": {
+                                                "element": [
+                                                "renttable",
+                                                "owntable"
+                                                ]
+                                            },
+                                            "local": {
+                                                "function":"capitalize$",
+                                                "capitalizer":"inflation"
+                                            }
+                                        }
+                                    }, 
+                                    { 
+                                        "name":"Hyra", 
+                                        "type":"capitalize", 
+                                        "sb": {
+                                            "element":"renttable", 
+                                            "channel":"renttable-year", 
+                                            "subject":"rent-rent-cost",
+                                            "label":"Hyreskostnad"
+                                        }, 
+                                        "sr": {
+                                            "extend":"",
+                                            "channel":"rentrent",
+                                            "subject":"cost",
+                                            "blacklist": {
+                                                "element": [
+                                                    "renttable",
+                                                    "owntable"
+                                                    ]
+                                            },
+                                            "local": {
+                                                "function":"capitalize$", 
+                                                "capitalizer":"inflation"
+                                            }
+                                        }
+                                    }
+                                ]' 
+                                slot="anytable"
+                                tablekind="renttable" 
+                                sb='{"channel":"tablerent", "subject":"tablerent"}' 
+                                sr='{
+                                    "channel": "period", 
+                                    "subject": "lengthandstart", 
+                                    "local": {
+                                        "function":"rendertable2$"
+                                    }
+                                }'>
+                            </table-one-ce>
+    
+                    </anykind-container-one-ce>
+    
+                </section-one-column-ce>
 
 
 
+<!-- 
 
 
             <section-two-column-ce id="rent-table">
@@ -834,7 +978,7 @@
                     </chart-one-ce>
 
                 </anykind-container-one-ce>
-            </section-two-column-ce>
+            </section-two-column-ce> -->
         </div>
         <div id="footer"></div>
     </div>

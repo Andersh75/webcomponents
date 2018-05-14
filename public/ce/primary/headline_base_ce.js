@@ -92,30 +92,65 @@ class HeadlineBaseCE extends CustomElement3 {
 
 		this.ctrl.sum$ = function (e) {
 			let testObj = {};
-			myRxmq.channel(e.detail[0]).behaviorobserve('*')
-				.map((x) => {
-					try {
-						return x.map(item => item.data);
-					} catch (error) {
-						return x;
+			console.log(e.detail);
+			myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1])
+				.do(console.log)
+				.filter(x => x !== undefined)
+				.map(x => JSON.parse(x))
+				.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject)))
+				.map(x => x.map(item => Rx.Observable.combineLatest(item)))
+				.mergeMap(x => Rx.Observable.combineLatest(x))
+				.map(x => x.map(item => item.map(element => {
+					if (element !== undefined && element !== null) {
+						return element;
+					} else {
+						return undefined;
 					}
+				})))
+				.filter(x => {
+					let defined = true;
+					x.forEach(y => {
+						y.forEach(z => {
+
+							if (z === undefined || z === null) {
+								defined = false;
+							} 
+						});
+					});
+					return defined;
 				})
-				.map((x) => {
-					try {
-						return x.map(item => Number(item));
-					} catch (error) {
-						return x;
-					}
-				})
-				.map((x) => {
-					try {
-						return x.reduce((acc, item) => acc + item);
-					} catch (error) {
-						return x;
-					}
-				})	
+				.do(x => console.log('SUM!: ' + x))
+				.do(console.log)
+				// .do(console.log('!SUM'))
+				// .map((x) => {
+				// 	try {
+				// 		return x.map(item => item.data);
+				// 	} catch (error) {
+				// 		return x;
+				// 	}
+				// })
+				// .map((x) => {
+				// 	try {
+				// 		return x.map(item => Number(item));
+				// 	} catch (error) {
+				// 		return x;
+				// 	}
+				// })
+				// .map((x) => {
+				// 	try {
+				// 		return x.reduce((acc, item) => acc + item);
+				// 	} catch (error) {
+				// 		return x;
+				// 	}
+				// })	
 				.subscribe((x) => {
-					let result = x;
+					console.log(x);
+					let y = x.reduce((acc, item) => {
+						console.log(item[0].data);
+						return acc + Number(item[0].data);
+					}, 0);
+					console.log(y);
+					let result = y;
 					//let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(3);
 					this.title = result;
 				});

@@ -89,8 +89,8 @@ class TableBaseCE extends CustomElement3 {
 				this.shadowRoot.querySelector('#table').removeChild(this.shadowRoot.querySelector('#table').firstChild);
 			}
 
-			headerRow.call(this, cells, 'Kostnadsslag\\År');
-			normalRow.call(this, rows, cells);
+			let hr = headerRow.call(this, cells, 'Kostnadsslag\\År');
+			normalRow.call(this, rows, cells, hr);
 		};
 
 
@@ -128,25 +128,32 @@ function headerRow(cells, title) {
 	textContent.setAttribute('sr', "");
 	textContent.setAttribute('year', "");
 	textContent.setAttribute('title', headerName);
-	textContent.setAttribute('sb', "");
+	textContent.setAttribute('sb', '');
 	tableCell.appendChild(textContent);
 	tableRow.appendChild(tableCell);
 
 
 	for (let j = 0; j <= Number(cells); j++) {
 		let tableCell = document.createElement('th');
-		tableCell.setAttribute('style', 'width: 9%');
-		let textContent = 'År ' + (j + this.startyear);
-		tableCell.textContent = textContent;
+
+		let textContent = document.createElement('headline-year-ce');
+		textContent.setAttribute('sr', "");
+		textContent.setAttribute('year', "");
+		textContent.setAttribute('title', 'År ' + (j + this.startyear));
+		textContent.setAttribute('sb', '{"element":"' + this.tablekind + '","channel":"' + this.tablekind + '-year-' + j + '","subject":"sum"}');
+		//let textContent = 'År ' + (j + this.startyear);
+		//tableCell.textContent = textContent;
+		tableCell.appendChild(textContent);
 		tableRow.appendChild(tableCell);
 	}
 
 	tableHead.appendChild(tableRow);
 	this.shadowRoot.querySelector('#table').appendChild(tableHead);
+	return tableRow;
 }
 
 
-function normalRow(rows, cells) {
+function normalRow(rows, cells, hr) {
 	let tableBody = document.createElement('tbody');
 	let tableArray = [];
 	for (let i = 1; i <= rows; i++) {
@@ -257,6 +264,27 @@ function normalRow(rows, cells) {
 			tableRow.appendChild(tableCell);
 			rowArray.push(sbObj2);
 
+
+
+			 
+			if (i === 1) {
+				hr.children[1].children[0].setAttribute('sbdispatch', '[');
+			}
+			let oldAttribute = hr.children[1].children[0].getAttribute('sbdispatch');
+			
+			if (((i) === rows)) {
+				//console.log(Number(cells));
+				hr.children[1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ']');
+				//console.log(hr.children[1].children[0].getAttribute('sbdispatch'));
+				myRxmq.channel(this.tablekind + '-year-' + 0).behaviorobserve('sum')
+				.next(hr.children[1].children[0].getAttribute('sbdispatch'));
+			} else {
+				//console.log(rows);
+				hr.children[1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ', ');
+				//console.log(hr.children[1].children[0].getAttribute('sbdispatch'));
+			}
+			//console.log(hr.children[0]);
+
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-thousand-ce');
@@ -282,6 +310,41 @@ function normalRow(rows, cells) {
 				tableCell.appendChild(textContent);
 				tableRow.appendChild(tableCell);
 				rowArray.push(sbObj2);
+
+				//console.log(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+				
+				if (i === 1) {
+					hr.children[j+1].children[0].setAttribute('sbdispatch', '[');
+				}
+				let oldAttribute = hr.children[j+1].children[0].getAttribute('sbdispatch'); 
+
+				if (((i) === rows)) {
+					// console.log(j);
+					// console.log(Number(cells));
+
+					hr.children[j+1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ']');
+					//console.log(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+					myRxmq.channel(this.tablekind + '-year-' + j).behaviorobserve('sum')
+					.next(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+				} else {
+					// console.log(j);
+					// console.log(rows);
+					hr.children[j+1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ', ');
+					//console.log(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+				}
+				//hr.children[j].children[0].sb = JSON.stringify({channel:'tablesum', subject:'tablesum'});
+				// let sbAttribute = JSON.parse(hr.children[j].children[0].getAttribute('sb'));
+				// if (h.boolean.isArray(sbAttribute)) {
+				// 	console.log(sbAttribute);
+				// 	let newAttribute = sbAttribute.push({channel:'tablesum', subject:'tablesum'});
+				// 	let newStringAttribute = JSON.stringify(newAttribute);
+				// 	console.log(newAttribute);
+				// 	console.log(hr.children[j].children[0]);
+				// 	hr.children[j].children[0].setAttribute('sb', newStringAttribute);
+					
+					
+				// }
+				
 			}
 		}
 
