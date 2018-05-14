@@ -21,7 +21,7 @@ tpl.innerHTML = `
 	
 	<style>
 	</style>
-
+	<headline-one-ce id="headline" title="Hyra Diagramrubrik" class="h6"></headline-one-ce>
 	<div id="chart" class="ct-chart"></div>
 `;
 

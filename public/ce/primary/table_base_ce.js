@@ -73,12 +73,9 @@ class TableBaseCE extends CustomElement3 {
 				})
 				.map(([e1, e2]) => [Number(e1), Number(e2)])
 				.filter(([e1, e2]) => !isNaN(e1) && !isNaN(e2))
-				.do(console.log('periodandlength'))
-				.do(x => console.log('pal: ' + x))
 				.subscribe((x) => {
 					this.startyear = x[1];
 					this.period = x[0];
-					//console.log(x);
 				});
 		};
 	}
@@ -292,7 +289,10 @@ function normalRow(rows, cells) {
 		tableArray.push(rowArray);
 	}
 	this.shadowRoot.querySelector('#table').appendChild(tableBody);
-	this.ctrl.stream(tableArray);
+	let tableObj = {};
+	tableObj.data = tableArray;
+	tableObj.label = this.startyear;
+	this.ctrl.stream(tableObj);
 }
 
 

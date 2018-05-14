@@ -21,7 +21,6 @@ class HeadlineAnyselectBaseCE extends CustomElement3 {
 
 			if (headline !== null) {
 				if (!h.boolean.isEmpty(this.title)) {
-					console.log(this);
 					this.eventDispatcher(headline.eventTarget, 'attributefromparent', {parent: this, attribute: 'title', newVal: this.title}); //Makes child component announce from headline component internally. The parent is attached in event e.details.
 				}
 			}

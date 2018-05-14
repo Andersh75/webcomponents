@@ -58,9 +58,7 @@ class EndlessBehaviorSubject extends Rx.BehaviorSubject {
 		findSubjectByName(subjects, name) {
 			let res; 
 			if (name === '*') {
-				console.log('A STAR');
 				 res = subjects.filter(s => true);
-				 console.log(res);
 			} else {
 				res = subjects.filter(s => s.name === name);
 			}
@@ -70,8 +68,6 @@ class EndlessBehaviorSubject extends Rx.BehaviorSubject {
 			}
 
 			if (res.length > 1) {
-				console.log('Array');
-				console.log(res);
 				return Rx.Observable.combineLatest(res);
 			}
 			return res[0];

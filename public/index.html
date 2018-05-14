@@ -470,10 +470,6 @@
                     };
                     combineLatestRentRent$(myRxmq.channel('rentkvm').behaviorobserve('amount'), myRxmq.channel(
                             'rentrent').behaviorobserve('price'))
-                        .do(x => {
-                            console.log('script');
-                            console.log(x);
-                        })
                         .map(([e1, e2]) => {
                             try {
                                 return [e1.data, e2.data];
@@ -533,7 +529,8 @@
                                 "sb": {
                                     "element":"owntable", 
                                     "channel":"owntable-sum-year", 
-                                    "subject":"sum"
+                                    "subject":"sum",
+                                    "label":"Totalkostnad Äga"
                                 }, 
                                 "sr": {
                                     "extend":"year",
@@ -550,7 +547,8 @@
                                 "sb": {
                                     "element":"renttable", 
                                     "channel":"renttable-sum-year", 
-                                    "subject":"sum"
+                                    "subject":"sum",
+                                    "label":"Totalkostnad Hyra"
                                 }, 
                                 "sr": {
                                     "extend":"year",
@@ -585,7 +583,8 @@
                                         "sb": {
                                             "element":"owntable", 
                                             "channel":"owntable-year", 
-                                            "subject":"own-heat-cost"
+                                            "subject":"own-heat-cost",
+                                            "label":"Värmekostnad"
                                         }, 
                                         "sr": {
                                             "extend":"",
@@ -609,7 +608,8 @@
                                         "sb": {
                                             "element":"owntable", 
                                             "channel":"owntable-year", 
-                                            "subject":"own-repair-cost"
+                                            "subject":"own-repair-cost",
+                                            "label":"Reparationskostnad"
                                         },
                                         "sr": {
                                             "extend":"",
@@ -659,7 +659,8 @@
                                 "sb": {
                                     "element":"renttable", 
                                     "channel":"renttable-year", 
-                                    "subject":"rent-heat-cost"
+                                    "subject":"rent-heat-cost",
+                                    "label":"Värmekostnad"
                                 }, 
                                 "sr": {
                                     "extend":"",
@@ -683,7 +684,8 @@
                                 "sb": {
                                     "element":"renttable", 
                                     "channel":"renttable-year", 
-                                    "subject":"rent-establish-cost"
+                                    "subject":"rent-establish-cost",
+                                    "label":"Etableringskostnad"
                                 }, 
                                 "sr": {
                                     "extend":"",
@@ -706,7 +708,8 @@
                                 "sb": {
                                     "element":"renttable", 
                                     "channel":"renttable-year", 
-                                    "subject":"rent-rent-cost"
+                                    "subject":"rent-rent-cost",
+                                    "label":"Hyreskostnad"
                                 }, 
                                 "sr": {
                                     "extend":"",

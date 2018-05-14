@@ -42,15 +42,18 @@ class ChartBaseCE extends CustomElement3 {
 
 		//local events initiated by global stream
 		this.ctrl.renderchart$ = function (e) {
+			var label = "hej";
 			myRxmq.channel(e.detail[0]).behaviorsubject(e.detail[1])
-				.filter(x => x !== undefined)
+				.filter(x => x !== undefined)				
+				.map(x => x.data)
+				.do(x => label = x.label)
 				.map(x => x.data)
 				.map(x => x.map(item => item.map(element => myRxmq.channel(element.channel).behaviorsubject(element.subject))))
 				.map(x => x.map(item => Rx.Observable.combineLatest(item)))
 				.mergeMap(x => Rx.Observable.combineLatest(x))
 				.map(x => x.map(item => item.map(element => {
 					if (element !== undefined && element !== null) {
-						return element.data;
+						return element;
 					} else {
 						return undefined;
 					}
@@ -59,6 +62,7 @@ class ChartBaseCE extends CustomElement3 {
 					let defined = true;
 					x.forEach(y => {
 						y.forEach(z => {
+
 							if (z === undefined || z === null) {
 								defined = false;
 							} 
@@ -67,7 +71,25 @@ class ChartBaseCE extends CustomElement3 {
 					return defined;
 				})
 				.subscribe(x => {
-					this.chartdata = JSON.stringify(x);
+					let headline = this.shadowRoot.querySelector('#headline');
+					
+					let data = x.map(item => item.map(element => {
+						if (element !== undefined && element !== null) {
+							if (element.detail.hasOwnProperty('label')) {
+								headline.title = element.detail.label;
+							}
+							return element.data;
+						} else {
+							return undefined;
+						}
+					}));
+
+					//headline.title = 'hej';
+					let obj = {};
+					obj.data = data;
+					obj.label = label;
+
+					this.chartdata = JSON.stringify(obj);
 				});
 		};
 
@@ -78,9 +100,12 @@ class ChartBaseCE extends CustomElement3 {
 	//always passive
 	extendView(model) {
 		this.view.renderChartdata = function (obj) {
+			let labelsArray = [];
+			let lengthOfLablesArray = JSON.parse(obj).data[0].length;
+			labelsArray = h.arr.seqArrayFromTo(JSON.parse(obj).label, (JSON.parse(obj).label + lengthOfLablesArray - 1));
 			new Chartist.Line(this.shadowRoot.querySelector('.ct-chart'), {
-				//labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-				series: JSON.parse(obj)
+				labels: labelsArray,
+				series: JSON.parse(obj).data
 			}, {
 				fullWidth: true,
 				chartPadding: {
