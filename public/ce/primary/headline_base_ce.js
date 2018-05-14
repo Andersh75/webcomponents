@@ -65,6 +65,30 @@ class HeadlineBaseCE extends CustomElement3 {
 				});
 		};
 
+		this.ctrl.discount$ = function (e) {
+			let capitalizer = e.detail[2].local.capitalizer;
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]), myRxmq.channel(capitalizer).behaviorobserve('rate'))
+				.map(([x1, x2]) => {
+					try {
+						return [x1.data, x2.data];
+					} catch (error) {
+						return [x1, x2];
+					}
+				})
+				.map(([e1, e2]) => [Number(e1), Number(e2)])		
+
+				.subscribe((x) => {
+					let year = this.year;
+					let numYear = Number(year);
+					let result = x[0] / Math.pow((x[1] + 1), numYear);
+					let roundedResult = parseFloat(Math.round(result * 1000) / 1000).toFixed(0);
+					if (h.boolean.isNumber(roundedResult)) {
+						//this.title = Number(roundedResult).toLocaleString('sv');
+						this.title = Number(roundedResult);
+					}
+				});
+		};
+
 		this.ctrl.initial$ = function (e) {
 			if (e.detail[2].year == 0) {
 				combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))

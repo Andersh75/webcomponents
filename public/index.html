@@ -9,7 +9,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Webflow" name="generator">
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.10/Rx.min.js"></script>
     <script src="js/rxmq.js" type="text/javascript"></script>
     <script src="js/curry.js" type="text/javascript"></script>
@@ -98,7 +98,6 @@
 
 
         var startyear = "hej";
-
     </script>
 
 
@@ -106,6 +105,7 @@
         body {
             background-color: azure;
         }
+
         .nav-tabs .nav-item.show .nav-link,
         .nav-tabs .nav-link.active {
             background-color: azure;
@@ -259,7 +259,8 @@
                     const combineLatestPeriod$ = function (...streams) {
                         return Rx.Observable.combineLatest(streams);
                     };
-                    combineLatestPeriod$(myRxmq.channel('period').behaviorobserve('length'), myRxmq.channel('period').behaviorobserve('start'))
+                    combineLatestPeriod$(myRxmq.channel('period').behaviorobserve('length'), myRxmq.channel('period').behaviorobserve(
+                            'start'))
                         .map(([e1, e2]) => {
                             try {
                                 return [e1.data, e2.data];
@@ -340,15 +341,49 @@
                         .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
                 </script>
 
-                <anykind-container-one-ce slot="anycontainer">
+                <!-- <anykind-container-one-ce slot="anycontainer">
 
-                    <headline-one-ce title="Brukare" class="h5" slot="headline"></headline-one-ce>
+                    <headline-one-ce title="Vatten" class="h5" slot="headline"></headline-one-ce>
 
-                    <headline-anyinput-ce title="Antal brukare" slot="anyform">
-                        <input-number-ce value="1000" placeholder="Antal brukare.." slot="anyinput" sb='{"channel":"users", "subject":"cost", "element":"initial"}'></input-number-ce>
+                    <headline-anyinput-ce title="Antal liter" slot="anyform">
+                        <input-number-ce value="1000" placeholder="Antal liter.." slot="anyinput" sb='{"channel":"water", "subject":"liter", "element":"initial"}'></input-number-ce>
                     </headline-anyinput-ce>
 
+
+                    <headline-anyselect-ce title="Kostnad per liter" slot="anyform">
+                        <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"water", "subject":"price", "element":"initial"}'></select-kwhprice-ce>
+                    </headline-anyselect-ce>
+
                 </anykind-container-one-ce>
+
+                <script>
+                    const combineLatestWater$ = function (...streams) {
+                        return Rx.Observable.combineLatest(streams);
+                    };
+                    combineLatestWater$(myRxmq.channel('water').behaviorobserve('liter'), myRxmq.channel('water').behaviorobserve(
+                            'price'))
+                        .map(([e1, e2]) => {
+                            try {
+                                return [e1.data, e2.data];
+                            } catch (error) {
+                                return [e1, e2];
+                            }
+                        })
+                        .map(([e1, e2]) => [Number(e1), Number(e2)])
+                        .map(([e1, e2]) => {
+                            let obj = {};
+                            obj.data = e1 * e2;
+                            obj.detail = {};
+                            obj.detail.channel = 'water';
+                            obj.detail.subject = 'cost;'
+                            obj.detail.element = 'initial';
+                            return obj;
+                        })
+                        .subscribe(myRxmq.channel('water').behaviorsubject('cost'));
+                </script> -->
+
+
+
 
             </section-input-one-ce>
             <section-input-one-ce id="own-input" listener="cleargeneralinputsection@clearanykindcontainers">
@@ -522,6 +557,10 @@
             </section-input-one-ce>
 
 
+
+
+
+
             <section-one-column-ce id="sum-table">
                 <headline-one-ce title="Tabell Summa" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
                 <anykind-container-one-ce slot="anycontainer">
@@ -571,37 +610,12 @@
                             }
                         }'>
                     </table-one-ce>
-                    <!-- <table-one-ce period title="Summa" celldispatch='[
-                            { 
-                                "name":"Summa Äga", 
-                                "type":"sum", 
-                                "sb": {
-                                    "element":"owntable", 
-                                    "channel":"owntable-sum-year", 
-                                    "subject":"*",
-                                    "label":"Totalkostnad Äga"
-                                }, 
-                                "sr": {
-                                    "extend":"year",
-                                    "channel":"owntable-year",
-                                    "subject":"sum", 
-                                    "local": {
-                                        "function":"sum$"
-                                    }
-                                }
-                            }
-                        ]' slot="anytable" sb='{"channel":"tablesum", "subject":"tablesum"}' sr='{
-                            "channel": "period", 
-                            "subject": "lengthandstart", 
-                            "local": {
-                                "function":"rendertable2$"
-                            }
-                        }'>
-                    </table-one-ce> -->
-
                 </anykind-container-one-ce>
-
             </section-one-column-ce>
+
+
+
+
 
             <section-one-column-ce id="own-table">
                 <headline-one-ce title="Tabell Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
@@ -658,11 +672,8 @@
                                             }
                                         }
                                     }
-                                ]' 
-                                slot="anytable"
-                                tablekind="owntable" 
-                                sb='{"channel":"tableown", "subject":"tableown"}' 
-                                sr='{
+                                ]' slot="anytable" tablekind="owntable" sb='{"channel":"tableown", "subject":"tableown"}'
+                        sr='{
                                     "channel": "period", 
                                     "subject": "lengthandstart", 
                                     "local": {
@@ -670,16 +681,18 @@
                                     }
                                 }'>
                     </table-one-ce>
-
                 </anykind-container-one-ce>
-
             </section-one-column-ce>
 
+
+
+
+
             <section-one-column-ce id="rent-table">
-                    <headline-one-ce title="Tabell Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
-                    <anykind-container-one-ce slot="anycontainer">
-                        <headline-one-ce title="Tabellrubrik Hyra" class="h5" slot="headline"></headline-one-ce>
-                        <table-one-ce period title="Hyra" celldispatch='[
+                <headline-one-ce title="Tabell Hyra" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                    <headline-one-ce title="Tabellrubrik Hyra" class="h5" slot="headline"></headline-one-ce>
+                    <table-one-ce period title="Hyra" celldispatch='[
                                     { 
                                         "name":"Värme", 
                                         "type":"capitalize", 
@@ -754,22 +767,19 @@
                                             }
                                         }
                                     }
-                                ]' 
-                                slot="anytable"
-                                tablekind="renttable" 
-                                sb='{"channel":"tablerent", "subject":"tablerent"}' 
-                                sr='{
+                                ]' slot="anytable" tablekind="renttable" sb='{"channel":"tablerent", "subject":"tablerent"}'
+                        sr='{
                                     "channel": "period", 
                                     "subject": "lengthandstart", 
                                     "local": {
                                         "function":"rendertable2$"
                                     }
                                 }'>
-                            </table-one-ce>
-    
-                    </anykind-container-one-ce>
-    
-                </section-one-column-ce>
+                    </table-one-ce>
+
+                </anykind-container-one-ce>
+
+            </section-one-column-ce>
 
 
             <section-one-column-ce id="own-diagram">
@@ -800,7 +810,6 @@
                                     }
                                 }'>
                     </chart-one-ce>
-
                 </anykind-container-one-ce>
             </section-one-column-ce>
 
@@ -822,7 +831,73 @@
 
 
 
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- <table-one-ce period title="Summa" celldispatch='[
+                            { 
+                                "name":"Summa Äga", 
+                                "type":"sum", 
+                                "sb": {
+                                    "element":"owntable", 
+                                    "channel":"owntable-sum-year", 
+                                    "subject":"*",
+                                    "label":"Totalkostnad Äga"
+                                }, 
+                                "sr": {
+                                    "extend":"year",
+                                    "channel":"owntable-year",
+                                    "subject":"sum", 
+                                    "local": {
+                                        "function":"sum$"
+                                    }
+                                }
+                            }
+                        ]' slot="anytable" sb='{"channel":"tablesum", "subject":"tablesum"}' sr='{
+                            "channel": "period", 
+                            "subject": "lengthandstart", 
+                            "local": {
+                                "function":"rendertable2$"
+                            }
+                        }'>
+                    </table-one-ce> -->
+
 
             <!-- <section-one-column-ce id="own-table">
                     <headline-one-ce title="Tabell Äga" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
@@ -923,7 +998,7 @@
 
 
 
-<!-- 
+            <!-- 
 
 
             <section-two-column-ce id="rent-table">
