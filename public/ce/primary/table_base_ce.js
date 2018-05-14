@@ -213,6 +213,24 @@ function normalRow(rows, cells, hr) {
 			tableRow.appendChild(tableCell);
 			rowArray.push(sbObj2);
 
+			if (i === 1) {
+				hr.children[1].children[0].setAttribute('sbdispatch', '[');
+			}
+			let oldAttribute = hr.children[1].children[0].getAttribute('sbdispatch');
+			
+			if (((i) === rows)) {
+				//console.log(Number(cells));
+				hr.children[1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ']');
+				//console.log(hr.children[1].children[0].getAttribute('sbdispatch'));
+				myRxmq.channel(this.tablekind + '-year-' + 0).behaviorobserve('sum')
+				.next(hr.children[1].children[0].getAttribute('sbdispatch'));
+			} else {
+				//console.log(rows);
+				hr.children[1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ', ');
+				//console.log(hr.children[1].children[0].getAttribute('sbdispatch'));
+			}
+			//console.log(hr.children[0]);
+
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
 				let textContent = document.createElement('headline-thousand-ce');
@@ -238,6 +256,28 @@ function normalRow(rows, cells, hr) {
 				tableRow.appendChild(tableCell);
 
 				rowArray.push(sbObj2);
+
+				//console.log(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+				
+				if (i === 1) {
+					hr.children[j+1].children[0].setAttribute('sbdispatch', '[');
+				}
+				let oldAttribute = hr.children[j+1].children[0].getAttribute('sbdispatch'); 
+
+				if (((i) === rows)) {
+					// console.log(j);
+					// console.log(Number(cells));
+
+					hr.children[j+1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ']');
+					//console.log(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+					myRxmq.channel(this.tablekind + '-year-' + j).behaviorobserve('sum')
+					.next(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+				} else {
+					// console.log(j);
+					// console.log(rows);
+					hr.children[j+1].children[0].setAttribute('sbdispatch', oldAttribute + JSON.stringify(sbObj2) + ', ');
+					//console.log(hr.children[j+1].children[0].getAttribute('sbdispatch'));
+				}
 			}
 		} else {
 			let tableCell = document.createElement('td');

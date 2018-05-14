@@ -71,13 +71,13 @@ class ChartBaseCE extends CustomElement3 {
 					return defined;
 				})
 				.subscribe(x => {
-					let headline = this.shadowRoot.querySelector('#headline');
+					//let headline = this.shadowRoot.querySelector('#headline');
 					
 					let data = x.map(item => item.map(element => {
 						if (element !== undefined && element !== null) {
-							if (element.detail.hasOwnProperty('label')) {
-								headline.title = element.detail.label;
-							}
+							// if (element.detail.hasOwnProperty('label')) {
+							// 	headline.title = element.detail.label;
+							// }
 							return element.data;
 						} else {
 							return undefined;
@@ -103,9 +103,20 @@ class ChartBaseCE extends CustomElement3 {
 			let labelsArray = [];
 			let lengthOfLablesArray = JSON.parse(obj).data[0].length;
 			labelsArray = h.arr.seqArrayFromTo(JSON.parse(obj).label, (JSON.parse(obj).label + lengthOfLablesArray - 1));
+			let thedata = JSON.parse(obj).data;
+			// let moddata = thedata.map(arr => {
+			// 	return {
+			// 		className: 'apples',
+			// 		name: 'My nice apples',
+			// 		data: arr,
+			// 	};
+			// });
+
+			//console.log(moddata);
+
 			new Chartist.Line(this.shadowRoot.querySelector('.ct-chart'), {
 				labels: labelsArray,
-				series: JSON.parse(obj).data
+				series: thedata
 			}, {
 				fullWidth: true,
 				chartPadding: {

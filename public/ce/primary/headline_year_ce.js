@@ -26,7 +26,7 @@ tpl.innerHTML = `
 class HeadlineYearCE extends HeadlineBaseCE {
 	constructor() {
 		super();
-		this.stream = 'sbdispatch';
+		//this.stream = 'sbdispatch';
 		this.tpl = tpl;
 		this.extend();
 	}

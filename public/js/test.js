@@ -76,8 +76,8 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-	myRxmq.channel('owntable-year-2').behaviorobserve('sum')
-	.subscribe(console.log);
+	// myRxmq.channel('owntable-year-2').behaviorobserve('sum')
+	// .subscribe(x => console.log('test ' + x));
 	// const combineLatest$ = function (...streams) {
 	// 	return Rx.Observable.combineLatest(streams);
 	// };
