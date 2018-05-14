@@ -28,7 +28,9 @@ class CustomElement3 extends HTMLElement {
 		this.remote = undefined;
 		this.eventDispatcher = eventDispatcherMaker();
 		this.html = html;
-		this.render =render;
+		this.render = render;
+		this.addedEvents = [];
+		
 	}
 
 	//-----------
@@ -46,6 +48,7 @@ class CustomElement3 extends HTMLElement {
 		//gets keys from this.ctrl and puts them in an array. Removes first element, the eval method.
 		//for every key it maps an eventlistener on the eventTarget which listens to the event with the same name as the key and runs its method.
 		Object.keys(this.ctrl).slice(1).map(key => { 
+			this.addedEvents.push({element: this.eventTarget, event: h.str.toLowerCase(key), function: this.ctrl[key].bind(this)});
 			this.eventTarget.addEventListener(h.str.toLowerCase(key), this.ctrl[key].bind(this));
 		});
 
@@ -95,25 +98,26 @@ class CustomElement3 extends HTMLElement {
 				let attribute = 'value';
 				this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: data, attribute: attribute, who: this});
 			});
-		} else {
+		} 
+		// else {
 			
-			//keydown and click to components without own user-iput elements
-			this.addEventListener('keydown', e => {
-				e.stopPropagation;
-				e.preventDefault;
-				let el = e.composedPath()[0];
+		// 	//keydown and click to components without own user-iput elements
+		// 	this.addEventListener('keydown', e => {
+		// 		e.stopPropagation;
+		// 		e.preventDefault;
+		// 		let el = e.composedPath()[0];
 				
-				if (e.keyCode === 32 || e.keyCode === 13) {
-					el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
-				}
-			});
+		// 		if (e.keyCode === 32 || e.keyCode === 13) {
+		// 			el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, composed: true}));
+		// 		}
+		// 	});
 
-			this.addEventListener('click', e => {
-				e.stopPropagation;
-				e.preventDefault;
-				this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined, who: this});
-			});
-		}	
+		// 	this.addEventListener('click', e => {
+		// 		e.stopPropagation;
+		// 		e.preventDefault;
+		// 		this.eventDispatcher(this.eventTarget, 'useraction', {userevent: e, data: undefined, attribute: undefined, who: this});
+		// 	});
+		// }	
 	}
 
 
@@ -134,6 +138,13 @@ class CustomElement3 extends HTMLElement {
 			details.changedAttribute = changedAttribute;
 			this.eventDispatcher(this, this.dispatch, details); //the customComponent dispatches a remote event and adds the changed attribute in detail object. This remote event is listened to by the document object in setComponentDispatcher function.
 		}	
+	}
+
+	disconnectedCallback() {
+		//console.log(this.addedEvents);
+		this.addedEvents.forEach(addedEvent => {
+			addedEvent.element.removeEventListener(addedEvent.event, addedEvent.function, false);
+		});
 	}
 
 	//
@@ -158,7 +169,7 @@ class CustomElement3 extends HTMLElement {
 
 		//makes component fire local events when remote event fires. Remote event is attached in each local event.
 		setComponentListener.call(this, this.model); //this.model is an object with dispatch and eval functions
-		setComponentDispatcher(this.dispatch); //this.dispatch is name of remote event that get published from component
+		setComponentDispatcher.call(this, this.dispatch); //this.dispatch is name of remote event that get published from component
 
 		//TODO: Go through these two
 		setComponentObserver.call(this, this.model); //this.model is an object with dispatch and eval functions
@@ -423,11 +434,14 @@ function setComponentDispatcher(eventName) {
 		return events.publish(eventName, e); //events(pub/sub) publishes event with name of this.dispatch.
 	}
 
+	this.addedEvents.push({element: document, event: eventName, function: publishEvent});
+
 	document.addEventListener(eventName, publishEvent); 
 }
 
 function setComponentObserver(model) {
 	let sr = this.sr; //string from attribute listener
+
 
 	if (h.boolean.isString(sr)) {
 		if (!h.boolean.isEmptyString(sr)) {
