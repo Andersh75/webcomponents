@@ -23,11 +23,12 @@ class TableOneCE extends TableBaseCE {
 		super();
 		this.stream = undefined;
 		this.tpl = tpl;
+		this.startyear = 0;
 		this.extend();
 	}
 
 	static get observedAttributes() {
-		return ['cells', 'sb', 'sr', 'celldispatch', 'type', 'title', 'period'];
+		return ['cells', 'sb', 'sr', 'celldispatch', 'type', 'title', 'period', 'startyear'];
 	}
 
 	extendBaseCtrl(that, model, view) {
@@ -45,6 +46,7 @@ class TableOneCE extends TableBaseCE {
 		this.db.title = "";
 		this.db.period = "";
 		this.db.type = "";
+		this.db.startyear = "";
 	}	
 }
 

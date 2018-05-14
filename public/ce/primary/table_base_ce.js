@@ -60,6 +60,27 @@ class TableBaseCE extends CustomElement3 {
 					this.period = x;
 				});
 		};
+
+		this.ctrl.rendertable2$ = function (e) {
+			combineLatest$(myRxmq.channel(e.detail[0]).behaviorobserve(e.detail[1]))
+
+				.map((e1) => {
+					try {
+						return e1[0].data;
+					} catch (error) {
+						return e1[0];
+					}
+				})
+				.map(([e1, e2]) => [Number(e1), Number(e2)])
+				.filter(([e1, e2]) => !isNaN(e1) && !isNaN(e2))
+				.do(console.log('periodandlength'))
+				.do(x => console.log('pal: ' + x))
+				.subscribe((x) => {
+					this.startyear = x[1];
+					this.period = x[0];
+					//console.log(x);
+				});
+		};
 	}
 
 	extendView(model) {
@@ -118,7 +139,7 @@ function headerRow(cells, title) {
 	for (let j = 0; j <= Number(cells); j++) {
 		let tableCell = document.createElement('th');
 		tableCell.setAttribute('style', 'width: 9%');
-		let textContent = 'År ' + j;
+		let textContent = 'År ' + (j + this.startyear);
 		tableCell.textContent = textContent;
 		tableRow.appendChild(tableCell);
 	}
@@ -165,7 +186,7 @@ function normalRow(rows, cells) {
 
 		if (type === 'initial') {
 			let tableCell = document.createElement('td');
-			let textContent = document.createElement('headline-one-ce');
+			let textContent = document.createElement('headline-thousand-ce');
 			//textContent.setAttribute('sr', JSON.stringify(srObj));
 			textContent.setAttribute('year', 0);
 			textContent.setAttribute('title', '');
@@ -190,7 +211,7 @@ function normalRow(rows, cells) {
 
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
-				let textContent = document.createElement('headline-one-ce');
+				let textContent = document.createElement('headline-thousand-ce');
 				textContent.setAttribute('year', j);
 				textContent.setAttribute('title', '');
 				sbObj.year = j;
@@ -216,7 +237,7 @@ function normalRow(rows, cells) {
 			}
 		} else {
 			let tableCell = document.createElement('td');
-			let textContent = document.createElement('headline-one-ce');
+			let textContent = document.createElement('headline-thousand-ce');
 			textContent.setAttribute('year', 0);
 			textContent.setAttribute('title', '');
 			sbObj.year = 0;
@@ -241,7 +262,7 @@ function normalRow(rows, cells) {
 
 			for (let j = 1; j <= Number(cells); j++) {
 				let tableCell = document.createElement('td');
-				let textContent = document.createElement('headline-one-ce');
+				let textContent = document.createElement('headline-thousand-ce');
 				//textContent.setAttribute('sr', JSON.stringify(srObj));
 				textContent.setAttribute('year', j);
 				textContent.setAttribute('title', '');

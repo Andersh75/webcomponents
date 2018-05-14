@@ -9,8 +9,8 @@
 
 // For instance, a focus event does not bubble. There are other examples too, we’ll meet them. But still it’s an exception, rather than a rule, most events do bubble.
 
-import { render} from 'https://unpkg.com/lit-html/lib/lit-extended.js?module';
-import {LitElement, html} from '@polymer/lit-element';
+import { html, render} from 'https://unpkg.com/lit-html/lib/lit-extended.js?module';
+//import {LitElement, html} from '../../node_modules/@polymer/lit-element/lit-element.js';
 
 class CustomElement3 extends HTMLElement {
 

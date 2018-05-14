@@ -135,6 +135,9 @@ class HeadlineBaseCE extends CustomElement3 {
 			const helloTemplate = (name) => this.html`${name}`;
  
 			// Call the function with some data, and pass the result to render()
+
+
+			//let separatedNumbers = Number(obj).toLocaleString('sv');
 			
 			// This renders <div>Hello Steve!</div> to the document body
 			this.render(helloTemplate(obj), headline);
