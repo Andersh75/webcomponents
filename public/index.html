@@ -31,6 +31,7 @@
     <script src="ce/primary/select_period_ce.js" type="module"></script>
     <script src="ce/primary/select_inflation_ce.js" type="module"></script>
     <script src="ce/primary/select_discount_ce.js" type="module"></script>
+    <script src="ce/primary/select_waterprice_ce.js" type="module"></script>
     <script src="ce/primary/select_kwhprice_ce.js" type="module"></script>
     <script src="ce/primary/headline_one_ce.js" type="module"></script>
     <script src="ce/primary/headline_thousand_ce.js" type="module"></script>
@@ -239,7 +240,7 @@
         <div id="main">
             <section-input-one-ce id="common-input" listener="cleargeneralinputsection@clearanykindcontainers">
 
-                <headline-one-ce title="Allmänt" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
+                <headline-one-ce title="common-input" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
 
                 <anykind-container-one-ce slot="anycontainer">
 
@@ -341,7 +342,7 @@
                         .subscribe(myRxmq.channel('heat').behaviorsubject('cost'));
                 </script>
 
-                <!-- <anykind-container-one-ce slot="anycontainer">
+                <anykind-container-one-ce slot="anycontainer">
 
                     <headline-one-ce title="Vatten" class="h5" slot="headline"></headline-one-ce>
 
@@ -351,10 +352,12 @@
 
 
                     <headline-anyselect-ce title="Kostnad per liter" slot="anyform">
-                        <select-kwhprice-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"water", "subject":"price", "element":"initial"}'></select-kwhprice-ce>
+                        <select-waterprice-ce slot="anyselect" selectedindex="3" selectedvalue sb='{"channel":"water", "subject":"price", "element":"initial"}'></select-kwhprice-ce>
                     </headline-anyselect-ce>
 
                 </anykind-container-one-ce>
+
+                
 
                 <script>
                     const combineLatestWater$ = function (...streams) {
@@ -380,7 +383,7 @@
                             return obj;
                         })
                         .subscribe(myRxmq.channel('water').behaviorsubject('cost'));
-                </script> -->
+                </script>
 
 
 
@@ -785,20 +788,98 @@
             <section-one-column-ce id="own-diagram">
                 <headline-one-ce title="Diagram - 1 kolumn" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
                 <anykind-container-one-ce slot="anycontainer">
-                    <headline-one-ce title="Äga Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
-                    <chart-one-ce slot="anyform" chartdata sr='{
-                                    "channel": "tableown", 
-                                    "subject": "tableown", 
-                                    "local": {
-                                        "function":"renderchart$"
-                                    }
-                                }'>
-                    </chart-one-ce>
+                        <headline-one-ce title="Tabellrubrik Hyra" class="h5" slot="headline"></headline-one-ce>
+                        <table-one-ce period title="Hyra" celldispatch='[
+                                        { 
+                                            "name":"Värme", 
+                                            "type":"capitalize", 
+                                            "sb": {
+                                                "element":"renttable", 
+                                                "channel":"renttable-year", 
+                                                "subject":"rent-heat-cost",
+                                                "label":"Värmekostnad"
+                                            }, 
+                                            "sr": {
+                                                "extend":"",
+                                                "channel":"heat",
+                                                "subject":"cost",
+                                                "blacklist": {
+                                                    "element": [
+                                                    "renttable",
+                                                    "owntable"
+                                                    ]
+                                                },
+                                                "local": {
+                                                    "function":"capitalize$", 
+                                                    "capitalizer":"inflation"
+                                                }
+                                            }
+                                        }, 
+                                        { 
+                                            "name":"Etablering", 
+                                            "type":"initial", 
+                                            "sb": {
+                                                "element":"renttable", 
+                                                "channel":"renttable-year", 
+                                                "subject":"rent-establish-cost",
+                                                "label":"Etableringskostnad"
+                                            }, 
+                                            "sr": {
+                                                "extend":"",
+                                                "channel":"rentestablish",
+                                                "subject":"cost",
+                                                "blacklist": {
+                                                    "element": [
+                                                    "renttable",
+                                                    "owntable"
+                                                    ]
+                                                },
+                                                "local": {
+                                                    "function":"initial$"
+                                                }
+                                            }
+                                        }, 
+                                        { 
+                                            "name":"Hyra", 
+                                            "type":"capitalize", 
+                                            "sb": {
+                                                "element":"renttable", 
+                                                "channel":"renttable-year", 
+                                                "subject":"rent-rent-cost",
+                                                "label":"Hyreskostnad"
+                                            }, 
+                                            "sr": {
+                                                "extend":"",
+                                                "channel":"rentrent",
+                                                "subject":"cost",
+                                                "blacklist": {
+                                                    "element": [
+                                                        "renttable",
+                                                        "owntable"
+                                                        ]
+                                                },
+                                                "local": {
+                                                    "function":"capitalize$", 
+                                                    "capitalizer":"inflation"
+                                                }
+                                            }
+                                        }
+                                    ]' slot="anytable" tablekind="renttable" sb='{"channel":"tablerent", "subject":"tablerent"}'
+                            sr='{
+                                        "channel": "period", 
+                                        "subject": "lengthandstart", 
+                                        "local": {
+                                            "function":"rendertable2$"
+                                        }
+                                    }'>
+                        </table-one-ce>
+    
+                    </anykind-container-one-ce>
 
                 </anykind-container-one-ce>
             </section-one-column-ce>
 
-            <section-one-column-ce id="rent-diagram">
+            <section-two-column-ce id="rent-diagram">
                 <headline-one-ce title="Diagram - 1 kolumn" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>
                 <anykind-container-one-ce slot="anycontainer">
                     <headline-one-ce title="Hyra Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
@@ -811,7 +892,18 @@
                                 }'>
                     </chart-one-ce>
                 </anykind-container-one-ce>
-            </section-one-column-ce>
+                <anykind-container-one-ce slot="anycontainer">
+                        <headline-one-ce title="Hyra Diagramrubrik" class="h5" slot="headline"></headline-one-ce>
+                        <chart-one-ce slot="anyform" chartdata sr='{
+                                        "channel": "tablerent", 
+                                        "subject": "tablerent", 
+                                        "local": {
+                                            "function":"renderchart$"
+                                        }
+                                    }'>
+                        </chart-one-ce>
+                    </anykind-container-one-ce>
+            </section-two-column-ce>
 
             <section-one-column-ce id="sum-diagram">
                 <headline-one-ce title="Diagram - 1 kolumn" id="mainheadline" class="h2 text-info" slot="anyheadline"></headline-one-ce>

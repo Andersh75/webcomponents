@@ -83,14 +83,14 @@ class TableBaseCE extends CustomElement3 {
 	extendView(model) {
 		this.view.renderCells = function (obj) {
 			let rows = this.cellDispatchObj.length;
-			let cells = this.period;
+			let period = this.period;
 			
 			while (this.shadowRoot.querySelector('#table').firstChild) {
 				this.shadowRoot.querySelector('#table').removeChild(this.shadowRoot.querySelector('#table').firstChild);
 			}
 
-			let hr = headerRow.call(this, cells, 'Kostnadsslag\\År');
-			normalRow.call(this, rows, cells, hr);
+			let hr = headerRow.call(this, period, 'Kostnadsslag\\År');
+			normalRow.call(this, rows, period, hr);
 		};
 
 
@@ -112,37 +112,32 @@ const combineLatest$ = function (...streams) {
 	return Rx.Observable.combineLatest(streams);
 };
 
-function headerRow(cells, title) {
-	let headerName = this.title;
+function headerRow(period, title) {
 	
 	let tableHead = document.createElement('thead');
 	tableHead.setAttribute('class', 'thead-dark');
 	
 	let tableRow = document.createElement('tr');
-	tableRow.setAttribute('cells', cells);
-	tableRow.setAttribute('slot', 'tr');
+	tableRow.setAttribute('cells', period);
 
+	// Set cell 0 in header row
 	let tableCell = document.createElement('th');
 
 	let textContent = document.createElement('headline-one-ce');
-	textContent.setAttribute('sr', "");
-	textContent.setAttribute('year', "");
-	textContent.setAttribute('title', headerName);
-	textContent.setAttribute('sb', '');
+	textContent.setAttribute('title', title);
+	
 	tableCell.appendChild(textContent);
 	tableRow.appendChild(tableCell);
 
 
-	for (let j = 0; j <= Number(cells); j++) {
+	// Set cell 1- in header row
+	for (let j = 0; j <= Number(period); j++) {
+		
 		let tableCell = document.createElement('th');
 
 		let textContent = document.createElement('headline-year-ce');
-		textContent.setAttribute('sr', "");
-		textContent.setAttribute('year', "");
 		textContent.setAttribute('title', 'År ' + (j + this.startyear));
 		textContent.setAttribute('sb', '{"element":"' + this.tablekind + '","channel":"' + this.tablekind + '-year-' + j + '","subject":"sum"}');
-		//let textContent = 'År ' + (j + this.startyear);
-		//tableCell.textContent = textContent;
 		tableCell.appendChild(textContent);
 		tableRow.appendChild(tableCell);
 	}
@@ -156,6 +151,7 @@ function headerRow(cells, title) {
 function normalRow(rows, cells, hr) {
 	let tableBody = document.createElement('tbody');
 	let tableArray = [];
+
 	for (let i = 1; i <= rows; i++) {
 		let rowArray = [];
 
